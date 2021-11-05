@@ -7,7 +7,7 @@ from rest_framework.permissions import IsAuthenticated
 # AUTHENTICATION REQUIRED: GET - All Users
 
 class UserViewSet(viewsets.ModelViewSet):
-    http_method_names = ['get']
+    http_method_names = ['get', 'post']
     serializer_class = UserSerializer
     permission_classes = (IsAuthenticated, )
     filter_backends = [filters.OrderingFilter]
@@ -15,8 +15,6 @@ class UserViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         if self.request.user.is_superuser:
             return User.objects.all()
-
-        return User.objects.all()
 
     def get_object(self):
         lookup_field_value = self.kwargs[self.lookup_field]
