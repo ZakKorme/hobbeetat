@@ -1,19 +1,39 @@
 import React, { useState } from "react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
-// import { useDispatch } from "react-redux";
-// import axios from "axios";
-// import { useHistory } from "react-router-dom";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
+
+import authSlice from "../../store/slices/auth";
 
 const Login = () => {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // const dispatch = useDispatch();
-  // const history = useHistory();
+  const dispatch = useDispatch();
+  const history = useHistory();
 
   const handleLogin = (email, password) => {
-    //
+    axios
+      .post(`${process.env.REACT_APP_API_URL}/auth/login/`, {
+        email,
+        password,
+      })
+      .then((res) => {
+        dispatch(
+          authSlice.actions.setAuthToekns({
+            token: res.data.access,
+            refreshToekn: res.data.refresh,
+          })
+        );
+        dispatch(authSlice.actions.setAccount(res.data.user));
+        setLoading(false);
+        history.push("/");
+      })
+      .catch((err) => {
+        setMessage(err.response.data.detail.toString());
+      });
   };
 
   const formik = useFormik({
@@ -26,7 +46,7 @@ const Login = () => {
       handleLogin(values.email, values.password);
     },
     validationSchema: Yup.object({
-      email: Yup.string().trim().required("Please enter your email!").required,
+      email: Yup.string().trim().required("Please enter your email!"),
       password: Yup.string().trim().required("Please enter your password!"),
     }),
   });

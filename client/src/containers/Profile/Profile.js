@@ -1,13 +1,14 @@
-import React from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
+import authSlice from "../../store/slices/auth";
 
 const Profile = () => {
-  // const dispatch = useDispatch();
-  // const history = useHistory()
+  const dispatch = useDispatch();
+  const history = useHistory();
 
   const handleLogout = () => {
-    //
+    dispatch(authSlice.actions.logout());
+    history.push("/login");
   };
 
   return (
