@@ -13,7 +13,6 @@ class UserViewSet(viewsets.ModelViewSet):
     filter_backends = [filters.OrderingFilter]
 
     def get_queryset(self):
-        print(self.request.user)
         if self.request.user.is_superuser:
             return User.objects.all()
 
