@@ -1,4 +1,5 @@
 from auth_users.viewsets import LoginViewSet, RefreshViewSet, RegistrationViewSet
+from hobbies.viewsets import HobbiesViewSet
 from users.viewsets import UserViewSet
 from rest_framework.routers import SimpleRouter
 
@@ -14,8 +15,10 @@ router.register(r'auth/refresh', RefreshViewSet, basename='auth-refresh')
 
 
 # USER
-router.register(r'user', UserViewSet, basename='user')
+router.register(r'users', UserViewSet, basename='user')
 
+# HOBBIES
+router.register(r'hobbies', HobbiesViewSet, basename="hobby")
 
 urlpatterns = [
     *router.urls
