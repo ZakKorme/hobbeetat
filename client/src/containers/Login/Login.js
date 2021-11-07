@@ -22,9 +22,9 @@ const Login = () => {
       })
       .then((res) => {
         dispatch(
-          authSlice.actions.setAuthToekns({
+          authSlice.actions.setAuthTokens({
             token: res.data.access,
-            refreshToekn: res.data.refresh,
+            refreshToken: res.data.refresh,
           })
         );
         dispatch(authSlice.actions.setAccount(res.data.user));
@@ -84,19 +84,19 @@ const Login = () => {
               <div>{formik.errors.password} </div>
             ) : null}
           </div>
+          <div className="text-danger text-center my-2" hidden={false}>
+            {message}
+          </div>
+          <div className="flex justify-center items-center mt-6">
+            <button
+              type="submit"
+              disabled={loading}
+              className="rounded border-gray-300 p-2 w-32 bg-blue-700 text-white"
+            >
+              Login
+            </button>
+          </div>
         </form>
-        <div className="text-danger text-center my-2" hidden={false}>
-          {message}
-        </div>
-        <div className="flex justify-center items-center mt-6">
-          <button
-            type="submit"
-            disabled={loading}
-            className="rounded border-gray-300 p-2 w-32 bg-blue-700 text-white"
-          >
-            Login
-          </button>
-        </div>
       </div>
     </div>
   );
