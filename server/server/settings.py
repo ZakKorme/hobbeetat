@@ -22,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('SECRET_KEY')
-# SECRET_KEY = 'ibrb9^cliw%bw%ne9b5icyu9l+%n%198l_+kv1%dm&i+2986zm'
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -33,17 +33,17 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'users',
-    'auth_users',
-    'hobbies',
-    'rest_framework',
-    'corsheaders',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
+    'users',
+    'auth_users',
+    'hobbies',
+    'rest_framework',
+    'corsheaders',
 
 ]
 
@@ -83,20 +83,8 @@ WSGI_APPLICATION = 'server.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-# DB_NAME = postgres
-# DB_USER = postgres
-# DB_PASSWORD = ghtghtght123
-# DB_PORT = 5432
-
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.postgresql',
-    #     'NAME': 'postgres',
-    #     'USER': 'postgres',
-    #     'PASSWORD': 'ghtghtght123',
-    #     'HOST': 'localhost',
-    #     'PORT': '5432',
-    # }
+
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': os.environ.get('DB_NAME'),

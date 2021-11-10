@@ -4,29 +4,25 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Permis
 
 class UserManager(BaseUserManager):
 
-    def create_user(self, username, email, password=None, **kwargs):
+    def create_user(self, email, password=None, **kwargs):
         """Create and return a user with an email, username, and password"""
-        if username is None:
-            raise TypeError("Users must have a username.")
         if email is None:
             raise ValueError("Users must have an email.")
 
-        user = self.model(username=username, email=self.normalize_email(
-            email), first_name=kwargs.get('first_name'), last_name=kwargs.get('last_name'))
+        user = self.model(email=self.normalize_email(
+            email), first_name=kwargs.get('first_name'), last_name=kwargs.get('last_name'), date_of_birth=kwargs.get('date_of_birth'), gender=kwargs.get('gender'))
         user.set_password(password)
         user.save()
         return user
 
-    def create_superuser(self, username, email, password):
+    def create_superuser(self, email, password):
         """Create and return user with admin permissions"""
         if password is None:
             raise TypeError("Admin users must have a password")
         if email is None:
             raise TypeError("Admin users must have an email")
-        if username is None:
-            raise TypeError("Admin users must have a username")
 
-        user = self.create_user(username, email, password)
+        user = self.create_user(email, password)
         user.is_superuser = True
         user.is_staff = True
         user.save()
@@ -37,14 +33,21 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
+    GENDER_CHOICES = (
+        ('M', 'Male'),
+        ('F', 'Female')
+    )
+
     first_name = models.CharField(max_length=150)
     last_name = models.CharField(max_length=150)
     email = models.EmailField(unique=True)
-    username = models.CharField(max_length=150, unique=True)
+    date_of_birth = models.DateField(max_length=8)
+    gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_reported = models.BooleanField(default=False)
     is_blocked = models.BooleanField(default=False)
+    is_confirmed = models.BooleanField(default=False)
     date_joined = models.DateTimeField(auto_now_add=True, null=True)
 
     USERNAME_FIELD = 'email'

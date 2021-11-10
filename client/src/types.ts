@@ -4,10 +4,12 @@ export interface AccountResponse {
     first_name: string;
     last_name: string;
     email: string;
-    username: string;
+    gender: string;
+    date_of_birth: Date;
     is_active: boolean;
-    date_joined: Date;
     is_staff: boolean;
+    is_confirmed: boolean;
+    date_joined: Date;
   };
   access: string;
   refresh: string;
