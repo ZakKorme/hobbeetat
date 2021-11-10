@@ -1,19 +1,18 @@
-from typing import Type
 from django.db import models
-from django.utils import timezone
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 
 
 class UserManager(BaseUserManager):
 
-    def create_user(self, username, email, password=None, **kwards):
+    def create_user(self, username, email, password=None, **kwargs):
         """Create and return a user with an email, username, and password"""
         if username is None:
             raise TypeError("Users must have a username.")
         if email is None:
             raise ValueError("Users must have an email.")
 
-        user = self.model(username=username, email=self.normalize_email(email))
+        user = self.model(username=username, email=self.normalize_email(
+            email), first_name=kwargs.get('first_name'), last_name=kwargs.get('last_name'))
         user.set_password(password)
         user.save()
         return user
