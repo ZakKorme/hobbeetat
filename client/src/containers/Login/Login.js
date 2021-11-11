@@ -32,6 +32,7 @@ const Login = () => {
         history.push("/");
       })
       .catch((err) => {
+        setLoading(false);
         setMessage(err.response.data.detail.toString());
       });
   };
@@ -46,9 +47,11 @@ const Login = () => {
       handleLogin(values.email, values.password);
     },
     validationSchema: Yup.object({
-      email: Yup.string().trim().required("Please enter your email!"),
+      email: Yup.string().email().trim().required("Please enter your email!"),
       password: Yup.string().trim().required("Please enter your password!"),
     }),
+    validateOnBlur: false,
+    validateOnChange: false,
   });
   return (
     // LOGIN FORM: Antd components - required email and password fields
@@ -57,7 +60,12 @@ const Login = () => {
         <h1 className="text-2xl font-medium text-primary mt-4 mb-12 text-center">
           Login 🔐
         </h1>
-        <form onSubmit={formik.handleSubmit}>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            formik.handleSubmit(e);
+          }}
+        >
           <div className="space-y-4">
             <input
               className="border-b border-gray-300 w-full px-2 h-8 rounded focus:border-blue-500"

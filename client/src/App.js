@@ -6,6 +6,7 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 
 import Login from "./containers/Login/Login";
 import Profile from "./containers/Profile/Profile";
+import Registration from "./containers/Registration/Registration";
 import "./App.css";
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
         <Router>
           <Switch>
             <Route exact path="/login" component={Login} />
+            <Route path="/registration" component={Registration} />
             <ProtectedRoute exact path="/" component={Profile} />
             <Route />
           </Switch>
