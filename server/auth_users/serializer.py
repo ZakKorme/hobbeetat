@@ -26,6 +26,12 @@ class LoginSerializer(TokenObtainPairSerializer):
         return data
 
 
+class ConfirmationSerializer(serializers.Serializer):
+    class Meta:
+        model = User
+        fields = ['id', 'first_name', 'last_name', 'is_confirmed']
+
+
 class RegisterSerializer(UserSerializer):
     password = serializers.CharField(
         max_length=128, min_length=8, write_only=True, required=True)

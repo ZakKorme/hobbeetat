@@ -33,11 +33,11 @@ const Registration = () => {
         setSuccess(true);
         setTimeout(() => {
           history.push("/login/");
-        }, 4000);
+        }, 2000);
       })
       .catch((err) => {
-        // setMessage(err.response.data.detail.toString());
-        setMessage(err.response);
+        setMessage(err.response.data.detail.toString());
+        // setMessage(err.response);
       });
   };
 
