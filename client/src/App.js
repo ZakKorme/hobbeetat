@@ -7,6 +7,7 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 import Login from "./containers/Login/Login";
 import Profile from "./containers/Profile/Profile";
 import Registration from "./containers/Registration/Registration";
+import EmailConfirmation from "./components/EmailConfirmation/EmailConfirmation.js";
 import "./App.css";
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
           <Switch>
             <Route exact path="/login" component={Login} />
             <Route path="/registration" component={Registration} />
+            <Route path="/email-confirmation" component={EmailConfirmation} />
             <ProtectedRoute exact path="/" component={Profile} />
             <Route />
           </Switch>

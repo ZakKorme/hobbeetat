@@ -37,7 +37,6 @@ const Registration = () => {
       })
       .catch((err) => {
         setMessage(err.response.data.detail.toString());
-        // setMessage(err.response);
       });
   };
 

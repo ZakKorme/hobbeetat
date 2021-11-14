@@ -21,19 +21,26 @@ const Login = () => {
         password,
       })
       .then((res) => {
-        dispatch(
-          authSlice.actions.setAuthTokens({
-            token: res.data.access,
-            refreshToken: res.data.refresh,
-          })
-        );
-        dispatch(authSlice.actions.setAccount(res.data.user));
-        setLoading(false);
-        history.push("/");
+        // We first check if the user has confirmed email
+        if (res.data.user.is_confirmed) {
+          dispatch(
+            authSlice.actions.setAuthTokens({
+              token: res.data.access,
+              refreshToken: res.data.refresh,
+            })
+          );
+          dispatch(authSlice.actions.setAccount(res.data.user));
+          setLoading(false);
+          history.push("/");
+        } else {
+          setLoading(false);
+          setMessage("Please confirm your email!");
+        }
       })
       .catch((err) => {
         setLoading(false);
-        setMessage(err.response.data.detail.toString());
+        setMessage(err);
+        // setMessage(err.response.data.detail.toString());
       });
   };
 
