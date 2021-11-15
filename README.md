@@ -1,6 +1,12 @@
 # Hobbeetat
 The following application allows users to join their favorite hobby group. They can comment, share, and like their fellow hobbyist's  thoughts and projects as well as share their own.
 
+## Table of contents
+* [How to Run](#how-to-run)
+* [Features](#features)
+* [Backend Dev](#backend-dev)
+* [Screenshots](#screenshots)
+
 ## How to Run
 ```
 cd server
