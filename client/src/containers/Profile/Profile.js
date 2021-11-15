@@ -1,29 +1,34 @@
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { Grid } from "@mui/material";
 import authSlice from "../../store/slices/auth";
+
+import Navbar from "../../components/Navbar/Navbar";
+import GroupMenu from "../../components/GroupMenu/GroupMenu";
+import ActivitiesMenu from "../../components/ActivitiesMenu/ActivitesMenu";
+import Post from "../../components/Post/Post";
 
 const Profile = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-
   const handleLogout = () => {
     dispatch(authSlice.actions.logout());
     history.push("/login");
   };
 
   return (
-    <div className="w-full h-screen">
-      <div className="w-full p-6">
-        <button
-          className="rounded p-2 w-32 bg-red-700 text-white"
-          onClick={handleLogout}
-        >
-          Logout
-        </button>
-      </div>
-      <div className="w-full h-full text-center items-center">
-        <p className="self-center my-auto"></p>
-      </div>
+    <div>
+      <Navbar logout={handleLogout} />
+      <Grid container spacing={3}>
+        <Grid item xs></Grid>
+        <Grid item xs={6}>
+          <Post />
+        </Grid>
+        <Grid item xs style={{ paddingRight: "2%" }}>
+          <GroupMenu title={"Group Acitivity"} />
+          <ActivitiesMenu title={"Upcoming Events"} />
+        </Grid>
+      </Grid>
     </div>
   );
 };
