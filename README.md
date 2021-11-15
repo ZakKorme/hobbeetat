@@ -42,6 +42,7 @@ There are 4 main features of this application:
 - Rest 
 - React (Material UI + TailwindCSS)
 - Redux
+- PostgreSQL
 
 ## Screenshots
 
