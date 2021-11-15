@@ -10,7 +10,6 @@ class UserViewSet(viewsets.ModelViewSet):
     http_method_names = ['get']
     serializer_class = UserSerializer
     permission_classes = (IsAuthenticated, )
-    filter_backends = [filters.OrderingFilter]
 
     def get_queryset(self):
         if self.request.user.is_superuser:

@@ -1,5 +1,6 @@
 import smtplib
 import ssl
+from django.http.request import validate_host
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
@@ -43,12 +44,17 @@ class LoginViewSet(ModelViewSet, TokenObtainPairView):
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
 
-        try:
-            serializer.is_valid(raise_exception=True)
-        except TokenError as e:
-            raise InvalidToken(e.args[0])
+        user = User.objects.filter(email=request.data['email']).first()
 
-        return Response(serializer.validated_data, status=status.HTTP_200_OK)
+        if user.is_confirmed:
+            try:
+                serializer.is_valid(raise_exception=True)
+            except TokenError as e:
+                raise InvalidToken(e.args[0])
+
+            return Response(serializer.validated_data, status=status.HTTP_200_OK)
+        else:
+            return Response({"error": "Please confirm email."}, status=status.HTTP_400_BAD_REQUEST)
 
 
 # Sends user and email with token to active their account

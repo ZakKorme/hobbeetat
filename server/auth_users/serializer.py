@@ -1,9 +1,10 @@
-from django.core import exceptions
-from rest_framework import serializers
+from rest_framework.response import Response
+from rest_framework import serializers, status
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.settings import api_settings
 from django.contrib.auth.models import update_last_login
 from django.core.exceptions import ObjectDoesNotExist
+
 
 from users.serializers import UserSerializer
 from users.models import User
