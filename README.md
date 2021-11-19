@@ -36,6 +36,10 @@ There are 4 main features of this application:
 - rest.framework.simplejwt is used for authentication. If a user has sent the correct credentials, the response will send an access token that will be required for routes to be exposed on the client side. 
 4) Email Confirmation: 
 - after a user has been created, an email is sent via ssl and smtp where the user receives a link, upon arrival at the designated url the users email is confirmed and they are routed to the login page. This process is running on a separate thread to prevent lagging on the registration page
+5) Tests: the following features have been developed with unit tests
+  - User route with authentication.
+  - Registration functionality.
+  - Login functionality.
 
 ## Tech/Framework Used
 - Django
