@@ -8,6 +8,7 @@ import Login from "./containers/Login/Login";
 import Profile from "./containers/Profile/Profile";
 import Registration from "./containers/Registration/Registration";
 import EmailConfirmation from "./components/EmailConfirmation/EmailConfirmation.js";
+
 import "./App.css";
 
 function App() {

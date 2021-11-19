@@ -1,75 +1,260 @@
-import { BiMessageRounded as MessageIcon } from "react-icons/bi";
-import { GrLogout as LogoutIcon } from "react-icons/gr";
-import { AiOutlineBell as NotificationIcon } from "react-icons/ai";
+import React, { useState } from "react";
+import { styled, alpha } from "@mui/material/styles";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import InputBase from "@mui/material/InputBase";
+import Badge from "@mui/material/Badge";
+import MenuItem from "@mui/material/MenuItem";
+import Menu from "@mui/material/Menu";
+import Divider from "@mui/material/Divider";
 
-const Navbar = (props) => {
+// Material UI Icons
+import MenuIcon from "@mui/icons-material/Menu";
+import SearchIcon from "@mui/icons-material/Search";
+import AccountCircle from "@mui/icons-material/AccountCircle";
+import MailIcon from "@mui/icons-material/Mail";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import MoreIcon from "@mui/icons-material/MoreVert";
+import Avatar from "@mui/material/Avatar";
+import Settings from "@mui/icons-material/SettingsOutlined";
+import Logout from "@mui/icons-material/Logout";
+import Icon from "@mui/material/Icon";
+
+const Search = styled("div")(({ theme }) => ({
+  position: "relative",
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: alpha(theme.palette.common.black, 0.15),
+  "&:hover": {
+    backgroundColor: alpha(theme.palette.common.black, 0.25),
+  },
+  marginRight: theme.spacing(2),
+  marginLeft: 0,
+  width: "100%",
+  [theme.breakpoints.up("sm")]: {
+    marginLeft: theme.spacing(3),
+    width: "auto",
+  },
+}));
+
+const SearchIconWrapper = styled("div")(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  height: "100%",
+  position: "absolute",
+  pointerEvents: "none",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+}));
+
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  color: "inherit",
+  "& .MuiInputBase-input": {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    transition: theme.transitions.create("width"),
+    width: "100%",
+    [theme.breakpoints.up("md")]: {
+      width: "20ch",
+    },
+  },
+}));
+const Navbar = () => {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
+
+  const isMenuOpen = Boolean(anchorEl);
+  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+  const handleProfileMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMobileMenuClose = () => {
+    setMobileMoreAnchorEl(null);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+    handleMobileMenuClose();
+  };
+
+  const handleMobileMenuOpen = (event) => {
+    setMobileMoreAnchorEl(event.currentTarget);
+  };
+
+  const menuId = "primary-search-account-menu";
+  const renderMenu = (
+    <Menu
+      anchorEl={anchorEl}
+      anchorOrigin={{
+        vertical: "top",
+        horizontal: "right",
+      }}
+      id={menuId}
+      keepMounted
+      transformOrigin={{
+        vertical: "top",
+        horizontal: "right",
+      }}
+      open={isMenuOpen}
+      onClose={handleMenuClose}
+    >
+      <MenuItem onClick={handleMenuClose}>
+        <Icon baseClassName="far" className="fa-user" fontSize="small" />
+        Profile
+      </MenuItem>
+      <MenuItem onClick={handleMenuClose}>
+        <Settings fontSize="small" />
+        Settings
+      </MenuItem>
+      <Divider />
+      <MenuItem onClick={handleMenuClose}>
+        <Logout fontSize="small" />
+        Logout
+      </MenuItem>
+    </Menu>
+  );
+
+  const mobileMenuId = "primary-search-account-menu-mobile";
+  const renderMobileMenu = (
+    <Menu
+      anchorEl={mobileMoreAnchorEl}
+      anchorOrigin={{
+        vertical: "top",
+        horizontal: "right",
+      }}
+      id={mobileMenuId}
+      keepMounted
+      transformOrigin={{
+        vertical: "top",
+        horizontal: "right",
+      }}
+      open={isMobileMenuOpen}
+      onClose={handleMobileMenuClose}
+    >
+      <MenuItem>
+        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
+          <Badge badgeContent={4} color="error">
+            <MailIcon />
+          </Badge>
+        </IconButton>
+        <p>Messages</p>
+      </MenuItem>
+      <MenuItem>
+        <IconButton
+          size="large"
+          aria-label="show 17 new notifications"
+          color="inherit"
+        >
+          <Badge badgeContent={17} color="error">
+            <NotificationsIcon />
+          </Badge>
+        </IconButton>
+        <p>Notifications</p>
+      </MenuItem>
+      <MenuItem onClick={handleProfileMenuOpen}>
+        <IconButton
+          size="large"
+          aria-label="account of current user"
+          aria-controls="primary-search-account-menu"
+          aria-haspopup="true"
+          color="inherit"
+        >
+          <AccountCircle />
+        </IconButton>
+        <p>Profile</p>
+      </MenuItem>
+    </Menu>
+  );
+
   return (
-    <div class="navbar mb-2 shadow-lg bg-neutral-content text-neutral rounded-box">
-      <div class="flex-none hidden lg:flex">
-        <button class="btn btn-square btn-ghost">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            class="inline-block w-6 h-6 stroke-current"
+    <Box sx={{ flexGrow: 1 }}>
+      <AppBar position="static" color="inherit">
+        <Toolbar>
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="open drawer"
+            sx={{ mr: 2 }}
           >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M4 6h16M4 12h16M4 18h16"
-            ></path>
-          </svg>
-        </button>
-      </div>
-      <div class="flex-1 hidden px-2 mx-2 lg:flex">
-        <span class="text-lg font-bold">Hobbeetat</span>
-      </div>
-      <div class="flex-1 lg:flex-none">
-        <div class="form-control">
-          <input type="text" placeholder="Search" class="input input-ghost" />
-        </div>
-      </div>
-      <div class="flex-none">
-        <button class="btn btn-square btn-ghost">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            class="inline-block w-6 h-6 stroke-current"
+            <MenuIcon />
+          </IconButton>
+          <Typography
+            variant="h6"
+            noWrap
+            component="div"
+            sx={{ display: { xs: "none", sm: "block" } }}
           >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-            ></path>
-          </svg>
-        </button>
-      </div>
-      <div class="flex-none">
-        <button class="btn btn-square btn-ghost">
-          <NotificationIcon class="inline-block w-5 h-5 stroke-current" />
-        </button>
-      </div>
-      <div class="flex-none">
-        <button class="btn btn-square btn-ghost">
-          <MessageIcon class="inline-block w-5 h-5 stroke-current" />
-        </button>
-      </div>
-      <div class="flex-none">
-        <button class="btn btn-square btn-ghost" onClick={() => props.logout()}>
-          <LogoutIcon class="inline-block w-4 h-4 stroke-current" />
-        </button>
-      </div>
-      <div class="flex-none">
-        <div class="avatar">
-          <div class="rounded-full w-10 h-10 m-1">
-            <img src="https://i.pravatar.cc/500?img=32" alt="avatar" />
-          </div>
-        </div>
-      </div>
-    </div>
+            Hobbeetat
+          </Typography>
+          <Box sx={{ display: { xs: "none", md: "block" } }}>
+            <Search>
+              <SearchIconWrapper>
+                <SearchIcon />
+              </SearchIconWrapper>
+              <StyledInputBase
+                placeholder="Search…"
+                inputProps={{ "aria-label": "search" }}
+              />
+            </Search>
+          </Box>
+          <Box sx={{ flexGrow: 1 }} />
+          <Box sx={{ display: { xs: "none", md: "flex" } }}>
+            <IconButton
+              size="large"
+              aria-label="show 4 new mails"
+              color="inherit"
+            >
+              <Badge badgeContent={4} color="primary">
+                <MailIcon />
+              </Badge>
+            </IconButton>
+            <IconButton
+              size="large"
+              aria-label="show 17 new notifications"
+              color="inherit"
+            >
+              <Badge badgeContent={17} color="primary">
+                <NotificationsIcon />
+              </Badge>
+            </IconButton>
+            <IconButton
+              size="large"
+              edge="end"
+              aria-label="account of current user"
+              aria-controls={menuId}
+              aria-haspopup="true"
+              onClick={handleProfileMenuOpen}
+              color="inherit"
+            >
+              <Avatar
+                alt="user profile"
+                src="https://www.fillmurray.com/500/900"
+              />
+            </IconButton>
+          </Box>
+          <Box sx={{ display: { xs: "flex", md: "none" } }}>
+            <IconButton
+              size="large"
+              aria-label="show more"
+              aria-controls={mobileMenuId}
+              aria-haspopup="true"
+              onClick={handleMobileMenuOpen}
+              color="inherit"
+            >
+              <MoreIcon />
+            </IconButton>
+          </Box>
+        </Toolbar>
+      </AppBar>
+      {renderMobileMenu}
+      {renderMenu}
+    </Box>
   );
 };
 

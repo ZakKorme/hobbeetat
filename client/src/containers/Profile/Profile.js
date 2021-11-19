@@ -1,35 +1,29 @@
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
-import { Grid } from "@mui/material";
+import { useHistory, useLocation } from "react-router-dom";
 import authSlice from "../../store/slices/auth";
 
 import Navbar from "../../components/Navbar/Navbar";
-import GroupMenu from "../../components/GroupMenu/GroupMenu";
-import ActivitiesMenu from "../../components/ActivitiesMenu/ActivitesMenu";
-import Post from "../../components/Post/Post";
 
 const Profile = () => {
   const dispatch = useDispatch();
   const history = useHistory();
+  const location = useLocation();
+
   const handleLogout = () => {
     dispatch(authSlice.actions.logout());
     history.push("/login");
   };
+  useEffect(() => {
+    document.documentElement.scrollTop = 0;
+    document.scrollingElement.scrollTop = 0;
+    // mainContent.current.scrollTop = 0;
+  }, [location]);
 
   return (
-    <div>
-      <Navbar logout={handleLogout} />
-      <Grid container spacing={3}>
-        <Grid item xs></Grid>
-        <Grid item xs={6}>
-          <Post />
-        </Grid>
-        <Grid item xs style={{ paddingRight: "2%" }}>
-          <GroupMenu title={"Group Acitivity"} />
-          <ActivitiesMenu title={"Upcoming Events"} />
-        </Grid>
-      </Grid>
-    </div>
+    <>
+      <Navbar />
+    </>
   );
 };
 
