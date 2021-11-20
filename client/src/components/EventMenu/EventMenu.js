@@ -5,15 +5,17 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ListItemButton from "@mui/material/ListItemButton";
-import Avatar from "@mui/material/Avatar";
+import CalendarIcon from "../CalendarIcon/CalendarIcon";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
 
-const Menu = (props) => {
+const EventMenu = (props) => {
   return (
     <Box
       sx={{
         display: { xs: "none", md: "block" },
         maxWidth: 350,
         maxHeight: 310,
+        minWidth: 350,
       }}
     >
       <List
@@ -22,30 +24,47 @@ const Menu = (props) => {
         aria-labelledby="nested-list-subheader"
         subheader={
           <ListSubheader component="div" id="nested-list-subheader">
-            Group Activity
+            Upcoming Events
           </ListSubheader>
         }
       >
         {[
           {
-            img: "http://www.fillmurray.com/200/300",
-            message: "John Smith has just joined your group",
+            event: "Monthly Meetup",
+            location: "Washington D.C.",
+            month: "Jan",
+            date: "19",
           },
+
           {
-            img: "http://www.fillmurray.com/200/300",
-            message: "John Smith has just joined your group",
+            event: "Monthly Meetup",
+            location: "New York",
+            month: "Jan",
+            date: "21",
           },
+
           {
-            img: "https://www.fillmurray.com/500/900",
-            message: "John Smith has just joined your group",
+            event: "Monthly Meetup",
+            location: "Toronto",
+            month: "Feb",
+            date: "2",
           },
         ].map((obj, index) => (
           <ListItem key={index} disablePadding>
             <ListItemButton>
               <ListItemAvatar>
-                <Avatar src={obj.img} />
+                <CalendarIcon month={obj.month} date={obj.date} />
               </ListItemAvatar>
-              <ListItemText id={index} primary={obj.message} />
+              <ListItemText
+                id={index}
+                primary={obj.event}
+                secondary={
+                  <>
+                    <LocationOnIcon fontSize="4px" color="black" />
+                    {obj.location}
+                  </>
+                }
+              />
             </ListItemButton>
           </ListItem>
         ))}
@@ -55,4 +74,4 @@ const Menu = (props) => {
   );
 };
 
-export default Menu;
+export default EventMenu;
