@@ -6,6 +6,7 @@ import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ListItemButton from "@mui/material/ListItemButton";
 import Avatar from "@mui/material/Avatar";
+import Typography from "@mui/material/Typography";
 
 const Menu = (props) => {
   return (
@@ -46,7 +47,8 @@ const Menu = (props) => {
               <ListItemAvatar>
                 <Avatar src={obj.img} />
               </ListItemAvatar>
-              <ListItemText id={index} primary={obj.message} />
+              <Typography> {obj.message}</Typography>
+              {/* <ListItemText id={index} primary={obj.message} noWrap /> */}
             </ListItemButton>
           </ListItem>
         ))}

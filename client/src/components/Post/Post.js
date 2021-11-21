@@ -8,7 +8,6 @@ import Typography from "@mui/material/Typography";
 import ButtonUnstyled from "@mui/core/ButtonUnstyled";
 import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
-import Divider from "@mui/material/Divider";
 import Button from "@mui/material/Button";
 
 import IconButton from "@mui/material/IconButton";
@@ -24,7 +23,7 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   minWidth: 500,
-  minHeight: 350,
+  minHeight: 300,
   bgcolor: "background.paper",
   border: "1px solid #000",
   boxShadow: 24,
@@ -88,16 +87,16 @@ const Post = () => {
           sx={{ display: { xs: "none", md: "block" } }}
         >
           <IconButton style={{ marginLeft: "10%" }}>
-            <AddPhotoAlternateIcon />
-            <Typography>Photo</Typography>
+            <AddPhotoAlternateIcon fontSize="small" />
+            <Typography variant="body2">Photo</Typography>
           </IconButton>
           <IconButton style={{ marginLeft: "10%" }}>
-            <VideoLibraryIcon />
-            <Typography>Video</Typography>
+            <VideoLibraryIcon fontSize="small" />
+            <Typography variant="body2">Video</Typography>
           </IconButton>
           <IconButton style={{ marginLeft: "10%" }}>
-            <FileCopyIcon />
-            <Typography>Attach File</Typography>
+            <FileCopyIcon fontSize="small" />
+            <Typography variant="body2">Attach File</Typography>
           </IconButton>
         </CardActions>
       </Card>

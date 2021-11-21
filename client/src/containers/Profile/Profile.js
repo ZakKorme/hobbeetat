@@ -7,11 +7,13 @@ import authSlice from "../../store/slices/auth";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
+import Divider from "@mui/material/Divider";
 
 import Navbar from "../../components/Navbar/Navbar";
 import GroupMenu from "../../components/GroupMenu/GroupMenu";
 import EventsMenu from "../../components/EventMenu/EventMenu";
 import Post from "../../components/Post/Post";
+import Feed from "../../components/Feed/Feed";
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -57,6 +59,8 @@ const Profile = () => {
             <Grid item xs={8}>
               <Container maxWidth="sm">
                 <Post></Post>
+                <Divider style={{ marginTop: "3%", marginBottom: "3%" }} />
+                <Feed />
               </Container>
             </Grid>
             <Grid
@@ -66,10 +70,10 @@ const Profile = () => {
               justifyContent="flex-end"
               alignItems="flex-start"
             >
-              <Item xs={2}>
+              <Item xs auto zeroMinWidth>
                 <GroupMenu />
               </Item>
-              <Item xs={2}>
+              <Item xs auto>
                 <EventsMenu />
               </Item>
             </Grid>
