@@ -1,102 +1,107 @@
-import { HiOutlinePhotograph as PhotoIcon } from "react-icons/hi";
-import { AiOutlineFileAdd as FileIcon } from "react-icons/ai";
+import { useState } from "react";
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import CardHeader from "@mui/material/CardHeader";
+import Avatar from "@mui/material/Avatar";
+import Typography from "@mui/material/Typography";
+import ButtonUnstyled from "@mui/core/ButtonUnstyled";
+import Modal from "@mui/material/Modal";
+import TextField from "@mui/material/TextField";
+import Divider from "@mui/material/Divider";
+import Button from "@mui/material/Button";
+
+import IconButton from "@mui/material/IconButton";
+import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
+import VideoLibraryIcon from "@mui/icons-material/VideoLibrary";
+import FileCopyIcon from "@mui/icons-material/FileCopy";
+import ClearIcon from "@mui/icons-material/Clear";
+import classes from "./Post.module.css";
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  minWidth: 500,
+  minHeight: 350,
+  bgcolor: "background.paper",
+  border: "1px solid #000",
+  boxShadow: 24,
+  borderRadius: 5,
+  p: 4,
+};
 
 const Post = () => {
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   return (
-    <div data-theme="light" style={{ marginRight: "10%" }}>
-      <ul class="menu py-3 shadow-lg bg-base-100 rounded-box">
-        <li class="menu-title">
-          <span>Post</span>
-        </li>
-        <li>
-          <div class="form-control">
-            <div class="flex">
-              <div class="avatar" style={{ paddingLeft: "3%" }}>
-                <div class="rounded-full w-10 h-10 m-1">
-                  <img src="https://i.pravatar.cc/500?img=32" alt="avatar" />
-                </div>
-              </div>
-              <label class="label">
-                <span class="label-text" style={{ fontWeight: "bold" }}>
-                  Share what you've been up to!
-                </span>
-              </label>
-            </div>
-
-            <textarea
-              class="textarea h-6 textarea-bordered"
-              placeholder="Title your post.."
-              style={{
-                marginTop: "2%",
-                marginBottom: "5px",
-                marginRight: "45%",
-                marginLeft: "3%",
-              }}
-            ></textarea>
-            <textarea
-              class="textarea h-24 textarea-bordered"
-              placeholder="Create a post.."
-              style={{
-                marginRight: "35%",
-                marginBottom: "3%",
-                marginLeft: "3%",
-              }}
-            ></textarea>
-            <div style={{ display: "flex" }}>
-              <button style={{ display: "inline-flex", paddingLeft: "1%" }}>
-                <PhotoIcon className="w-5 h-5 m-1" />
-                <span style={{ fontWeight: "bold", paddingTop: "2px" }}>
-                  Photo/Video&nbsp;
-                </span>
-              </button>
-              <button style={{ display: "inline-flex", paddingLeft: "1%" }}>
-                <FileIcon className="w-5 h-5 m-1" />
-                <span
+    <div>
+      <Card
+        elevation={3}
+        style={{ minHeight: 85, marginTop: "5%" }}
+        variant="outlined"
+      >
+        <CardContent style={{ display: "inline-flex", fill: "100%" }}>
+          <Avatar alt="user profile" src="https://www.fillmurray.com/500/900" />
+          <ButtonUnstyled
+            variant="outlined"
+            className={classes.post}
+            onClick={handleOpen}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            Create a post
+          </ButtonUnstyled>
+          <Modal open={open}>
+            <Card sx={style}>
+              <CardHeader
+                title="Create a Post"
+                action={
+                  <IconButton onClick={handleClose}>
+                    <ClearIcon />
+                  </IconButton>
+                }
+              ></CardHeader>
+              <CardContent>
+                <TextField
+                  placeholder="What would you like to share?"
+                  multiline
+                  rows={4}
+                  rowsMax={10}
                   style={{
-                    fontWeight: "bold",
-                    paddingTop: "2px",
+                    marginBottom: 20,
+                    minWidth: 350,
                   }}
-                >
-                  Attach File
-                </span>
-              </button>
-              <button
-                class="btn btn-sm"
-                style={{ alignSelf: "flex-end", marginLeft: "55%" }}
-              >
-                Post
-              </button>
-            </div>
-          </div>
-        </li>
-      </ul>
+                />
+              </CardContent>
+              <CardActions>
+                <Button variant="contained">Post</Button>
+              </CardActions>
+            </Card>
+          </Modal>
+        </CardContent>
+        <CardActions
+          className={classes.cardActions}
+          sx={{ display: { xs: "none", md: "block" } }}
+        >
+          <IconButton style={{ marginLeft: "10%" }}>
+            <AddPhotoAlternateIcon />
+            <Typography>Photo</Typography>
+          </IconButton>
+          <IconButton style={{ marginLeft: "10%" }}>
+            <VideoLibraryIcon />
+            <Typography>Video</Typography>
+          </IconButton>
+          <IconButton style={{ marginLeft: "10%" }}>
+            <FileCopyIcon />
+            <Typography>Attach File</Typography>
+          </IconButton>
+        </CardActions>
+      </Card>
     </div>
-    // <div data-theme="light">
-    //   <span class="menu-title">Post</span>
-
-    //   <div class="form-control">
-    //     <div class="flex-none">
-    //       <div class="avatar">
-    //         <div class="rounded-full w-10 h-10 m-1">
-    //           <img src="https://i.pravatar.cc/500?img=32" alt="avatar" />
-    //         </div>
-    //       </div>
-    //     </div>
-    //     <label class="label">
-    //       <span class="label-text">Share what you've been up to</span>
-    //     </label>
-    //     <textarea
-    //       class="textarea h-6 textarea-bordered"
-    //       placeholder="Title your post.."
-    //       style={{ marginBottom: "5px", marginRight: "45%" }}
-    //     ></textarea>
-    //     <textarea
-    //       class="textarea h-24 textarea-bordered"
-    //       placeholder="Create a post.."
-    //       style={{ marginRight: "35%" }}
-    //     ></textarea>
-    //   </div>
-    // </div>
   );
 };
 

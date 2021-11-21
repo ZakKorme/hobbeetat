@@ -13,6 +13,7 @@ const Menu = (props) => {
       sx={{
         display: { xs: "none", md: "block" },
         maxWidth: 350,
+        minWidth: 350,
         maxHeight: 310,
       }}
     >

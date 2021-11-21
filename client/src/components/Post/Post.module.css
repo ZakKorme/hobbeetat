@@ -1,0 +1,25 @@
+.post {
+  margin-left: 6%;
+  padding-right: 15.25rem;
+  display: inline-flex;
+  align-items: left;
+  fill: 100%;
+  color: #666666;
+  background-color: #fff;
+  border-radius: 16px;
+  border: 1px solid #b2b2b2;
+  white-space: nowrap;
+  text-align: center;
+  padding-top: 3.5%;
+  padding-left: 5%;
+}
+.post:hover {
+  background-color: #ebebeb;
+  border: 1px solid #b2b2b2;
+  color: #666666;
+}
+
+.cardActions {
+  display: inline-flex;
+  align-content: space-around;
+}
