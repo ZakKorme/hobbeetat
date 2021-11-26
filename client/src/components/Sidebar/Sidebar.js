@@ -1,15 +1,20 @@
+import { useState } from "react";
 import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
+import ListItemButton from "@mui/material/ListItemButton";
+import Typography from "@mui/material/Typography";
 import Drawer from "@mui/material/Drawer";
+import Collapse from "@mui/material/Collapse";
+import ListSubheader from "@mui/material/ListSubheader";
+import AddIcon from "@mui/icons-material/Add";
+import ExpandLess from "@mui/icons-material/ExpandLess";
+import ExpandMore from "@mui/icons-material/ExpandMore";
+
 import { styled, useTheme } from "@mui/material/styles";
 
 import Icon from "@mui/material/Icon";
-import { IconButton } from "@mui/material";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 
 const drawerWidth = 230;
 
@@ -17,6 +22,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   padding: theme.spacing(0, 1),
+  paddingLeft: "10%",
   // necessary for content to be below app bar
   ...theme.mixins.toolbar,
   justifyContent: "flex-start",
@@ -24,11 +30,28 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 
 const Sidebar = (props) => {
   const theme = useTheme();
+  const [openHobby, setOpenHobby] = useState(false);
+  const [selectedHobby, setSelectedHobby] = useState("Chess");
+
+  const handleClick = (event) => {
+    setOpenHobby(!openHobby);
+  };
+
+  const handleHobbySelection = (event) => {
+    setOpenHobby(!openHobby);
+    setSelectedHobby(event.target.textContent);
+  };
 
   return (
     <Drawer
       sx={{
         width: drawerWidth,
+        display: {
+          sm: "none",
+          md: "none",
+          lg: "block",
+        },
+        // paddingTop: "2%",
         flexShrink: 0,
         "& .MuiDrawer-paper": {
           width: drawerWidth,
@@ -36,27 +59,100 @@ const Sidebar = (props) => {
       }}
       variant="persistent"
       anchor="left"
-      open={props.open}
+      open
     >
       <DrawerHeader>
-        <IconButton onClick={props.handleClose}>
-          {theme.direction === "rtl" ? (
-            <ChevronLeftIcon />
-          ) : (
-            <ChevronRightIcon />
-          )}
-        </IconButton>
+        <Typography
+          variant="h6"
+          noWrap
+          component="div"
+          sx={{ display: { xs: "none", sm: "block" } }}
+        >
+          Hobbeetat
+        </Typography>
       </DrawerHeader>
-      <Divider />
-      <List>
+
+      <List
+        subheader={
+          <ListSubheader
+            component="div"
+            id="nested-list-subheader"
+            style={{ fontFamily: "Manrope" }}
+          >
+            User Context
+          </ListSubheader>
+        }
+      >
+        {["Hobby"].map((text, index) => (
+          <ListItem
+            button
+            key={text}
+            onClick={handleClick}
+            style={{ borderRadius: "16px" }}
+          >
+            <ListItemIcon style={{ minWidth: "40px" }}>
+              <Icon baseClassName="fas" className="fa-list" fontSize="small" />
+            </ListItemIcon>
+            <ListItemText
+              disableTypography
+              primary={
+                <Typography style={{ fontFamily: "Manrope", fontSize: "14px" }}>
+                  {`${text}: ${selectedHobby}`}
+                </Typography>
+              }
+            />
+            {openHobby ? <ExpandLess /> : <ExpandMore />}
+          </ListItem>
+        ))}
+        <Collapse in={openHobby} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding style={{ maxHeight: "150px" }}>
+            <ListItemButton sx={{ pl: 4 }} onClick={handleHobbySelection}>
+              <ListItemIcon>
+                <AddIcon fontSize={"small"} />
+              </ListItemIcon>
+              <ListItemText secondary="Cooking" />
+            </ListItemButton>
+            <ListItemButton sx={{ pl: 4 }} onClick={handleHobbySelection}>
+              <ListItemIcon>
+                <AddIcon fontSize={"small"} />
+              </ListItemIcon>
+              <ListItemText
+                secondary="Swimming"
+                onClick={handleHobbySelection}
+              />
+            </ListItemButton>
+            <ListItemButton sx={{ pl: 4 }}>
+              <ListItemIcon>
+                <AddIcon fontSize={"small"} />
+              </ListItemIcon>
+              <ListItemText
+                secondary="Hunting"
+                onClick={handleHobbySelection}
+              />
+            </ListItemButton>
+          </List>
+        </Collapse>
+      </List>
+      <List
+        subheader={
+          <ListSubheader
+            component="div"
+            id="nested-list-subheader"
+            style={{ fontFamily: "Manrope" }}
+          >
+            Navigation
+          </ListSubheader>
+        }
+      >
         {["Feed", "Message Board", "Members", "Groups"].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
+          <ListItem button key={text} style={{ borderRadius: "16px" }}>
+            <ListItemIcon style={{ minWidth: "40px", contentRight: "10px" }}>
               {text === "Feed" ? (
                 <Icon
                   baseClassName="far"
                   className="fa-newspaper"
                   fontSize="small"
+                  sx={{ display: "inline-table" }}
                 />
               ) : text === "Message Board" ? (
                 <Icon
@@ -75,18 +171,35 @@ const Sidebar = (props) => {
                   baseClassName="fas"
                   className="fa-users"
                   fontSize="small"
+                  sx={{ display: "inline-table" }}
                 />
               ) : null}
             </ListItemIcon>
-            <ListItemText primary={text} />
+            <ListItemText
+              disableTypography
+              primary={
+                <Typography style={{ fontFamily: "Manrope", fontSize: "14px" }}>
+                  {text}
+                </Typography>
+              }
+            />
           </ListItem>
         ))}
       </List>
-      <Divider />
-      <List>
+      <List
+        subheader={
+          <ListSubheader
+            component="div"
+            id="nested-list-subheader"
+            style={{ fontFamily: "Manrope" }}
+          >
+            Other
+          </ListSubheader>
+        }
+      >
         {["Events", "Fundraising"].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
+          <ListItem button key={text} style={{ borderRadius: "16px" }}>
+            <ListItemIcon style={{ minWidth: "40px" }}>
               {index % 2 === 0 ? (
                 <Icon
                   baseClassName="far"
@@ -98,10 +211,18 @@ const Sidebar = (props) => {
                   baseClassName="far"
                   className="fa-money-bill-alt"
                   fontSize="small"
+                  sx={{ display: "inline-table" }}
                 />
               )}
             </ListItemIcon>
-            <ListItemText primary={text} />
+            <ListItemText
+              disableTypography
+              primary={
+                <Typography style={{ fontFamily: "Manrope", fontSize: "14px" }}>
+                  {text}
+                </Typography>
+              }
+            />
           </ListItem>
         ))}
       </List>

@@ -11,6 +11,14 @@ import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import Divider from "@mui/material/Divider";
 import Sidebar from "../Sidebar/Sidebar";
+import ListItemText from "@mui/material/ListItemText";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import classes from "./Navbar.module.css";
+
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
+import authSlice from "../../store/slices/auth";
 
 // Material UI Icons
 import MenuIcon from "@mui/icons-material/Menu";
@@ -63,13 +71,21 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
   },
 }));
-const Navbar = () => {
+const Navbar = (props) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [open, setOpen] = useState(false);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+  const history = useHistory();
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(authSlice.actions.logout());
+    history.push("/login");
+  };
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -95,9 +111,10 @@ const Navbar = () => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
-  const menuId = "primary-search-account-menu";
+  const menuId = "menu-appbar";
   const renderMenu = (
     <Menu
+      sx={{ mt: "45px" }}
       anchorEl={anchorEl}
       anchorOrigin={{
         vertical: "top",
@@ -121,7 +138,7 @@ const Navbar = () => {
         Settings
       </MenuItem>
       <Divider />
-      <MenuItem onClick={handleMenuClose}>
+      <MenuItem onClick={handleLogout}>
         <Logout fontSize="small" />
         Logout
       </MenuItem>
@@ -181,93 +198,158 @@ const Navbar = () => {
   );
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" color="inherit">
-        <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            sx={{ mr: 2 }}
-            onClick={handleDrawerOpen}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ display: { xs: "none", sm: "block" } }}
-          >
-            Hobbeetat
-          </Typography>
-          <Box sx={{ display: { xs: "none", md: "block" } }}>
-            {open ? null : (
-              <Search>
-                <SearchIconWrapper>
-                  <SearchIcon />
-                </SearchIconWrapper>
-                <StyledInputBase
-                  placeholder="Search…"
-                  inputProps={{ "aria-label": "search" }}
+    <>
+      <Box sx={{ display: { md: "none", lg: "block" } }}>
+        <Sidebar open={open} handleClose={handleDrawerClose} />
+      </Box>
+      <Box>
+        <AppBar
+          headerPosition
+          position="relative"
+          color="inherit"
+          elevation={0}
+        >
+          <Toolbar sx={{ justifyContent: "space-between" }} variant="dense">
+            <Box sx={{ display: { md: "inline-flex", lg: "none" } }}>
+              <IconButton
+                size="large"
+                edge="start"
+                color="inherit"
+                aria-label="open drawer"
+                sx={{ mr: 2 }}
+                onClick={handleDrawerOpen}
+              >
+                <MenuIcon />
+              </IconButton>
+              <Typography
+                variant="h6"
+                noWrap
+                component="div"
+                sx={{
+                  display: { xs: "none", sm: "inline-flex" },
+                  paddingTop: "5%",
+                }}
+              >
+                Hobbeetat
+              </Typography>
+            </Box>
+            <Box
+              sx={{ display: { sm: "block", md: "none", lg: "inline-flex" } }}
+            />
+            <Box
+              sx={{
+                display: { xs: "none", md: "block" },
+                paddingLeft: "4%",
+              }}
+            >
+              <List
+                style={{
+                  display: "inline-flex",
+                }}
+              >
+                <ListItem button className={classes.navlist}>
+                  <ListItemText
+                    disableTypography
+                    primary={
+                      <Typography
+                        style={{ fontFamily: "Manrope", fontSize: "14px" }}
+                      >
+                        Home
+                      </Typography>
+                    }
+                  />
+                </ListItem>
+                <ListItem button className={classes.navlist}>
+                  <ListItemText
+                    disableTypography
+                    primary={
+                      <Typography
+                        style={{ fontFamily: "Manrope", fontSize: "14px" }}
+                      >
+                        Profile
+                      </Typography>
+                    }
+                  />
+                </ListItem>
+                <ListItem button className={classes.navlist}>
+                  <ListItemText
+                    disableTypography
+                    primary={
+                      <Typography
+                        style={{ fontFamily: "Manrope", fontSize: "14px" }}
+                      >
+                        Messages
+                      </Typography>
+                    }
+                  />
+                </ListItem>
+                <ListItem button className={classes.navlist}>
+                  <ListItemText
+                    disableTypography
+                    primary={
+                      <Typography
+                        style={{ fontFamily: "Manrope", fontSize: "14px" }}
+                      >
+                        Notifications
+                      </Typography>
+                    }
+                  />
+                </ListItem>
+              </List>
+            </Box>
+
+            <Box sx={{ display: { xs: "none", md: "flex" } }}>
+              <IconButton
+                size="large"
+                aria-label="show 4 new mails"
+                color="inherit"
+              >
+                <Badge badgeContent={4} color="primary">
+                  <MailIcon />
+                </Badge>
+              </IconButton>
+              <IconButton
+                size="large"
+                aria-label="show 17 new notifications"
+                color="inherit"
+              >
+                <Badge badgeContent={17} color="primary">
+                  <NotificationsIcon />
+                </Badge>
+              </IconButton>
+              <IconButton
+                size="large"
+                edge="end"
+                aria-label="account of current user"
+                aria-controls={menuId}
+                aria-haspopup="true"
+                onClick={handleProfileMenuOpen}
+                color="inherit"
+              >
+                <Avatar
+                  alt="user profile"
+                  src="https://www.fillmurray.com/500/900"
                 />
-              </Search>
-            )}
-          </Box>
-          <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            <IconButton
-              size="large"
-              aria-label="show 4 new mails"
-              color="inherit"
-            >
-              <Badge badgeContent={4} color="primary">
-                <MailIcon />
-              </Badge>
-            </IconButton>
-            <IconButton
-              size="large"
-              aria-label="show 17 new notifications"
-              color="inherit"
-            >
-              <Badge badgeContent={17} color="primary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
-            <IconButton
-              size="large"
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
-              <Avatar
-                alt="user profile"
-                src="https://www.fillmurray.com/500/900"
-              />
-            </IconButton>
-          </Box>
-          <Box sx={{ display: { xs: "flex", md: "none" } }}>
-            <IconButton
-              size="large"
-              aria-label="show more"
-              aria-controls={mobileMenuId}
-              aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
-              color="inherit"
-            >
-              <MoreIcon />
-            </IconButton>
-          </Box>
-        </Toolbar>
-      </AppBar>
-      {renderMobileMenu}
-      {renderMenu}
-      <Sidebar open={open} handleClose={handleDrawerClose} />
-    </Box>
+              </IconButton>
+            </Box>
+            <Box sx={{ display: { xs: "flex", md: "none" } }}>
+              <IconButton
+                size="large"
+                aria-label="show more"
+                aria-controls={mobileMenuId}
+                aria-haspopup="true"
+                onClick={handleMobileMenuOpen}
+                color="inherit"
+              >
+                <MoreIcon />
+              </IconButton>
+            </Box>
+          </Toolbar>
+        </AppBar>
+        {renderMobileMenu}
+        {renderMenu}
+      </Box>
+    </>
   );
 };
 

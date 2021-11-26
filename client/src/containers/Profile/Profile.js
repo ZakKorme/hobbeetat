@@ -36,7 +36,6 @@ const Profile = () => {
   useEffect(() => {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
-    // mainContent.current.scrollTop = 0;
   }, [location]);
 
   return (
@@ -46,6 +45,7 @@ const Profile = () => {
         sx={{
           flexGrow: 1,
           display: { xs: "none", md: "block" },
+          backgroundColor: "#fafafa",
         }}
       >
         <Grid container>
