@@ -7,7 +7,7 @@ const ProtectedRoute = (props: RouteProps) => {
 
   if (auth.account) {
     if (props.path === "/login") {
-      return <Redirect to={"/"} />;
+      return <Redirect to={"/home"} />;
     }
     return <Route {...props} />;
   } else if (!auth.account) {

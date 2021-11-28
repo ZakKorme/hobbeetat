@@ -40,7 +40,6 @@ const Profile = () => {
 
   return (
     <>
-      <Navbar />
       <Box
         sx={{
           flexGrow: 1,

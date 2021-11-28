@@ -11,8 +11,10 @@ import ListSubheader from "@mui/material/ListSubheader";
 import AddIcon from "@mui/icons-material/Add";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
+import { Link } from "react-router-dom";
 
 import { styled, useTheme } from "@mui/material/styles";
+import { useLocation } from "react-router-dom";
 
 import Icon from "@mui/material/Icon";
 
@@ -32,6 +34,8 @@ const Sidebar = (props) => {
   const theme = useTheme();
   const [openHobby, setOpenHobby] = useState(false);
   const [selectedHobby, setSelectedHobby] = useState("Chess");
+
+  const location = useLocation();
 
   const handleClick = (event) => {
     setOpenHobby(!openHobby);
@@ -144,47 +148,67 @@ const Sidebar = (props) => {
           </ListSubheader>
         }
       >
-        {["Feed", "Message Board", "Members", "Groups"].map((text, index) => (
-          <ListItem button key={text} style={{ borderRadius: "16px" }}>
-            <ListItemIcon style={{ minWidth: "40px", contentRight: "10px" }}>
-              {text === "Feed" ? (
-                <Icon
-                  baseClassName="far"
-                  className="fa-newspaper"
-                  fontSize="small"
-                  sx={{ display: "inline-table" }}
-                />
-              ) : text === "Message Board" ? (
-                <Icon
-                  baseClassName="far"
-                  className="fa-comment-dots"
-                  fontSize="small"
-                />
-              ) : text === "Members" ? (
-                <Icon
-                  baseClassName="far"
-                  className="fa-user-circle"
-                  fontSize="small"
-                />
-              ) : text === "Groups" ? (
-                <Icon
-                  baseClassName="fas"
-                  className="fa-users"
-                  fontSize="small"
-                  sx={{ display: "inline-table" }}
-                />
-              ) : null}
-            </ListItemIcon>
-            <ListItemText
-              disableTypography
-              primary={
-                <Typography style={{ fontFamily: "Manrope", fontSize: "14px" }}>
-                  {text}
-                </Typography>
-              }
-            />
-          </ListItem>
-        ))}
+        {["Feed", "Message Board", "Members", "Groups"].map((text, index) => {
+          let linkPath = null;
+
+          if (
+            `/home/${text.replace(" ", "-").toLowerCase()}` === "/home/feed"
+          ) {
+            linkPath = "/home";
+          } else {
+            linkPath = `/home/${text.replace(" ", "-").toLowerCase()}`;
+          }
+          return (
+            <ListItem
+              button
+              key={text}
+              style={{ borderRadius: "16px" }}
+              component={Link}
+              to={linkPath}
+              selected={location.pathname === linkPath}
+            >
+              <ListItemIcon style={{ minWidth: "40px", contentRight: "10px" }}>
+                {text === "Feed" ? (
+                  <Icon
+                    baseClassName="far"
+                    className="fa-newspaper"
+                    fontSize="small"
+                    sx={{ display: "inline-table" }}
+                  />
+                ) : text === "Message Board" ? (
+                  <Icon
+                    baseClassName="far"
+                    className="fa-comment-dots"
+                    fontSize="small"
+                  />
+                ) : text === "Members" ? (
+                  <Icon
+                    baseClassName="far"
+                    className="fa-user-circle"
+                    fontSize="small"
+                  />
+                ) : text === "Groups" ? (
+                  <Icon
+                    baseClassName="fas"
+                    className="fa-users"
+                    fontSize="small"
+                    sx={{ display: "inline-table" }}
+                  />
+                ) : null}
+              </ListItemIcon>
+              <ListItemText
+                disableTypography
+                primary={
+                  <Typography
+                    style={{ fontFamily: "Manrope", fontSize: "14px" }}
+                  >
+                    {text}
+                  </Typography>
+                }
+              />
+            </ListItem>
+          );
+        })}
       </List>
       <List
         subheader={

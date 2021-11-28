@@ -31,7 +31,7 @@ const Login = () => {
           );
           dispatch(authSlice.actions.setAccount(res.data.user));
           setLoading(false);
-          history.push("/");
+          history.push("/home");
         } else {
           setLoading(false);
           setMessage("Please confirm your email!");
