@@ -37,6 +37,7 @@ const Registration = () => {
         password: password,
         gender: gender,
         date_of_birth: dateOfBirth,
+        hobbies: hobbySelection,
       })
       .then((res) => {
         setLoading(false);

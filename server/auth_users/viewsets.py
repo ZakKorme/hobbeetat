@@ -9,13 +9,17 @@ from rest_framework.permissions import AllowAny
 from rest_framework import status, serializers
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
+
+
 from .serializer import LoginSerializer, RegisterSerializer, ConfirmationSerializer
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.utils.encoding import force_str,  force_bytes,  force_text
 from .utils import generate_token
-from users.models import User
+from .utils import get_user_hobbies
+from users.models import User, User_Hobby
+from hobbies.models import Hobbies
 from email.message import EmailMessage
 from django.conf import settings
 import threading
@@ -83,10 +87,18 @@ class RegistrationViewSet(ModelViewSet, TokenObtainPairView):
     http_method_names = ['post']
 
     def create(self, request, *args, **kwargs):
+
         serializer = self.get_serializer(data=request.data)
 
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
+
+        # Adds User's Hobbies to User_Hobby Model
+        for hobby in request.data['hobbies']:
+            hobby_instance = Hobbies.objects.get(hobby_title=hobby['title'])
+            user_hobby_entry = User_Hobby.objects.create(
+                user_id=user, user_hobbyTitle=hobby_instance)
+            user_hobby_entry.save()
 
         send_activation_email(user, request)
         refresh = RefreshToken.for_user(user)
@@ -126,7 +138,6 @@ class EmailConfirmationViewSet(ModelViewSet, serializers.ModelSerializer):
         token = kwargs['token']
         try:
             uid = force_text(urlsafe_base64_decode(uidb64))
-            print(uid)
             user = User.objects.get(pk=uid)
 
         except Exception as e:

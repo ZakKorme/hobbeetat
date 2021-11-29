@@ -5,9 +5,15 @@ type State = {
   token: string | null;
   refreshToken: string | null;
   account: AccountResponse | null;
+  hobbies: Array<string> | null;
 };
 
-const initialState: State = { token: null, refreshToken: null, account: null };
+const initialState: State = {
+  token: null,
+  refreshToken: null,
+  account: null,
+  hobbies: null,
+};
 
 const authSlice = createSlice({
   name: "auth",
@@ -20,13 +26,18 @@ const authSlice = createSlice({
       state.refreshToken = action.payload.refreshToken;
       state.token = action.payload.token;
     },
-    setAccount(state: State, action: PayloadAction<AccountResponse>) {
-      state.account = action.payload;
+    setAccount(
+      state: State,
+      action: PayloadAction<{ user: AccountResponse; hobbies: Array<string> }>
+    ) {
+      state.account = action.payload.user;
+      state.hobbies = action.payload.hobbies;
     },
     logout(state: State) {
       state.account = null;
       state.refreshToken = null;
       state.token = null;
+      state.hobbies = null;
     },
   },
 });

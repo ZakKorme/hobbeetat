@@ -13,4 +13,5 @@ export interface AccountResponse {
   };
   access: string;
   refresh: string;
+  hobbies: string[];
 }

@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from hobbies.models import Hobbies
 
 
 class UserManager(BaseUserManager):
@@ -55,3 +56,12 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
+
+
+class User_Hobby(models.Model):
+    user_id = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+    user_hobbyTitle = models.ForeignKey(
+        Hobbies, null=True, on_delete=models.SET_NULL)
+
+    def __str__(self):
+        return f"{self.user_id} - {self.user_hobbyTitle}"

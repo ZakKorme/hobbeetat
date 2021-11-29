@@ -29,7 +29,12 @@ const Login = () => {
               refreshToken: res.data.refresh,
             })
           );
-          dispatch(authSlice.actions.setAccount(res.data.user));
+          dispatch(
+            authSlice.actions.setAccount({
+              user: res.data.user,
+              hobbies: res.data.hobbies,
+            })
+          );
           setLoading(false);
           history.push("/home");
         } else {

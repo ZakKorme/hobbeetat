@@ -1,9 +1,12 @@
+from django.http import request
+from rest_framework import response
 from rest_framework.response import Response
 from rest_framework import serializers, status
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.settings import api_settings
 from django.contrib.auth.models import update_last_login
 from django.core.exceptions import ObjectDoesNotExist
+from auth_users.utils import get_user_hobbies
 
 
 from users.serializers import UserSerializer
@@ -20,7 +23,7 @@ class LoginSerializer(TokenObtainPairSerializer):
         data['user'] = UserSerializer(self.user).data
         data['refresh'] = str(refresh)
         data['access'] = str(refresh.access_token)
-
+        data['hobbies'] = get_user_hobbies(self.user)
         if api_settings.UPDATE_LAST_LOGIN:
             update_last_login(None, self.user)
 
