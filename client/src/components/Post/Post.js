@@ -5,7 +5,7 @@ import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
-import ButtonUnstyled from "@mui/core/ButtonUnstyled";
+import ButtonUnstyled from "@mui/base/ButtonUnstyled";
 import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -28,7 +28,7 @@ const style = {
   border: "1px solid #000",
   boxShadow: 24,
   borderRadius: 5,
-  p: 4,
+  p: 4
 };
 
 const Post = () => {
@@ -63,7 +63,7 @@ const Post = () => {
                     <ClearIcon />
                   </IconButton>
                 }
-              ></CardHeader>
+              />
               <CardContent>
                 <TextField
                   placeholder="What would you like to share?"
@@ -72,7 +72,7 @@ const Post = () => {
                   rowsMax={10}
                   style={{
                     marginBottom: 20,
-                    minWidth: 350,
+                    minWidth: 350
                   }}
                 />
               </CardContent>

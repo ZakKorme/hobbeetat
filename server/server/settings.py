@@ -42,6 +42,10 @@ INSTALLED_APPS = [
     'users',
     'auth_users',
     'hobbies',
+    'posts',
+    'comments',
+    'groups',
+    'events',
     'rest_framework',
     'corsheaders',
 
