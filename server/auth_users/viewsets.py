@@ -17,7 +17,6 @@ from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.utils.encoding import force_str,  force_bytes,  force_text
 from .utils import generate_token
-from .utils import get_user_hobbies
 from users.models import User, User_Hobby
 from hobbies.models import Hobbies
 from email.message import EmailMessage
