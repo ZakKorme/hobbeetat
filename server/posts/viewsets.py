@@ -54,12 +54,3 @@ class PostViewSet(viewsets.ModelViewSet):
                 title=title, author=user_obj, hobby=hobby_obj, content=content)
 
             return Response({"success": "Post has been updated"}, status=status.HTTP_200_OK)
-
-    def delete(self,  request, *args, **kwargs):
-        hobby_name = self.kwargs.get('hobby', None)
-        post_id = self.kwargs.get('pk', None)
-
-        if hobby_name and post_id:
-            del_post = Post.objects.delete(id=post_id)
-            del_post.save()
-            return Response({"success": "Post has been deleted"}, status=status.HTTP_200_OK)
