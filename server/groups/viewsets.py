@@ -14,7 +14,7 @@ class GroupViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         hobby_name = self.kwargs.get('hobby', None)
-        print(hobby_name)
+
         if hobby_name:
             hobby_id = Hobbies.objects.get(
                 hobby_title=hobby_name.capitalize()).pk

@@ -1,6 +1,7 @@
 from auth_users.viewsets import LoginViewSet, RefreshViewSet, RegistrationViewSet, EmailConfirmationViewSet
 from hobbies.viewsets import HobbiesViewSet
 from posts.viewsets import PostViewSet
+from events.viewsets import EventViewSet
 from users.viewsets import UserViewSet
 from groups.viewsets import GroupViewSet
 from rest_framework.routers import SimpleRouter
@@ -22,7 +23,9 @@ router.register(r'auth/posts', PostViewSet,
 router.register(
     r'auth/groups/(?P<hobby>[A-Za-z0-9_-]+)', GroupViewSet, basename='auth-groups')
 router.register(r'auth/groups', GroupViewSet, basename="auth-all-groups")
-
+router.register(
+    r'auth/events/(?P<hobby>[A-Za-z0-9_-]+)', EventViewSet, basename='auth-events')
+router.register(r'auth/events', EventViewSet, basename="auth-all-events")
 
 # USER
 router.register(r'users', UserViewSet, basename='user')
