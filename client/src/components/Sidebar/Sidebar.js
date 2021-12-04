@@ -13,9 +13,11 @@ import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import { Link } from "react-router-dom";
 
-import { styled, useTheme } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import { useLocation } from "react-router-dom";
-
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import hobbySlice from "../../store/slices/hobby";
 import Icon from "@mui/material/Icon";
 
 const drawerWidth = 230;
@@ -27,23 +29,29 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   paddingLeft: "10%",
   // necessary for content to be below app bar
   ...theme.mixins.toolbar,
-  justifyContent: "flex-start",
+  justifyContent: "flex-start"
 }));
 
-const Sidebar = (props) => {
-  const theme = useTheme();
+const Sidebar = props => {
+  const user = useSelector(state => state.auth);
   const [openHobby, setOpenHobby] = useState(false);
-  const [selectedHobby, setSelectedHobby] = useState("Chess");
+  const [selectedHobby, setSelectedHobby] = useState(user.hobbies[0]);
 
   const location = useLocation();
+  const dispatch = useDispatch();
 
-  const handleClick = (event) => {
+  const handleClick = event => {
     setOpenHobby(!openHobby);
   };
 
-  const handleHobbySelection = (event) => {
+  const handleHobbySelection = event => {
     setOpenHobby(!openHobby);
     setSelectedHobby(event.target.textContent);
+    dispatch(
+      hobbySlice.actions.setHobby({
+        hobby: event.target.textContent
+      })
+    );
   };
 
   return (
@@ -53,13 +61,13 @@ const Sidebar = (props) => {
         display: {
           sm: "none",
           md: "none",
-          lg: "block",
+          lg: "block"
         },
         // paddingTop: "2%",
         flexShrink: 0,
         "& .MuiDrawer-paper": {
-          width: drawerWidth,
-        },
+          width: drawerWidth
+        }
       }}
       variant="persistent"
       anchor="left"
@@ -87,7 +95,7 @@ const Sidebar = (props) => {
           </ListSubheader>
         }
       >
-        {["Hobby"].map((text, index) => (
+        {["Hobby"].map((text, index) =>
           <ListItem
             button
             key={text}
@@ -107,33 +115,24 @@ const Sidebar = (props) => {
             />
             {openHobby ? <ExpandLess /> : <ExpandMore />}
           </ListItem>
-        ))}
-        <Collapse in={openHobby} timeout="auto" unmountOnExit>
+        )}
+        <Collapse
+          in={openHobby}
+          timeout="auto"
+          unmountOnExit
+          style={{ overflowY: "scroll" }}
+        >
           <List component="div" disablePadding style={{ maxHeight: "150px" }}>
-            <ListItemButton sx={{ pl: 4 }} onClick={handleHobbySelection}>
-              <ListItemIcon>
-                <AddIcon fontSize={"small"} />
-              </ListItemIcon>
-              <ListItemText secondary="Cooking" />
-            </ListItemButton>
-            <ListItemButton sx={{ pl: 4 }} onClick={handleHobbySelection}>
-              <ListItemIcon>
-                <AddIcon fontSize={"small"} />
-              </ListItemIcon>
-              <ListItemText
-                secondary="Swimming"
-                onClick={handleHobbySelection}
-              />
-            </ListItemButton>
-            <ListItemButton sx={{ pl: 4 }}>
-              <ListItemIcon>
-                <AddIcon fontSize={"small"} />
-              </ListItemIcon>
-              <ListItemText
-                secondary="Hunting"
-                onClick={handleHobbySelection}
-              />
-            </ListItemButton>
+            {user.hobbies.map(hobby => {
+              return (
+                <ListItemButton sx={{ pl: 4 }} onClick={handleHobbySelection}>
+                  <ListItemIcon>
+                    <AddIcon fontSize={"small"} />
+                  </ListItemIcon>
+                  <ListItemText secondary={`${hobby}`} />
+                </ListItemButton>
+              );
+            })}
           </List>
         </Collapse>
       </List>
@@ -168,33 +167,33 @@ const Sidebar = (props) => {
               selected={location.pathname === linkPath}
             >
               <ListItemIcon style={{ minWidth: "40px", contentRight: "10px" }}>
-                {text === "Feed" ? (
-                  <Icon
-                    baseClassName="far"
-                    className="fa-newspaper"
-                    fontSize="small"
-                    sx={{ display: "inline-table" }}
-                  />
-                ) : text === "Message Board" ? (
-                  <Icon
-                    baseClassName="far"
-                    className="fa-comment-dots"
-                    fontSize="small"
-                  />
-                ) : text === "Members" ? (
-                  <Icon
-                    baseClassName="far"
-                    className="fa-user-circle"
-                    fontSize="small"
-                  />
-                ) : text === "Groups" ? (
-                  <Icon
-                    baseClassName="fas"
-                    className="fa-users"
-                    fontSize="small"
-                    sx={{ display: "inline-table" }}
-                  />
-                ) : null}
+                {text === "Feed"
+                  ? <Icon
+                      baseClassName="far"
+                      className="fa-newspaper"
+                      fontSize="small"
+                      sx={{ display: "inline-table" }}
+                    />
+                  : text === "Message Board"
+                    ? <Icon
+                        baseClassName="far"
+                        className="fa-comment-dots"
+                        fontSize="small"
+                      />
+                    : text === "Members"
+                      ? <Icon
+                          baseClassName="far"
+                          className="fa-user-circle"
+                          fontSize="small"
+                        />
+                      : text === "Groups"
+                        ? <Icon
+                            baseClassName="fas"
+                            className="fa-users"
+                            fontSize="small"
+                            sx={{ display: "inline-table" }}
+                          />
+                        : null}
               </ListItemIcon>
               <ListItemText
                 disableTypography
@@ -221,23 +220,21 @@ const Sidebar = (props) => {
           </ListSubheader>
         }
       >
-        {["Events", "Fundraising"].map((text, index) => (
+        {["Events", "Fundraising"].map((text, index) =>
           <ListItem button key={text} style={{ borderRadius: "16px" }}>
             <ListItemIcon style={{ minWidth: "40px" }}>
-              {index % 2 === 0 ? (
-                <Icon
-                  baseClassName="far"
-                  className="fa-calendar-alt"
-                  fontSize="small"
-                />
-              ) : (
-                <Icon
-                  baseClassName="far"
-                  className="fa-money-bill-alt"
-                  fontSize="small"
-                  sx={{ display: "inline-table" }}
-                />
-              )}
+              {index % 2 === 0
+                ? <Icon
+                    baseClassName="far"
+                    className="fa-calendar-alt"
+                    fontSize="small"
+                  />
+                : <Icon
+                    baseClassName="far"
+                    className="fa-money-bill-alt"
+                    fontSize="small"
+                    sx={{ display: "inline-table" }}
+                  />}
             </ListItemIcon>
             <ListItemText
               disableTypography
@@ -248,7 +245,7 @@ const Sidebar = (props) => {
               }
             />
           </ListItem>
-        ))}
+        )}
       </List>
     </Drawer>
   );

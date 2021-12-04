@@ -9,32 +9,34 @@ import {
   persistStore,
   PURGE,
   REGISTER,
-  REHYDRATE,
+  REHYDRATE
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import authSlice from "./slices/auth";
+import hobbySlice from "./slices/hobby";
 
 const rootReducer = combineReducers({
   auth: authSlice.reducer,
+  hobby: hobbySlice.reducer
 });
 
 const persistedReducer = persistReducer(
   {
     key: "root",
     version: 1,
-    storage: storage,
+    storage: storage
   },
   rootReducer
 );
 
 const store = configureStore({
   reducer: persistedReducer,
-  middleware: (getDefaultMiddleware) =>
+  middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-      },
-    }),
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]
+      }
+    })
 });
 
 export const persistor = persistStore(store);

@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 
 import authSlice from "../../store/slices/auth";
+import hobbySlice from "../../store/slices/hobby";
 
 const Login = () => {
   const [message, setMessage] = useState("");
@@ -18,21 +19,26 @@ const Login = () => {
     axios
       .post(`${process.env.REACT_APP_API_URL}/auth/login/`, {
         email,
-        password,
+        password
       })
-      .then((res) => {
+      .then(res => {
         // We first check if the user has confirmed email
         if (res.data.user.is_confirmed) {
           dispatch(
             authSlice.actions.setAuthTokens({
               token: res.data.access,
-              refreshToken: res.data.refresh,
+              refreshToken: res.data.refresh
             })
           );
           dispatch(
             authSlice.actions.setAccount({
               user: res.data.user,
-              hobbies: res.data.hobbies,
+              hobbies: res.data.hobbies
+            })
+          );
+          dispatch(
+            hobbySlice.actions.setHobby({
+              hobby: res.data.hobbies[0]
             })
           );
           setLoading(false);
@@ -42,7 +48,7 @@ const Login = () => {
           setMessage("Please confirm your email!");
         }
       })
-      .catch((err) => {
+      .catch(err => {
         setLoading(false);
         setMessage(err);
         // setMessage(err.response.data.detail.toString());
@@ -52,18 +58,18 @@ const Login = () => {
   const formik = useFormik({
     initialValues: {
       email: "",
-      password: "",
+      password: ""
     },
-    onSubmit: (values) => {
+    onSubmit: values => {
       setLoading(true);
       handleLogin(values.email, values.password);
     },
     validationSchema: Yup.object({
       email: Yup.string().email().trim().required("Please enter your email!"),
-      password: Yup.string().trim().required("Please enter your password!"),
+      password: Yup.string().trim().required("Please enter your password!")
     }),
     validateOnBlur: false,
-    validateOnChange: false,
+    validateOnChange: false
   });
   return (
     // LOGIN FORM: Antd components - required email and password fields
@@ -76,7 +82,7 @@ const Login = () => {
           Login 🔐
         </h1>
         <form
-          onSubmit={(e) => {
+          onSubmit={e => {
             e.preventDefault();
             formik.handleSubmit(e);
           }}
@@ -92,7 +98,11 @@ const Login = () => {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             />
-            {formik.errors.email ? <div>{formik.errors.email}</div> : null}
+            {formik.errors.email
+              ? <div>
+                  {formik.errors.email}
+                </div>
+              : null}
             <input
               className="border-b border-gray-300 w-full px-2 h-8 rounded focus:border-blue-500"
               id="password"
@@ -103,9 +113,11 @@ const Login = () => {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             />
-            {formik.errors.password ? (
-              <div>{formik.errors.password} </div>
-            ) : null}
+            {formik.errors.password
+              ? <div>
+                  {formik.errors.password}{" "}
+                </div>
+              : null}
           </div>
           <div className="text-danger text-center my-2" hidden={false}>
             {message}

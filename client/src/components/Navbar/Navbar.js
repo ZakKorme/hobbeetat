@@ -19,6 +19,7 @@ import classes from "./Navbar.module.css";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import authSlice from "../../store/slices/auth";
+import hobbySlice from "../../store/slices/hobby";
 
 // Material UI Icons
 import MenuIcon from "@mui/icons-material/Menu";
@@ -84,6 +85,7 @@ const Navbar = (props) => {
 
   const handleLogout = () => {
     dispatch(authSlice.actions.logout());
+    dispatch(hobbySlice.actions.clearHobby())
     history.push("/login");
   };
 
