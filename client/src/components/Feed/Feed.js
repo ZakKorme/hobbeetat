@@ -10,49 +10,57 @@ import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import CommentIcon from "@mui/icons-material/Comment";
 import ShareIcon from "@mui/icons-material/Share";
 
-const posts = [
-  {
-    user: "John Smith",
-    time: "29min",
-    post: "I love this new book I've been reading!",
-    img: "",
-  },
-  {
-    user: "John Smith",
-    time: "2d",
-    post: "I love this new book I've been reading!",
-    img: "https://picsum.photos/200/200/",
-  },
-  {
-    user: "John Smith",
-    time: "15w",
-    post: "Join this new group I started!",
-    img: "",
-  },
-  {
-    user: "John Smith",
-    time: "29min",
-    post: "I love this new book I've been reading!",
-    img: "https://picsum.photos/200/200/",
-  },
-  {
-    user: "John Smith",
-    time: "2d",
-    post: "I love this new book I've been reading!",
-    img: "",
-  },
-  {
-    user: "John Smith",
-    time: "15w",
-    post: "Join this new group I started!",
-    img: "",
-  },
-];
+import { useSelector } from "react-redux";
+import { capitalize } from "../../utils/index";
+
+
+// const posts = [
+//   {
+//     user: "John Smith",
+//     time: "29min",
+//     post: "I love this new book I've been reading!",
+//     img: "",
+//   },
+//   {
+//     user: "John Smith",
+//     time: "2d",
+//     post: "I love this new book I've been reading!",
+//     img: "https://picsum.photos/200/200/",
+//   },
+//   {
+//     user: "John Smith",
+//     time: "15w",
+//     post: "Join this new group I started!",
+//     img: "",
+//   },
+//   {
+//     user: "John Smith",
+//     time: "29min",
+//     post: "I love this new book I've been reading!",
+//     img: "https://picsum.photos/200/200/",
+//   },
+//   {
+//     user: "John Smith",
+//     time: "2d",
+//     post: "I love this new book I've been reading!",
+//     img: "",
+//   },
+//   {
+//     user: "John Smith",
+//     time: "15w",
+//     post: "Join this new group I started!",
+//     img: "",
+//   },
+// ];
 
 const Feed = (props) => {
+  const authState = useSelector((state => state.auth));
+  const hobbyState = useSelector((state => state.hobby));
+  const posts = hobbyState.posts
   return (
     <>
       {posts.map((post, index) => {
+        // Returns the details of the author
         return (
           <Card key={index} style={{ marginBottom: "2%" }}>
             <CardHeader
@@ -62,8 +70,8 @@ const Feed = (props) => {
                   src="https://www.fillmurray.com/500/900"
                 />
               }
-              title={post.user}
-              subheader={post.time}
+              title={`${capitalize(post.author['first_name'])} ${capitalize(post.author['last_name'])}`}
+              subheader={post.author['created_on']}
             ></CardHeader>
             {post.img ? (
               <CardMedia
@@ -74,7 +82,7 @@ const Feed = (props) => {
               />
             ) : null}
             <CardContent>
-              <Typography>{post.post}</Typography>
+              <Typography>{post.content}</Typography>
             </CardContent>
             <CardActions>
               <IconButton>

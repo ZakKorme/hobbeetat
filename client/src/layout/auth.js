@@ -29,7 +29,6 @@ const Auth = (props) => {
         'Authorization': `Bearer ${authState.token}`
       }
     }
-    console.log('useEfffect was be used!')
     // Get Posts 
     axios.get(`http://127.0.0.1:8000/api/v1/auth/posts/${currentHobby}`, config).then((res) => {
       dispatch(hobbySlice.actions.setHobbyPosts({

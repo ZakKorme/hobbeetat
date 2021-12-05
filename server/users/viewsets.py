@@ -18,7 +18,7 @@ class UserViewSet(viewsets.ModelViewSet):
     def get_object(self):
         lookup_field_value = self.kwargs[self.lookup_field]
 
-        obj = User.objects.get(lookup_field_value)
+        obj = User.objects.get(id=lookup_field_value)
         self.check_object_permissions(self.request, obj)
 
         return obj

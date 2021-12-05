@@ -8,6 +8,7 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Divider from "@mui/material/Divider";
+import { useSelector } from "react-redux";
 
 import Navbar from "../../components/Navbar/Navbar";
 import GroupMenu from "../../components/GroupMenu/GroupMenu";
@@ -28,6 +29,8 @@ const Profile = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
+
+  const hobbyState = useSelector((state => state.hobby));
 
   const handleLogout = () => {
     dispatch(authSlice.actions.logout());
@@ -57,9 +60,14 @@ const Profile = () => {
           >
             <Grid item xs={8}>
               <Container maxWidth="sm">
+                {hobbyState.currentHobby && hobbyState.posts ? (
+                <>
                 <Post></Post>
                 <Divider style={{ marginTop: "3%", marginBottom: "3%" }} />
                 <Feed />
+                </>
+                )
+              :null}
               </Container>
             </Grid>
             <Grid
