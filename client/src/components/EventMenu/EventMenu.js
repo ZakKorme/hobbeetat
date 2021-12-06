@@ -8,7 +8,12 @@ import ListItemButton from "@mui/material/ListItemButton";
 import CalendarIcon from "../CalendarIcon/CalendarIcon";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 
+import { useSelector } from "react-redux";
+import { capitalize } from "../../utils/index";
+
 const EventMenu = (props) => {
+  const hobbyState = useSelector((state => state.hobby));
+  const events = hobbyState.events
   return (
     <Box
       sx={{
@@ -28,46 +33,54 @@ const EventMenu = (props) => {
           </ListSubheader>
         }
       >
-        {[
-          {
-            event: "Monthly Meetup",
-            location: "Washington D.C.",
-            month: "Jan",
-            date: "19",
-          },
+        {
+        // [
+        //   {
+        //     event: "Monthly Meetup",
+        //     location: "Washington D.C.",
+        //     month: "Jan",
+        //     date: "19",
+        //   },
 
-          {
-            event: "Monthly Meetup",
-            location: "New York",
-            month: "Jan",
-            date: "21",
-          },
+        //   {
+        //     event: "Monthly Meetup",
+        //     location: "New York",
+        //     month: "Jan",
+        //     date: "21",
+        //   },
 
-          {
-            event: "Monthly Meetup",
-            location: "Toronto",
-            month: "Feb",
-            date: "2",
-          },
-        ].map((obj, index) => (
+        //   {
+        //     event: "Monthly Meetup",
+        //     location: "Toronto",
+        //     month: "Feb",
+        //     date: "2",
+        //   },
+        // ]
+        events ? events
+        .map((event, index) => {
+          const month = event.date.split("-")[1];
+          const date = event.date.split("-")[2];
+          
+          return (
           <ListItem key={index} disablePadding>
             <ListItemButton>
               <ListItemAvatar>
-                <CalendarIcon month={obj.month} date={obj.date} />
+                <CalendarIcon month={month} date={date} />
               </ListItemAvatar>
               <ListItemText
                 id={index}
-                primary={obj.event}
+                primary={event.title}
                 secondary={
                   <>
                     <LocationOnIcon fontSize="4px" color="black" />
-                    {obj.location}
+                    {event.location}
                   </>
                 }
               />
             </ListItemButton>
           </ListItem>
-        ))}
+        )}): null
+      }
         <ListItemButton style={{ color: "#0645AD" }}>See All</ListItemButton>
       </List>
     </Box>

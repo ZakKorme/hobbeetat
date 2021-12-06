@@ -54,7 +54,6 @@ import { capitalize } from "../../utils/index";
 // ];
 
 const Feed = (props) => {
-  const authState = useSelector((state => state.auth));
   const hobbyState = useSelector((state => state.hobby));
   const posts = hobbyState.posts
   return (
