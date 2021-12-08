@@ -27,11 +27,12 @@ class UserViewSet(viewsets.ModelViewSet):
 
     def update(self, request, *args, **kwargs):
         user_id = self.kwargs['pk']
-        hobby_id = self.request.data['last_accessed_hobby']
-        if user_id and hobby_id:
+        hobby_name = self.request.data['last_accessed_hobby']
+        if user_id and hobby_name:
             user_obj = User.objects.get(id=user_id)
-            hobby_name = Hobbies.objects.get(id=hobby_id)
-            if user_obj and hobby_name:
-                User.objects.update(last_accessed_hobby=hobby_name)
+            hobby_obj = Hobbies.objects.get(hobby_title=hobby_name)
+            if user_obj and hobby_obj:
+                User.objects.filter(id=user_obj.pk).update(
+                    last_accessed_hobby=hobby_obj)
                 return Response({'Success': 'User last selected hobby has been updated.'}, status=status.HTTP_200_OK)
         return Response({'Failure': 'Invalid Format - please add UserID and HobbyID as reference.'}, status=status.HTTP_400_BAD_REQUEST)

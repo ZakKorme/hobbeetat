@@ -36,9 +36,13 @@ const Login = () => {
               hobbies: res.data.hobbies
             })
           );
+          let last_hobby = res.data.user["last_accessed_hobby"]["hobby_title"]
+            ? res.data.user["last_accessed_hobby"]["hobby_title"]
+            : res.data.hobbies[0];
+
           dispatch(
             hobbySlice.actions.setHobby({
-              hobby: res.data.hobbies[0]
+              hobby: last_hobby
             })
           );
           setLoading(false);

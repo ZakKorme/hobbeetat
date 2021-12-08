@@ -12,7 +12,7 @@ const initialState: State = {
   token: null,
   refreshToken: null,
   account: null,
-  hobbies: null,
+  hobbies: null
 };
 
 const authSlice = createSlice({
@@ -38,8 +38,8 @@ const authSlice = createSlice({
       state.refreshToken = null;
       state.token = null;
       state.hobbies = null;
-    },
-  },
+    }
+  }
 });
 
 export default authSlice;

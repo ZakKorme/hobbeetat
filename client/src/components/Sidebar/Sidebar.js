@@ -18,6 +18,7 @@ import { useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import hobbySlice from "../../store/slices/hobby";
+import axios from "axios";
 import Icon from "@mui/material/Icon";
 
 const drawerWidth = 230;
@@ -33,9 +34,13 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 }));
 
 const Sidebar = props => {
-  const user = useSelector(state => state.auth);
+  const authState = useSelector(state => state.auth);
   const [openHobby, setOpenHobby] = useState(false);
-  const [selectedHobby, setSelectedHobby] = useState(user.hobbies[0]);
+  const last_accessed_hobby =
+    authState.account["last_accessed_hobby"]["hobby_title"];
+  const [selectedHobby, setSelectedHobby] = useState(
+    last_accessed_hobby ? last_accessed_hobby : authState.hobbies[0]
+  );
 
   const location = useLocation();
   const dispatch = useDispatch();
@@ -46,12 +51,30 @@ const Sidebar = props => {
 
   const handleHobbySelection = event => {
     setOpenHobby(!openHobby);
-    setSelectedHobby(event.target.textContent);
-    dispatch(
-      hobbySlice.actions.setHobby({
-        hobby: event.target.textContent
+    // Saves the last accessed hobby for the user and then sets the global hobby content
+    const config = {
+      headers: {
+        Authorization: `Bearer ${authState.token}`,
+        "Content-Type": "application/json"
+      }
+    };
+    axios
+      .put(
+        `http://127.0.0.1:8000/api/v1/auth/users/${authState.account.id}/`,
+        {
+          last_accessed_hobby: event.target.textContent
+        },
+        config
+      )
+      .then(res => {
+        setSelectedHobby(event.target.textContent);
+        dispatch(
+          hobbySlice.actions.setHobby({
+            hobby: event.target.textContent
+          })
+        );
       })
-    );
+      .catch(err => console.error(err));
   };
 
   return (
@@ -123,7 +146,7 @@ const Sidebar = props => {
           style={{ overflowY: "scroll" }}
         >
           <List component="div" disablePadding style={{ maxHeight: "150px" }}>
-            {user.hobbies.map(hobby => {
+            {authState.hobbies.map(hobby => {
               return (
                 <ListItemButton sx={{ pl: 4 }} onClick={handleHobbySelection}>
                   <ListItemIcon>
