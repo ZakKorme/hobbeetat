@@ -244,60 +244,7 @@ const Navbar = (props) => {
                 paddingLeft: "4%",
               }}
             >
-              <List
-                style={{
-                  display: "inline-flex",
-                }}
-              >
-                <ListItem button className={classes.navlist}>
-                  <ListItemText
-                    disableTypography
-                    primary={
-                      <Typography
-                        style={{ fontFamily: "Manrope", fontSize: "14px" }}
-                      >
-                        Home
-                      </Typography>
-                    }
-                  />
-                </ListItem>
-                <ListItem button className={classes.navlist}>
-                  <ListItemText
-                    disableTypography
-                    primary={
-                      <Typography
-                        style={{ fontFamily: "Manrope", fontSize: "14px" }}
-                      >
-                        Profile
-                      </Typography>
-                    }
-                  />
-                </ListItem>
-                <ListItem button className={classes.navlist}>
-                  <ListItemText
-                    disableTypography
-                    primary={
-                      <Typography
-                        style={{ fontFamily: "Manrope", fontSize: "14px" }}
-                      >
-                        Messages
-                      </Typography>
-                    }
-                  />
-                </ListItem>
-                <ListItem button className={classes.navlist}>
-                  <ListItemText
-                    disableTypography
-                    primary={
-                      <Typography
-                        style={{ fontFamily: "Manrope", fontSize: "14px" }}
-                      >
-                        Notifications
-                      </Typography>
-                    }
-                  />
-                </ListItem>
-              </List>
+           
             </Box>
 
             <Box sx={{ display: { xs: "none", md: "flex" } }}>

@@ -220,21 +220,51 @@ const Sidebar = props => {
           </ListSubheader>
         }
       >
-        {["Events", "Fundraising"].map((text, index) =>
+        {[
+          "Events",
+          "Fundraising",
+          "Marketplace",
+          "Showcase",
+          "Resources"
+        ].map((text, index) =>
           <ListItem button key={text} style={{ borderRadius: "16px" }}>
             <ListItemIcon style={{ minWidth: "40px" }}>
-              {index % 2 === 0
+              {text === "Events"
                 ? <Icon
                     baseClassName="far"
                     className="fa-calendar-alt"
                     fontSize="small"
                   />
-                : <Icon
-                    baseClassName="far"
-                    className="fa-money-bill-alt"
-                    fontSize="small"
-                    sx={{ display: "inline-table" }}
-                  />}
+                : text === "Fundraising"
+                  ? <Icon
+                      baseClassName="fas"
+                      className="fa-hand-holding-usd"
+                      fontSize="small"
+                      sx={{ display: "inline-table" }}
+                    />
+                  : text === "Marketplace"
+                    ? <Icon
+                        baseClassName="fas"
+                        className="fa-tags"
+                        fontSize="small"
+                        sx={{
+                          display: "inline-table",
+                          marginTop: "10px"
+                        }}
+                      />
+                    : text === "Showcase"
+                      ? <Icon
+                          baseClassName="fas"
+                          className="fa-award"
+                          fontSize="small"
+                          sx={{ display: "inline-table" }}
+                        />
+                      : <Icon
+                          baseClassName="fas"
+                          className="fa-tools"
+                          fontSize="small"
+                          sx={{ display: "inline-table" }}
+                        />}
             </ListItemIcon>
             <ListItemText
               disableTypography
