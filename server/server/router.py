@@ -26,7 +26,7 @@ router.register(r'auth/groups', GroupViewSet, basename="auth-all-groups")
 router.register(
     r'auth/events/(?P<hobby>[A-Za-z0-9_-]+)', EventViewSet, basename='auth-events')
 router.register(r'auth/events', EventViewSet, basename="auth-all-events")
-
+router.register(r'auth/users', UserViewSet, basename='auth-users')
 # USER
 router.register(r'users', UserViewSet, basename='user')
 

@@ -5,4 +5,5 @@ from rest_framework import serializers
 class HobbiesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Hobbies
-        fields = ['id', 'title', 'description', 'number_of_members', ]
+        fields = ['id', 'hobby_title',
+                  'hobby_description', 'number_of_members', ]

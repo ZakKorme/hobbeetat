@@ -50,6 +50,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_blocked = models.BooleanField(default=False)
     is_confirmed = models.BooleanField(default=False)
     date_joined = models.DateTimeField(auto_now_add=True, null=True)
+    last_accessed_hobby = models.ForeignKey(
+        Hobbies, null=True, on_delete=models.CASCADE)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FILEDS = []
