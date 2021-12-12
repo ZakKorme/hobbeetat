@@ -51,7 +51,7 @@ const Auth = (props) => {
   return (
     <>
       <Navbar />
-      <Box>
+      <Box >
         <Switch>
           <ProtectedRoute exact path="/home/groups" component={Groups} />
           <ProtectedRoute exact path="/home/members" component={Members} />

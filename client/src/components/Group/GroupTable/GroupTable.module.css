@@ -1,0 +1,20 @@
+.tableCellRootHead {
+  vertical-align: middle;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  border-top: 0;
+  font-size: 8px;
+  color: "#8898aa";
+  background-color: "#f6f9fc";
+}
+
+/* tableCellRoot: {
+    verticalAlign: "middle",
+    paddingLeft: "1.5rem",
+    paddingRight: "1.5rem",
+    borderTop: "0",
+  },
+  tableCellRootHead: {
+    backgroundColor: theme.palette.gray[100],
+    color: theme.palette.gray[600],
+  }, */

@@ -1,16 +1,11 @@
-import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { styled } from "@mui/material/styles";
-import Paper from "@mui/material/Paper";
-import { useHistory, useLocation } from "react-router-dom";
-import authSlice from "../../store/slices/auth";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import Divider from "@mui/material/Divider";
 
-import GroupTable from "../../components/GroupTable/GroupTable";
-
+import GroupTable from "../../components/Group/GroupTable/GroupTable";
+import UserGroupMenu from "../../components/Group/UserMenu/UserMenu";
+import TrendingMenu from "../../components/Group/TrendingMenu/TrendingMenu"
+import CreateGroup from "../../components/Group/CreateGroup/CreateGroup";
 
 const Groups = (props) => {
   return (
@@ -31,7 +26,16 @@ const Groups = (props) => {
             alignItems="flex-start"
           >
             <Grid item xs={8}>
-              <Container maxWidth="sm">
+              <Container maxWidth="md">
+                <CreateGroup />
+                <Container style={{
+                  display: "inline-flex",
+                  paddingLeft: "0",
+                  paddingTop: "2%"
+                }}>
+                <UserGroupMenu/>
+                <TrendingMenu/>
+                </Container>
                 <GroupTable/>
               </Container>
             </Grid>
