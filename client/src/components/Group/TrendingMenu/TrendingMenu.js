@@ -11,7 +11,9 @@ import {
   ListItemText,
   ListItemAvatar,
   ListItemButton,
-  ListSubheader
+  ListSubheader,
+  CardActions,
+  Button
 } from "@mui/material";
 
 
@@ -99,11 +101,11 @@ const TrendingMenu = () => {
                   )
                   }
                 )}
-          <ListItemText style={{ color: "#0645AD" }}>
-            <ListItemButton>See All</ListItemButton>
-          </ListItemText>
         </List>
       </Box>
+      <CardActions>
+        <Button size="small">Sell All</Button>
+      </CardActions>
     </Card>
   );
 };

@@ -12,10 +12,12 @@ import {
   Container,
   ListSubheader,
   Divider,
- ListItemButton 
+ ListItemButton,
+ CardActions,
+ Button
 } from "@mui/material";
 import { useSelector } from "react-redux";
-
+import { useHistory } from "react-router";
 
 import IconButton from "@mui/material/IconButton";
 import BellIcon from "@mui/icons-material/Notifications";
@@ -53,6 +55,8 @@ const groups = [
 const UserTable = props => {
   const authState = useSelector(state => state.auth);
   const topThreeGroups = groups.slice(0,3);
+  const history = useHistory();
+
   return (
         <Card elevation={1} style={{
             width: "45%",
@@ -112,7 +116,7 @@ const UserTable = props => {
                       {group.groupName[0]}
                     </Avatar>
                   </ListItemAvatar>
-                  <ListItemButton style={{ marginRight: "30%", paddingLeft: "1%"}}  alignItems={"center"} dense={true}>
+                  <ListItemButton style={{ marginRight: "30%", paddingLeft: "1%"}}  alignItems={"center"} dense={true} onClick={() => history.push("/home/groups/page")}>
                   <ListItemText
                     primary={group.groupName}
                   />
@@ -124,10 +128,11 @@ const UserTable = props => {
                 </>
             )
           })}
-          <ListItemText style={{ color: "#0645AD", }}><ListItemButton>See All</ListItemButton></ListItemText>
           </List>
-        
       </Box>
+      <CardActions>
+              <Button size="small">See All</Button>
+          </CardActions>
       </Card>
   );
 };

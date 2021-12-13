@@ -8,6 +8,7 @@ import Groups from "../containers/Groups/Groups";
 import Members from "../containers/Members/Members";
 import MessageBoard from "../containers/MessageBoard/MessageBoard";
 import Profile from "../containers/Profile/Profile";
+import GroupPage from "../containers/GroupPage/GroupPage";
 
 import axios from "axios";
 import hobbySlice from "../store/slices/hobby";
@@ -53,6 +54,7 @@ const Auth = (props) => {
       <Navbar />
       <Box >
         <Switch>
+          <ProtectedRoute exact path="/home/groups/page" component={GroupPage} />
           <ProtectedRoute exact path="/home/groups" component={Groups} />
           <ProtectedRoute exact path="/home/members" component={Members} />
           <ProtectedRoute
