@@ -9,6 +9,7 @@ import ButtonUnstyled from "@mui/base/ButtonUnstyled";
 import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
 
 import IconButton from "@mui/material/IconButton";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
@@ -37,10 +38,10 @@ const Post = () => {
   const handleClose = () => setOpen(false);
 
   return (
-    <div>
+    <Box>
       <Card
         elevation={3}
-        style={{ minHeight: 85, marginTop: "5%" }}
+        style={{ height: "100%", marginTop: "5%" }}
         variant="outlined"
       >
         <CardContent style={{ display: "inline-flex", fill: "100%" }}>
@@ -100,7 +101,7 @@ const Post = () => {
           </IconButton>
         </CardActions>
       </Card>
-    </div>
+    </Box>
   );
 };
 

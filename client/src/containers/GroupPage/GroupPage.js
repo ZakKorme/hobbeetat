@@ -27,9 +27,11 @@ const GroupPage = (props) => {
             alignItems="flex-start"
             style={{paddingLeft: "20%"}}
           >
+            
             <Grid item xs={3}>
               <GroupPageLayout/>
             </Grid>
+            
             <Grid item xs>
               <GroupPageBar/>
               <GroupInformation/>

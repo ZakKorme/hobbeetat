@@ -7,6 +7,9 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ListItemButton from "@mui/material/ListItemButton";
 import CalendarIcon from "../CalendarIcon/CalendarIcon";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import Button from "@mui/material/Button";
 
 import { useSelector } from "react-redux";
 import { capitalize } from "../../utils/index";
@@ -23,6 +26,7 @@ const EventMenu = (props) => {
         minWidth: 350,
       }}
     >
+      <Card sx={{width: 330, marginTop: "6%"}}>
       <List
         sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
         component="nav"
@@ -81,8 +85,9 @@ const EventMenu = (props) => {
           </ListItem>
         )}): null
       }
-        <ListItemButton style={{ color: "#0645AD" }}>See All</ListItemButton>
       </List>
+      <CardActions><Button>See All</Button></CardActions>
+      </Card>
     </Box>
   );
 };

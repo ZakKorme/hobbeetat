@@ -50,16 +50,17 @@ const Profile = () => {
           backgroundColor: "#fafafa",
         }}
       >
-        <Grid container>
+        <Grid container >
           <Grid
             container
             item
             direction="row"
-            justifyContent="flex-end"
+            justifyContent="flex-start"
             alignItems="flex-start"
+        
           >
-            <Grid item xs={8}>
-              <Container maxWidth="sm">
+            <Grid item sx={{ marginLeft: "30%"}} xs={4}>
+              <Container maxWidth="sm" >
                 {hobbyState.currentHobby && hobbyState.posts ? (
                 <>
                 <Post></Post>
@@ -74,16 +75,12 @@ const Profile = () => {
               item
               xs={2}
               direction="column"
-              justifyContent="flex-end"
+              justifyContent="flex-start"
               alignItems="flex-start"
             >
-              <Item xs auto zeroMinWidth>
-                <GroupMenu />
-              </Item>
-              <Item xs auto>
-                <EventsMenu />
-              </Item>
-            </Grid>
+              <GroupMenu />              
+              <EventsMenu />
+            </Grid> 
           </Grid>
         </Grid>
       </Box>
