@@ -41,65 +41,64 @@ const Post = () => {
     <Box>
       <Card
         elevation={3}
-        style={{ height: "100%", marginTop: "5%" }}
+        style={{ height: "100%", marginTop: "4%", color: "#585959" }}
         variant="outlined"
       >
-        <CardContent style={{ display: "inline-flex", fill: "100%" }}>
+        <div className="flex space-x-4 p-4 items center">
           <Avatar alt="user profile" src="https://www.fillmurray.com/500/900" />
-          <ButtonUnstyled
-            variant="outlined"
-            className={classes.post}
-            onClick={handleOpen}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-          >
-            Create a post
-          </ButtonUnstyled>
-          <Modal open={open}>
-            <Card sx={style}>
-              <CardHeader
-                title="Create a Post"
-                action={
-                  <IconButton onClick={handleClose}>
-                    <ClearIcon />
-                  </IconButton>
-                }
-              />
-              <CardContent>
-                <TextField
-                  placeholder="What would you like to share?"
-                  multiline
-                  rows={4}
-                  rowsMax={10}
-                  style={{
-                    marginBottom: 20,
-                    minWidth: 350
-                  }}
-                />
-              </CardContent>
-              <CardActions>
-                <Button variant="contained">Post</Button>
-              </CardActions>
-            </Card>
-          </Modal>
-        </CardContent>
-        <CardActions
-          className={classes.cardActions}
-          sx={{ display: { xs: "none", md: "block" } }}
-        >
-          <IconButton style={{ marginLeft: "10%" }}>
+          <div className="flex flex-1">
+            <ButtonUnstyled
+              variant="outlined"
+              className="rounded-full h-12 bg-gray-100 flex-grow px-5 focus:outline-none"
+              onClick={handleOpen}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              Create a post
+            </ButtonUnstyled>
+          </div>
+        </div>
+        <div className="flex justify-evenly p-2 border-t">
+          <div className="flex items-center space-x-1 hover:bg-gray-100 flex-grow justify-center p-1 rounded-xl cursor-pointer">
             <AddPhotoAlternateIcon fontSize="small" />
-            <Typography variant="body2">Photo</Typography>
-          </IconButton>
-          <IconButton style={{ marginLeft: "10%" }}>
+            <p className="text-xs sm:text-sm xl:text-base m-0">Photo</p>
+          </div>
+          <div className="flex items-center space-x-1 hover:bg-gray-100 flex-grow justify-center p-1 rounded-xl cursor-pointer">
             <VideoLibraryIcon fontSize="small" />
-            <Typography variant="body2">Video</Typography>
-          </IconButton>
-          <IconButton style={{ marginLeft: "10%" }}>
+            <p className="text-xs sm:text-sm xl:text-base m-0">Video</p>
+          </div>
+          <div className="flex items-center space-x-1 hover:bg-gray-100 flex-grow justify-center p-1 rounded-xl cursor-pointer">
             <FileCopyIcon fontSize="small" />
-            <Typography variant="body2">Attach File</Typography>
-          </IconButton>
-        </CardActions>
+            <p className="text-xs sm:text-sm xl:text-base m-0">Attach File</p>
+          </div>
+        </div>
+        <Modal open={open}>
+          <Card sx={style}>
+            <CardHeader
+              title="Create a Post"
+              action={
+                <IconButton onClick={handleClose}>
+                  <ClearIcon />
+                </IconButton>
+              }
+            />
+            <CardContent>
+              <TextField
+                placeholder="What would you like to share?"
+                multiline
+                rows={4}
+                rowsMax={10}
+                style={{
+                  marginBottom: 20,
+                  minWidth: 350
+                }}
+              />
+            </CardContent>
+            <CardActions>
+              <Button variant="contained">Post</Button>
+            </CardActions>
+          </Card>
+        </Modal>
       </Card>
     </Box>
   );

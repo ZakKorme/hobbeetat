@@ -1,12 +1,9 @@
 import {
   Card,
   Avatar,
-  Paper,
-  Container,
   CardHeader,
   ButtonGroup,
   IconButton,
-  Button,
   Typography,
   List,
   ListItem,

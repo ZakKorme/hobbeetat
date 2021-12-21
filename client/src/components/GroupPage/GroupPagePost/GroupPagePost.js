@@ -9,7 +9,8 @@ import {
   ListItemAvatar,
   CardContent,
   Divider,
-  CardActions
+  CardActions,
+  ListItemButton
 } from "@mui/material";
 import { useSelector } from "react-redux";
 
@@ -23,7 +24,7 @@ const GroupPagePost = () => {
         <CardContent>
         <Typography variant="h6">Posts</Typography>
           <List>
-            <ListItem alignItems="flex-start">
+            <ListItemButton alignItems="flex-start">
                 <ListItemAvatar>
                     <Avatar alt="post-image" src="https://www.fillmurray.com/500/900"/>
                 </ListItemAvatar>
@@ -40,9 +41,9 @@ const GroupPagePost = () => {
                 >
 
                 </ListItemText>
-            </ListItem>
+            </ListItemButton>
             <Divider variant="inset" component="li" />
-            <ListItem alignItems="flex-start">
+            <ListItemButton alignItems="flex-start">
                 <ListItemAvatar>
                     <Avatar alt="post-image" src="https://www.fillmurray.com/500/900"/>
                 </ListItemAvatar>
@@ -59,9 +60,9 @@ const GroupPagePost = () => {
                 >
 
                 </ListItemText>
-            </ListItem>
+            </ListItemButton>
             <Divider variant="inset" component="li" />
-            <ListItem alignItems="flex-start">
+            <ListItemButton alignItems="flex-start">
                 <ListItemAvatar>
                     <Avatar alt="post-image" src="https://www.fillmurray.com/500/900"/>
                 </ListItemAvatar>
@@ -78,7 +79,7 @@ const GroupPagePost = () => {
                 >
 
                 </ListItemText>
-            </ListItem>
+            </ListItemButton>
           </List>
           </CardContent>
           <CardActions>

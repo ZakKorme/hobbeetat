@@ -1,10 +1,13 @@
-import { Card, CardContent, Typography, Paper } from "@mui/material";
+import { Card, CardContent, Typography, CardHeader } from "@mui/material";
 
-const GroupInformation = () => {
+const GroupInformation = props => {
   return (
-    <Card sx={{ maxHeight: "336px" }}>
+    <Card sx={{ maxHeight: "350px" }}>
+      <CardHeader
+        title={props.title ? props.title : "Group Description"}
+        titleTypographyProps={{ variant: "h6" }}
+      />
       <CardContent>
-        <Typography variant="h6">Group Description</Typography>
         <Typography paragraph={true}>
           <p>
             This is the description of the group. The following paragraph will

@@ -63,7 +63,7 @@ const Profile = () => {
               <Container maxWidth="sm" >
                 {hobbyState.currentHobby && hobbyState.posts ? (
                 <>
-                <Post></Post>
+                <Post/>
                 <Divider style={{ marginTop: "3%", marginBottom: "3%" }} />
                 <Feed />
                 </>
