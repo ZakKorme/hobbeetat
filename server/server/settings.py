@@ -46,8 +46,12 @@ INSTALLED_APPS = [
     'comments',
     'groups',
     'events',
+    'pictures',
+    'documents',
+    'videos',
     'rest_framework',
     'corsheaders',
+    'storages'
 
 ]
 
