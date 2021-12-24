@@ -8,6 +8,7 @@ import GroupPageAboutUs from "../GroupPageSections/GroupPageAboutUs/GroupPageAbo
 import GroupPagePosts from "../GroupPageSections/GroupPagePosts/GroupPagePosts";
 import GroupPageMembers from "../GroupPageSections/GroupPageMembers/GroupPageMembers";
 import GroupPageEvents from "../GroupPageSections/GroupPageEvents/GroupPageEvents";
+import GroupPageResources from "../GroupPageSections/GroupPageResources/GroupPageResources";
 
 const useStyles = makeStyles({
   root: {
@@ -43,6 +44,7 @@ const GroupPageLayout = () => {
   const postSection = <GroupPagePosts />;
   const memberSection = <GroupPageMembers />;
   const eventSection = <GroupPageEvents/>
+  const resourceSection = <GroupPageResources/>
 
   // Renders corresponding component
   const [currentSectionComponent, setCurrentSectionComponent] = useState(
@@ -66,6 +68,9 @@ const GroupPageLayout = () => {
         break;
       case "Events":
         setCurrentSectionComponent(eventSection)
+        break;
+      case "Resources":
+        setCurrentSectionComponent(resourceSection);
         break;
       default:
         setCurrentSectionComponent(null);
