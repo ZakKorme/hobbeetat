@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from hobbies.models import Hobbies
+from groups.models import Group
 
 
 class UserManager(BaseUserManager):
@@ -51,8 +52,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_confirmed = models.BooleanField(default=False)
     date_joined = models.DateTimeField(auto_now_add=True, null=True)
     last_accessed_hobby = models.ForeignKey(
-        Hobbies, null=True, on_delete=models.CASCADE)
-
+        Hobbies, null=True, on_delete=models.SET_NULL)
+    last_accessed_group = models.ForeignKey(
+        Group, null=True, on_delete=models.SET_NULL)
     USERNAME_FIELD = 'email'
     REQUIRED_FILEDS = []
 
@@ -67,3 +69,12 @@ class User_Hobby(models.Model):
 
     def __str__(self):
         return f"{self.user_id} - {self.user_hobbyTitle}"
+
+
+class User_Group(models.Model):
+    user_id = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+    user_groupTitle = models.ForeignKey(
+        Group, null=True, on_delete=models.SET_NULL)
+
+    def __str__(self):
+        return f"{self.user_id} - {self.user_groupTitle}"

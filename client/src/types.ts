@@ -15,3 +15,14 @@ export interface AccountResponse {
   refresh: string;
   hobbies: string[];
 }
+
+export interface GroupResponse {
+  group: {
+    id: string;
+    name: string;
+    description: string;
+    enrollmentStatus: string;
+    hobby: string;
+    groupCreator: string;
+  };
+}

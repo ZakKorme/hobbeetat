@@ -14,10 +14,12 @@ import {
 import storage from "redux-persist/lib/storage";
 import authSlice from "./slices/auth";
 import hobbySlice from "./slices/hobby";
+import groupSlice from "./slices/group";
 
 const rootReducer = combineReducers({
   auth: authSlice.reducer,
-  hobby: hobbySlice.reducer
+  hobby: hobbySlice.reducer,
+  group: groupSlice.reducer
 });
 
 const persistedReducer = persistReducer(

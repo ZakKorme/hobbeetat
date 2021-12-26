@@ -60,7 +60,8 @@ const Sidebar = props => {
     };
     axios
       .put(
-        `http://127.0.0.1:8000/api/v1/auth/users/${authState.account.id}/`,
+        `http://127.0.0.1:8000/api/v1/auth/users/hobby/${authState.account
+          .id}/`,
         {
           last_accessed_hobby: event.target.textContent
         },

@@ -3,7 +3,7 @@ from hobbies.viewsets import HobbiesViewSet
 from posts.viewsets import PostViewSet
 from events.viewsets import EventViewSet
 from documents.viewsets import GroupDocumentViewSet, HobbyDocumentViewSet
-from users.viewsets import UserViewSet
+from users.viewsets import UserViewSet, UserUpdateGroupViewSet, UserUpdateHobbyViewSet
 from groups.viewsets import GroupViewSet
 from videos.viewsets import GroupVideoViewSet, HobbyVideoViewSet
 from pictures.viewsets import GroupPictureViewSet, HobbyPictureViewSet
@@ -36,8 +36,11 @@ router.register(
     r'auth/events/(?P<hobby>[A-Za-z0-9_-]+)', EventViewSet, basename='auth-events')
 router.register(r'auth/events', EventViewSet, basename="auth-all-events")
 
-# UPDATE LAST ACCESSED USER HOBBY
-router.register(r'auth/users', UserViewSet, basename='auth-users')
+# UPDATE LAST ACCESSED USER HOBBY AND GROUP
+router.register(r'auth/users/hobby', UserUpdateHobbyViewSet,
+                basename='auth-users-update-hobby')
+router.register(r'auth/users/group', UserUpdateGroupViewSet,
+                basename='auth-users-update-group')
 
 # USER
 router.register(r'users', UserViewSet, basename='user')

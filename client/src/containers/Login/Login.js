@@ -7,6 +7,7 @@ import { useHistory } from "react-router-dom";
 
 import authSlice from "../../store/slices/auth";
 import hobbySlice from "../../store/slices/hobby";
+import groupSlice from "../../store/slices/group";
 
 const Login = () => {
   const [message, setMessage] = useState("");
@@ -33,16 +34,25 @@ const Login = () => {
           dispatch(
             authSlice.actions.setAccount({
               user: res.data.user,
-              hobbies: res.data.hobbies
+              hobbies: res.data.hobbies,
+              groups: res.data.groups
             })
           );
           let last_hobby = res.data.user["last_accessed_hobby"]["hobby_title"]
             ? res.data.user["last_accessed_hobby"]["hobby_title"]
             : res.data.hobbies[0];
 
+          let last_group = res.data.user["last_accessed_group"]
+            ? res.data.user["last_accessed_group"]["name"]
+            : res.data.groups ? res.data.groups[0] : null;
           dispatch(
             hobbySlice.actions.setHobby({
               hobby: last_hobby
+            })
+          );
+          dispatch(
+            groupSlice.actions.setGroupInfo({
+              info: last_group
             })
           );
           setLoading(false);
