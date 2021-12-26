@@ -11,7 +11,7 @@ from .serializer import VideoSerializer
 
 
 class GroupVideoViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsAuthenticated,)
+
     serializer_class = VideoSerializer
     parser_classes = [parsers.MultiPartParser, parsers.FormParser]
     http_method_names = ['get', 'post', 'patch', 'delete']
@@ -35,7 +35,7 @@ class GroupVideoViewSet(viewsets.ModelViewSet):
 
 
 class HobbyVideoViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsAuthenticated,)
+
     serializer_class = VideoSerializer
     parser_classes = [parsers.MultiPartParser, parsers.FormParser]
     http_method_names = ['get', 'post', 'patch', 'delete']

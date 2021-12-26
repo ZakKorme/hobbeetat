@@ -17,7 +17,11 @@ import {
  Button
 } from "@mui/material";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
+import loadGroup from "../../../utils/loadGroup";
+
+import groupSlice from "../../../store/slices/group";
 
 import IconButton from "@mui/material/IconButton";
 import BellIcon from "@mui/icons-material/Notifications";
@@ -54,8 +58,26 @@ const groups = [
 
 const UserTable = props => {
   const authState = useSelector(state => state.auth);
+  const hobbyState = useSelector(state => state.hobby);
+  const userGroups = authState.groups ? authState.groups:null;
   const topThreeGroups = groups.slice(0,3);
   const history = useHistory();
+  const dispatch = useDispatch();
+
+  const handleGroupSelection = (event) => {
+    try {
+      loadGroup(hobbyState.currentHobby, event.target.outerText, authState.token).then((res) => {
+        dispatch(groupSlice.actions.setGroupResources({pictures: res.groupPictures, videos: res.groupVideos, documents: res.groupDocuments}))
+        // dispatch(groupSlice.actions.setGroup(res.group, res.groupVideos))
+      })
+      
+    } catch (err) {
+      console.log(err)
+    }
+
+    history.push("/home/groups/page")
+  };
+
 
   return (
         <Card elevation={1} style={{
@@ -90,7 +112,7 @@ const UserTable = props => {
                 <div></div>
                 <ListSubheader>Notifications</ListSubheader>
             </Container>
-          {topThreeGroups.map((group,index) => {
+          {userGroups ? (userGroups.map((group,index) => {
             return (
                 <>
                 <Paper elevation={0}>
@@ -113,12 +135,13 @@ const UserTable = props => {
                 >
                   <ListItemAvatar>
                     <Avatar>
-                      {group.groupName[0]}
+                      {group.name[0]}
                     </Avatar>
                   </ListItemAvatar>
-                  <ListItemButton style={{ marginRight: "30%", paddingLeft: "1%"}}  alignItems={"center"} dense={true} onClick={() => history.push("/home/groups/page")}>
+                  <ListItemButton style={{ marginRight: "30%", paddingLeft: "1%"}}  alignItems={"center"} dense={true} onClick={handleGroupSelection}>
                   <ListItemText
-                    primary={group.groupName}
+                    primary={group.name}
+                    
                   />
                   </ListItemButton>
                 </ListItem>
@@ -127,7 +150,7 @@ const UserTable = props => {
                 {(topThreeGroups.length - 1) === index ? null:<Divider/>}
                 </>
             )
-          })}
+          })): <div>You have not joined a group.</div>}
           </List>
       </Box>
       <CardActions>

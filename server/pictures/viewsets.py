@@ -11,7 +11,7 @@ from .serializer import PictureSerializer
 
 
 class GroupPictureViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsAuthenticated,)
+
     serializer_class = PictureSerializer
     parser_classes = [parsers.MultiPartParser, parsers.FormParser]
     http_method_names = ['get', 'post', 'patch', 'delete']
@@ -35,7 +35,7 @@ class GroupPictureViewSet(viewsets.ModelViewSet):
 
 
 class HobbyPictureViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsAuthenticated,)
+
     serializer_class = PictureSerializer
     parser_classes = [parsers.MultiPartParser, parsers.FormParser]
     http_method_names = ['get', 'post', 'patch', 'delete']

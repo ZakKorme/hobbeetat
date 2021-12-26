@@ -11,7 +11,7 @@ from .serializer import DocumentSerializer
 
 
 class GroupDocumentViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsAuthenticated,)
+
     serializer_class = DocumentSerializer
     parser_classes = [parsers.MultiPartParser, parsers.FormParser]
     http_method_names = ['get', 'post', 'patch', 'delete']
@@ -35,7 +35,7 @@ class GroupDocumentViewSet(viewsets.ModelViewSet):
 
 
 class HobbyDocumentViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsAuthenticated,)
+
     serializer_class = DocumentSerializer
     parser_classes = [parsers.MultiPartParser, parsers.FormParser]
     http_method_names = ['get', 'post', 'patch', 'delete']

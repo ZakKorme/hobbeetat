@@ -35,10 +35,15 @@ const groupSlice = createSlice({
     },
     setGroupResources(
       state: State,
-      action: PayloadAction<{ pictures: Array<object>; videos: Array<object> }>
+      action: PayloadAction<{
+        pictures: Array<object>;
+        videos: Array<object>;
+        documents: Array<object>;
+      }>
     ) {
       state.pictures = action.payload.pictures;
       state.videos = action.payload.videos;
+      state.documents = action.payload.documents;
     },
     clearGroup(state: State) {
       state.info = null;
