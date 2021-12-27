@@ -1,7 +1,8 @@
+from django.db.models import base
 from auth_users.viewsets import LoginViewSet, RefreshViewSet, RegistrationViewSet, EmailConfirmationViewSet
 from hobbies.viewsets import HobbiesViewSet
-from posts.viewsets import PostViewSet
-from events.viewsets import EventViewSet
+from posts.viewsets import HobbyPostViewSet, GroupPostViewSet
+from events.viewsets import HobbyEventViewSet, GroupEventViewSet
 from documents.viewsets import GroupDocumentViewSet, HobbyDocumentViewSet
 from users.viewsets import UserViewSet, UserUpdateGroupViewSet, UserUpdateHobbyViewSet
 from groups.viewsets import GroupViewSet
@@ -20,12 +21,6 @@ router.register(r'auth/register', RegistrationViewSet,
                 basename='auth-register')
 router.register(r'auth/refresh', RefreshViewSet, basename='auth-refresh')
 
-# POSTS
-router.register(
-    r'auth/posts/(?P<hobby>[A-Za-z0-9_-]+)', PostViewSet, basename="auth-posts")
-router.register(r'auth/posts', PostViewSet,
-                basename="auth-get-all-posts")
-
 # GROUPS
 router.register(
     r'auth/groups/(?P<hobby>[A-Za-z0-9_-]+)', GroupViewSet, basename='auth-groups')
@@ -33,8 +28,9 @@ router.register(r'auth/groups', GroupViewSet, basename="auth-all-groups")
 
 # EVENTS
 router.register(
-    r'auth/events/(?P<hobby>[A-Za-z0-9_-]+)', EventViewSet, basename='auth-events')
-router.register(r'auth/events', EventViewSet, basename="auth-all-events")
+    r'auth/events/hobby', HobbyEventViewSet, basename='auth-hobby-events')
+router.register(r'auth/events/groups', GroupEventViewSet,
+                basename="auth-group-events")
 
 # UPDATE LAST ACCESSED USER HOBBY AND GROUP
 router.register(r'auth/users/hobby', UserUpdateHobbyViewSet,
@@ -44,6 +40,14 @@ router.register(r'auth/users/group', UserUpdateGroupViewSet,
 
 # USER
 router.register(r'users', UserViewSet, basename='user')
+
+
+# POSTS
+router.register(r'auth/posts/hobby', HobbyPostViewSet,
+                basename="auth-hobby-posts")
+router.register(r'auth/posts/groups', GroupPostViewSet,
+                basename="auth-group-posts")
+
 
 # EMAIL CONFIRMATION
 router.register(r'^email-confirmation/(?P<uidb64>[A-Za-z0-9_-]+)/(?P<token>[A-Za-z0-9_-]+)',
