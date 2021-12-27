@@ -15,6 +15,7 @@ import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import authSlice from "../../store/slices/auth";
 import hobbySlice from "../../store/slices/hobby";
+import groupSlice from "../../store/slices/group";
 
 // Material UI Icons
 import MenuIcon from "@mui/icons-material/Menu";
@@ -42,6 +43,7 @@ const Navbar = (props) => {
   const handleLogout = () => {
     dispatch(authSlice.actions.logout());
     dispatch(hobbySlice.actions.clearHobby())
+    dispatch(groupSlice.actions.clearGroup())
     history.push("/login");
   };
 

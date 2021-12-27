@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -21,6 +22,7 @@ import VideoLibraryIcon from "@mui/icons-material/VideoLibrary";
 import LinkIcon from "@mui/icons-material/Link";
 import IosShareIcon from '@mui/icons-material/IosShare';
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { capitalize } from "../../../../../utils/index";
 
 function createData(name, modified, size, owner, members) {
   return { name, modified, size, owner, members };
@@ -68,7 +70,28 @@ const ResourceTable = props => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [view, setView] = useState(false);
   const isMenuOpen = Boolean(anchorEl);
+  const groupSlice = useSelector(state => state.group)
+  const groupPictures = groupSlice.pictures
+  const groupVideos = groupSlice.videos
+  const groupDocuments = groupSlice.documents
 
+  // Depending on the type returned, we'll render the corresponding resource
+  let renderResource;
+  
+  switch(props.type) {
+    case "Photos":
+      renderResource = groupPictures
+      break;
+    case "Videos":
+      renderResource = groupVideos
+      break;
+    case "Documents":
+      renderResource = groupDocuments
+      break;
+    default:
+      renderResource = groupDocuments
+  }
+  
   const handleProfileMenuOpen = event => {
     setAnchorEl(event.currentTarget);
   };
@@ -138,13 +161,14 @@ const ResourceTable = props => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map(row =>
+          {renderResource.map(row =>
             <TableRow
               key={row.name}
               className="hover:bg-gray-100"
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
-              <TableCell component="th" scope="row">
+              <TableCell component="th" scope="row" >
+                <div className="flex flex-row justify-between">
                 {props.type === "Documents"
                   ? <DocumentIcon className="text-blue-600 pr-1" />
                   : props.type === "Photos"
@@ -154,25 +178,36 @@ const ResourceTable = props => {
                       : props.type === "Links"
                         ? <LinkIcon className="text-green-400 pr-1" />
                         : null}
-                <p className="inline-flex font-bold font m-0">
+                <p className="font-bold font m-0">
                   {row.name}
                 </p>
+                </div>
               </TableCell>
               <TableCell align="right">
-                <p className="font-bold font m-0">
-                  {row.modified}
+                <div className="flex flex-row justify-between">
+                
+                <p className="whitespace-nowrap font-bold font m-0">
+                  {row["modified_on"].split("T")[0]}
                 </p>
+
+                </div>
                 <p className="text-gray-400 pr-3 m-0">By Me</p>
+                
               </TableCell>
               <TableCell align="right">
                 <p className="font-bold m-0">
-                  {row.size}
+                  0.98MB
                 </p>
               </TableCell>
               <TableCell align="right">
+                <div className="flex space-x-1 ml-2">
                 <p className="font-bold m-0">
-                  {row.owner}
+                  {`${capitalize(row.author["first_name"])} `}
                 </p>
+                <p className="font-bold m-0">
+                {`${capitalize(row.author['last_name'])}`}
+                </p>
+                </div>
               </TableCell>
               <TableCell align="right">
                 <AvatarGroup max={3}>
