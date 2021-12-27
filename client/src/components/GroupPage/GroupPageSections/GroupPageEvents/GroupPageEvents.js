@@ -12,56 +12,57 @@ import {
   ListItemButton,
   IconButton
 } from "@mui/material";
+import { useSelector } from "react-redux";
 import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
 import SelectedEvent from "./SelectedEvent/SelectedEvent";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
-const events = [
-  {
-    title: "Chess Study Group",
-    date: "2021-12-21",
-    startTime: "18:00",
-    description: "This is the description for the first event.",
-    location: "Washington, DC",
-    address: "717 Devonshire rd, Takoma Park MD 21144",
-    eventImg: "https://picsum.photos/200/200/",
-    eventCreator: "Zak Korme",
-    price: 0
-  },
-  {
-    title: "Chess Study Group",
-    date: "2021-12-21",
-    startTime: "18:00",
-    description: "This is the description for the first event.",
-    location: "Washington, DC",
-    address: "717 Devonshire rd, Takoma Park MD 21144",
-    eventImg: "https://picsum.photos/200/200/",
-    eventCreator: "Zak Korme",
-    price: 0
-  },
-  {
-    title: "Chess Study Group",
-    date: "2021-12-21",
-    startTime: "18:00",
-    description: "This is the description for the first event.",
-    location: "Washington, DC",
-    address: "717 Devonshire rd, Takoma Park MD 21144",
-    eventImg: "https://picsum.photos/200/200/",
-    eventCreator: "Zak Korme",
-    price: 0
-  },
-  {
-    title: "Chess Study Group",
-    date: "2021-12-21",
-    startTime: "18:00",
-    description: "This is the description for the first event.",
-    location: "Washington, DC",
-    address: "717 Devonshire rd, Takoma Park MD 21144",
-    eventImg: "https://picsum.photos/200/200/",
-    eventCreator: "Zak Korme",
-    price: 0
-  }
-];
+// const events = [
+//   {
+//     title: "Chess Study Group",
+//     date: "2021-12-21",
+//     startTime: "18:00",
+//     description: "This is the description for the first event.",
+//     location: "Washington, DC",
+//     address: "717 Devonshire rd, Takoma Park MD 21144",
+//     eventImg: "https://picsum.photos/200/200/",
+//     eventCreator: "Zak Korme",
+//     price: 0
+//   },
+//   {
+//     title: "Chess Study Group",
+//     date: "2021-12-21",
+//     startTime: "18:00",
+//     description: "This is the description for the first event.",
+//     location: "Washington, DC",
+//     address: "717 Devonshire rd, Takoma Park MD 21144",
+//     eventImg: "https://picsum.photos/200/200/",
+//     eventCreator: "Zak Korme",
+//     price: 0
+//   },
+//   {
+//     title: "Chess Study Group",
+//     date: "2021-12-21",
+//     startTime: "18:00",
+//     description: "This is the description for the first event.",
+//     location: "Washington, DC",
+//     address: "717 Devonshire rd, Takoma Park MD 21144",
+//     eventImg: "https://picsum.photos/200/200/",
+//     eventCreator: "Zak Korme",
+//     price: 0
+//   },
+//   {
+//     title: "Chess Study Group",
+//     date: "2021-12-21",
+//     startTime: "18:00",
+//     description: "This is the description for the first event.",
+//     location: "Washington, DC",
+//     address: "717 Devonshire rd, Takoma Park MD 21144",
+//     eventImg: ,
+//     eventCreator: "Zak Korme",
+//     price: 0
+//   }
+// ];
 
 const monthList = {
   Jan: 1,
@@ -79,6 +80,8 @@ const monthList = {
 };
 
 const GroupPageEvents = () => {
+  const groupState = useSelector(state => state.group);
+  const groupEvents = groupState.events;
   const [eventSelected, setEventSelected] = useState(null);
 
   const handleEventSelection = event => {
@@ -92,7 +95,7 @@ const GroupPageEvents = () => {
   const eventListComponent = (
     <CardContent>
       <List>
-        {events.map((event, index) => {
+        {groupEvents.map((event, index) => {
           let day = event.date.split("-")[2];
           let monthNum = event.date.split("-")[1];
           let monthName = Object.keys(monthList).find(
@@ -132,7 +135,7 @@ const GroupPageEvents = () => {
                       {event.title}
                     </Typography>
                     <Typography variant="body2">
-                      {`Mon - ${event.startTime} PM`}
+                      {`Mon - ${event["start_time"]} PM`}
                     </Typography>
                     <Typography variant="body2">
                       {event.location}
@@ -145,7 +148,10 @@ const GroupPageEvents = () => {
                       flexDirection: "flex-end"
                     }}
                   >
-                    <img alt="event img" src={event.eventImg} />
+                    <img
+                      alt="event img"
+                      src={"https://picsum.photos/200/200/"}
+                    />
                   </div>
                 </div>
               </ListItemButton>

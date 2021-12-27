@@ -57,8 +57,8 @@ import { capitalize } from "../../utils/index";
 
 const Feed = (props) => {
   const hobbyState = useSelector((state => state.hobby));
-  const posts = hobbyState.posts
-
+  const posts = props.groupPosts ? props.groupPosts:hobbyState.posts
+  
   const [commentSelected, setCommentSelected] = useState(null);
   return (
     <>

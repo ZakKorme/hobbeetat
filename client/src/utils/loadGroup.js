@@ -6,8 +6,8 @@ const loadGroup = async (hobby, group, token) => {
   let groupPictures;
   let groupVideos;
   let groupDocuments;
-  // let groupPosts;
-  // let groupevents;
+  let groupPosts;
+  let groupEvents;
 
   const config = {
     headers: {
@@ -38,10 +38,30 @@ const loadGroup = async (hobby, group, token) => {
         config
       )
       .then(res => res.data);
+    groupPosts = await axios
+      .get(
+        `${process.env
+          .REACT_APP_API_URL}/auth/posts/groups/?hobby=${formattedHobby}&group=${formattedGroup}`,
+        config
+      )
+      .then(res => res.data);
+    groupEvents = await axios
+      .get(
+        `${process.env
+          .REACT_APP_API_URL}/auth/events/groups/?hobby=${formattedHobby}&group=${formattedGroup}`,
+        config
+      )
+      .then(res => res.data);
   } catch (err) {
     console.log(err);
   }
-  return { groupPictures, groupVideos, groupDocuments };
+  return {
+    groupPictures,
+    groupVideos,
+    groupDocuments,
+    groupPosts,
+    groupEvents
+  };
 };
 
 export default loadGroup;

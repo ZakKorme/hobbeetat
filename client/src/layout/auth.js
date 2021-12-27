@@ -31,7 +31,7 @@ const Auth = (props) => {
       }
     }
     // Get Posts 
-    axios.get(`http://127.0.0.1:8000/api/v1/auth/posts/${currentHobby}`, config).then((res) => {
+    axios.get(`http://127.0.0.1:8000/api/v1/auth/posts/hobby?hobby=${currentHobby}`, config).then((res) => {
       dispatch(hobbySlice.actions.setHobbyPosts({
         posts: res.data
       }));
@@ -43,7 +43,7 @@ const Auth = (props) => {
       }));
     }).catch((err) => console.error(err))
     // Get Events
-    axios.get(`http://127.0.0.1:8000/api/v1/auth/events/${currentHobby}`, config).then((res) => {
+    axios.get(`http://127.0.0.1:8000/api/v1/auth/events/hobby?hobby=${currentHobby}`, config).then((res) => {
       dispatch(hobbySlice.actions.setHobbyEvents({
         events: res.data,
       }));

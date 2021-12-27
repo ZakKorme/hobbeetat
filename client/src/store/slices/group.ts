@@ -39,11 +39,15 @@ const groupSlice = createSlice({
         pictures: Array<object>;
         videos: Array<object>;
         documents: Array<object>;
+        posts: Array<object>;
+        events: Array<object>;
       }>
     ) {
       state.pictures = action.payload.pictures;
       state.videos = action.payload.videos;
       state.documents = action.payload.documents;
+      state.posts = action.payload.posts;
+      state.events = action.payload.events;
     },
     clearGroup(state: State) {
       state.info = null;
