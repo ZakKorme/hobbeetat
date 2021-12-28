@@ -18,14 +18,15 @@ import { useSelector } from "react-redux";
 const GroupPagePost = () => {
     const groupState = useSelector(state => state.group);
     const posts = groupState.posts
-    const topThreePost = posts.slice(0,3);
+    const topThreePosts = posts ? posts.slice(0,3): null
+    
     return (
       <>
       <Card sx={{ marginTop: "2%"}}>
         <CardContent>
         <Typography variant="h6">Posts</Typography>
           <List>
-      {topThreePost.map((post, index) => {
+      {topThreePosts ? topThreePosts.map((post, index) => {
           return(
           <>
             <ListItemButton alignItems="flex-start">
@@ -45,11 +46,11 @@ const GroupPagePost = () => {
                 >
                 </ListItemText>
             </ListItemButton>
-            {index === topThreePost.length - 1 ? null:<Divider variant="inset" component="li" />}
+            {index === topThreePosts - 1 ? null:<Divider variant="inset" component="li" />}
             </>
             
             )
-      })}
+      }): null}
       </List>
           </CardContent>
           <CardActions>

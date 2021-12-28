@@ -5,14 +5,19 @@ import {
   CardContent,
   Divider,
   Tabs,
-  Tab
+  Tab,
+  Button,
+  Modal
 } from "@mui/material";
 import ResourceTable from "./ResourceTable/ResourceTable";
+import AddResource from "./AddResource/AddResource";
 
 import DocumentIcon from "@mui/icons-material/Article";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import VideoLibraryIcon from "@mui/icons-material/VideoLibrary";
 import LinkIcon from "@mui/icons-material/Link";
+import UploadIcon from "@mui/icons-material/Upload";
+import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
 
 const GroupPageResources = () => {
   const [notesAndDocuments, setNotesAndDocuments] = useState(false);
@@ -20,6 +25,11 @@ const GroupPageResources = () => {
   const [videos, setVideos] = useState(false);
   const [links, setLinks] = useState(false);
   const [value, setValue] = useState(0);
+  const [upload, setUpload] = useState(false);
+
+  
+  
+
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -38,11 +48,29 @@ const GroupPageResources = () => {
     setLinks(!links);
   };
 
+  const handleUpload = () => {
+    setUpload(!upload)
+  };
+
+  const AddResourceModal = (
+    <Modal open={upload}>
+          <AddResource handleClose={handleUpload}/>
+        </Modal>
+  )
   return (
     <Card>
-      <CardHeader title="Resources" titleTypographyProps={{ variant: "h6" }} />
+      <CardHeader
+        title="Resources"
+        titleTypographyProps={{ variant: "h6" }}
+        action={
+          <Button startIcon={<UploadIcon />} onClick={handleUpload}>
+            Upload
+          </Button>
+        }
+      />
       <Divider />
-
+      {upload ? AddResourceModal : (
+      <>
       <Tabs value={value} onChange={handleChange} centered>
         <Tab icon={<DocumentIcon />} label="Documents" iconPosition="start" />
         <Tab
@@ -59,6 +87,8 @@ const GroupPageResources = () => {
         {value === 2 ? <ResourceTable type="Videos" /> : null}
         {value === 3 ? <ResourceTable type="Links" /> : null}
       </CardContent>
+      </>
+      )}
     </Card>
 
     // <Card>

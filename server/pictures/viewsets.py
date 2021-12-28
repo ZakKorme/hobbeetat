@@ -2,6 +2,8 @@ from rest_framework.response import Response
 from rest_framework import viewsets, parsers, status
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from groups.models import Group
+from users.models import User
+import json
 
 from hobbies.models import Hobbies
 from .models import Picture
@@ -32,6 +34,26 @@ class GroupPictureViewSet(viewsets.ModelViewSet):
 
         else:
             return Picture.objects.all()
+
+    def create(self, *args, **kwargs):
+        body_unicode = self.request.body.decode('utf-8')
+        body = json.loads(body_unicode)
+        hobby_name = body['hobby']
+        group_name = body['is_group']
+        author_id = body['author']
+        name = body['name']
+        link = body['link']
+
+        if hobby_name and group_name:
+            hobby_obj = Hobbies.objects.filter(hobby_title=hobby_name).first()
+            group_obj = Group.objects.get(
+                hobby=hobby_obj, name=group_name)
+            author_obj = User.objects.get(id=author_id)
+
+            if hobby_obj and group_obj and author_obj:
+                new_picture = Picture.objects.create(
+                    name=name, link=link, author=author_obj, hobby=hobby_obj, is_group=group_obj)
+                return Response({"success": "Picture has been created"}, status=status.HTTP_201_CREATED)
 
 
 class HobbyPictureViewSet(viewsets.ModelViewSet):

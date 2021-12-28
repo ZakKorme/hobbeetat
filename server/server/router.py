@@ -15,7 +15,6 @@ router = SimpleRouter()
 
 
 # AUTHENTICATION
-
 router.register(r'auth/login', LoginViewSet, basename='auth-login')
 router.register(r'auth/register', RegistrationViewSet,
                 basename='auth-register')
