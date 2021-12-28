@@ -16,6 +16,7 @@ class Group(models.Model):
     hobby = models.ForeignKey(Hobbies, null=True, on_delete=CASCADE)
     group_creator = models.ForeignKey(
         "users.User", null=True, on_delete=models.SET_NULL)
+    img = models.FileField(null=True, blank=True)
 
     def __str__(self):
         return f"{self.name} - {self.hobby}: {self.enrollment_status}"

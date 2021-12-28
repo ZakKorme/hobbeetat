@@ -1,7 +1,8 @@
 from django.db import models
-from django.db.models.deletion import CASCADE
+from django.db.models.deletion import CASCADE, SET_NULL
 from hobbies.models import Hobbies
 from groups.models import Group
+from users.models import User
 # Create your models here.
 
 
@@ -12,9 +13,15 @@ class Event(models.Model):
     start_time = models.TimeField()
     end_time = models.TimeField()
     location = models.CharField(max_length=80)
+    address = models.CharField(max_length=80, blank=True, null=True)
     hobby = models.ForeignKey(Hobbies, null=True, on_delete=CASCADE)
     group = models.ForeignKey(
         Group, blank=True, null=True, on_delete=CASCADE, db_column="group")
+    event_creator = models.ForeignKey(
+        User, blank=True, null=True, on_delete=SET_NULL)
+    price = models.DecimalField(null=True, max_digits=6, decimal_places=2)
+    img = models.FileField(null=True, blank=True)
+    link = models.URLField(max_length=200, null=True, blank=True)
 
     def __str__(self):
         return f"{self.hobby} - {self.title}"
