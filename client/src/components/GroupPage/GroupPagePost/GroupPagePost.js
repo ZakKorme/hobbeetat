@@ -16,71 +16,41 @@ import { useSelector } from "react-redux";
 
 
 const GroupPagePost = () => {
-    const hobbyState = useSelector((state => state.hobby));
-  const posts = hobbyState.posts
-  return (
+    const groupState = useSelector(state => state.group);
+    const posts = groupState.posts
+    const topThreePost = posts.slice(0,3);
+    return (
       <>
       <Card sx={{ marginTop: "2%"}}>
         <CardContent>
         <Typography variant="h6">Posts</Typography>
           <List>
+      {topThreePost.map((post, index) => {
+          return(
+          <>
             <ListItemButton alignItems="flex-start">
                 <ListItemAvatar>
                     <Avatar alt="post-image" src="https://www.fillmurray.com/500/900"/>
                 </ListItemAvatar>
                 <ListItemText
-                primary="This will be the post title"
+                primary={post.title}
                 secondary={
                     <>
                     <Typography sx={{ display: "inline"}} component="span" variant="body2" color="text.primary">
-                        Zak Korme
+                        {`${post.author['first_name']} ${post.author['last_name']}`}
                     </Typography>
-                    {" - This will be the truncated text..."}
+                    {` - ${post.content.slice(0,40)}...`}
                     </>
                 }
                 >
-
                 </ListItemText>
             </ListItemButton>
-            <Divider variant="inset" component="li" />
-            <ListItemButton alignItems="flex-start">
-                <ListItemAvatar>
-                    <Avatar alt="post-image" src="https://www.fillmurray.com/500/900"/>
-                </ListItemAvatar>
-                <ListItemText
-                primary="This will be the post title"
-                secondary={
-                    <>
-                    <Typography sx={{ display: "inline"}} component="span" variant="body2" color="text.primary">
-                        Zak Korme
-                    </Typography>
-                    {" - This will be the truncated text..."}
-                    </>
-                }
-                >
-
-                </ListItemText>
-            </ListItemButton>
-            <Divider variant="inset" component="li" />
-            <ListItemButton alignItems="flex-start">
-                <ListItemAvatar>
-                    <Avatar alt="post-image" src="https://www.fillmurray.com/500/900"/>
-                </ListItemAvatar>
-                <ListItemText
-                primary="This will be the post title"
-                secondary={
-                    <>
-                    <Typography sx={{ display: "inline"}} component="span" variant="body2" color="text.primary">
-                        Zak Korme
-                    </Typography>
-                    {" - This will be the truncated text..."}
-                    </>
-                }
-                >
-
-                </ListItemText>
-            </ListItemButton>
-          </List>
+            {index === topThreePost.length - 1 ? null:<Divider variant="inset" component="li" />}
+            </>
+            
+            )
+      })}
+      </List>
           </CardContent>
           <CardActions>
               <Button size="small">See All</Button>

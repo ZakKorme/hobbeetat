@@ -66,7 +66,7 @@ const Feed = (props) => {
         // Returns the details of the author
         return (
           // <Card key={index} style={{ marginBottom: "2%" }}>
-            <div className="flex flex-col">
+            <div className="flex flex-col" key={index}>
               <div className="p-5 bg-white mt-4 rounded-t-2xl shadow-sm">
                 <div className="flex items-center space-x-2">
                 <Avatar

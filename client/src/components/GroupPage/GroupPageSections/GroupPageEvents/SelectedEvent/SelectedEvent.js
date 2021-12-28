@@ -54,7 +54,7 @@ const SelectedEvent = props => {
       <div style={{ display: "flex", width: "100%" }}>
         <CardMedia
           component="img"
-          image={props.event.eventImg}
+          image={props.event.img}
           alt="event-img"
           sx={{
             height: "40%",
@@ -94,7 +94,10 @@ const SelectedEvent = props => {
           </ListItem>
           <ListItem>
             <Typography>
-              <PersonIcon /> {props.event.eventCreator}
+              <PersonIcon />{" "}
+              {`${props.event["event_creator"]["first_name"]} ${props.event[
+                "event_creator"
+              ]["last_name"]}`}
             </Typography>
           </ListItem>
           <ListItem>

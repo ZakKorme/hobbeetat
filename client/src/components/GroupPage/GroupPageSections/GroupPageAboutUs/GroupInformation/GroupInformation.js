@@ -1,6 +1,9 @@
 import { Card, CardContent, Typography, CardHeader } from "@mui/material";
+import { useSelector } from "react-redux";
 
 const GroupInformation = props => {
+  const groupState = useSelector(state => state.group);
+  const groupDescription = groupState.info.description;
   return (
     <Card sx={{ maxHeight: "350px" }}>
       <CardHeader
@@ -10,20 +13,7 @@ const GroupInformation = props => {
       <CardContent>
         <Typography paragraph={true}>
           <p>
-            This is the description of the group. The following paragraph will
-            highlight the objects and purpose of the group. This is the
-            description of the group. The following paragraph will highlight the
-            objects and purpose of the group. This is the description of the
-            group. The following paragraph will highlight the objects and
-            purpose of the group. This is the description of the group.
-          </p>
-          <p>
-            This is the description of the group. The following paragraph will
-            highlight the objects and purpose of the group. This is the
-            description of the group. The following paragraph will highlight the
-            objects and purpose of the group. This is the description of the
-            group. The following paragraph will highlight the objects and
-            purpose of the group. This is the description of the group.
+            {groupDescription}
           </p>
         </Typography>
       </CardContent>
