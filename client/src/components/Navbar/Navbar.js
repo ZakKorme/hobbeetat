@@ -10,6 +10,7 @@ import Menu from "@mui/material/Menu";
 import Divider from "@mui/material/Divider";
 import Sidebar from "../Sidebar/Sidebar";
 import Search from "../Search/Search";
+import NotesSideBar from "../NotesSideBar/NotesSideBar";
 
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -27,11 +28,13 @@ import Avatar from "@mui/material/Avatar";
 import Settings from "@mui/icons-material/SettingsOutlined";
 import Logout from "@mui/icons-material/Logout";
 import Icon from "@mui/material/Icon";
+import EditIcon from '@mui/icons-material/Edit';
 
 
 const Navbar = (props) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [open, setOpen] = useState(false);
+  const [notes, setNotes] = useState(false);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
 
   const isMenuOpen = Boolean(anchorEl);
@@ -70,6 +73,11 @@ const Navbar = (props) => {
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
+
+  const handleNotes = () => {
+    setNotes(!notes);
+    console.log("Notes have changed")
+  }
 
   const menuId = "menu-appbar";
   const renderMenu = (
@@ -141,6 +149,14 @@ const Navbar = (props) => {
           </Badge>
         </IconButton>
         <p>Notifications</p>
+      </MenuItem>
+      <MenuItem>
+        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
+          <Badge >
+            <EditIcon />
+          </Badge>
+        </IconButton>
+        <p>Notes</p>
       </MenuItem>
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
@@ -235,6 +251,16 @@ const Navbar = (props) => {
               </IconButton>
               <IconButton
                 size="large"
+                aria-label="show 17 new notifications"
+                color="inherit"
+                onClick={handleNotes}
+              >
+                <Badge color="primary">
+                  <EditIcon />
+                </Badge>
+              </IconButton>
+              <IconButton
+                size="large"
                 edge="end"
                 aria-label="account of current user"
                 aria-controls={menuId}
@@ -264,7 +290,9 @@ const Navbar = (props) => {
         </AppBar>
         {renderMobileMenu}
         {renderMenu}
+        
       </Box>
+      <Box>{notes ? <NotesSideBar open={notes} close={handleNotes}/>:null}</Box>
     </>
   );
 };

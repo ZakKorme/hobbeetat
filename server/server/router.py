@@ -4,6 +4,7 @@ from hobbies.viewsets import HobbiesViewSet
 from posts.viewsets import HobbyPostViewSet, GroupPostViewSet
 from events.viewsets import HobbyEventViewSet, GroupEventViewSet
 from documents.viewsets import GroupDocumentViewSet, HobbyDocumentViewSet
+from notes.viewsets import NoteViewSet
 from users.viewsets import UserViewSet, UserUpdateGroupViewSet, UserUpdateHobbyViewSet
 from groups.viewsets import GroupViewSet
 from videos.viewsets import GroupVideoViewSet, HobbyVideoViewSet
@@ -70,6 +71,10 @@ router.register(r'auth/documents/groups', GroupDocumentViewSet,
                 basename="auth-groups-documents")
 router.register(r'auth/documents/hobby', HobbyDocumentViewSet,
                 basename="auth-hobby-documents")
+
+# NOTES
+router.register(r'auth/notes', NoteViewSet, basename="auth-notes")
+
 
 urlpatterns = [
     *router.urls
