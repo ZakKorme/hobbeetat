@@ -12,6 +12,7 @@ import GroupPage from "../containers/GroupPage/GroupPage";
 
 import axios from "axios";
 import hobbySlice from "../store/slices/hobby";
+import noteSlice from "../store/slices/notes";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 
@@ -47,7 +48,15 @@ const Auth = (props) => {
       dispatch(hobbySlice.actions.setHobbyEvents({
         events: res.data,
       }));
-    }).catch((err) => console.error(err))
+    }).catch((err) => console.error(err));
+    // Get Notes
+    axios.get(`http://127.0.0.1:8000/api/v1/auth/notes?hobby=${currentHobby}&user=${authState.account.id}`, config).then((res) => {
+    console.log(res.data)  
+    dispatch(noteSlice.actions.setNotes({
+        notes: res.data,
+      }));
+    }).catch((err) => console.error(err));
+    console.log("After axios");
   }, [dispatch, authState, currentHobby])
   return (
     <>

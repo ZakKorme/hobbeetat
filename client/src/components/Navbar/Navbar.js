@@ -17,6 +17,7 @@ import { useHistory } from "react-router-dom";
 import authSlice from "../../store/slices/auth";
 import hobbySlice from "../../store/slices/hobby";
 import groupSlice from "../../store/slices/group";
+import noteSlice from "../../store/slices/notes";
 
 // Material UI Icons
 import MenuIcon from "@mui/icons-material/Menu";
@@ -47,6 +48,7 @@ const Navbar = (props) => {
     dispatch(authSlice.actions.logout());
     dispatch(hobbySlice.actions.clearHobby())
     dispatch(groupSlice.actions.clearGroup())
+    dispatch(noteSlice.actions.clearNotes())
     history.push("/login");
   };
 

@@ -13,6 +13,7 @@ import {
   CardContent,
   Grid
 } from "@mui/material";
+import { useSelector } from "react-redux";
 
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import SearchIcon from "@mui/icons-material/Search";
@@ -21,6 +22,7 @@ import LockIcon from "@mui/icons-material/Lock";
 import Interpunct from "react-interpunct";
 
 const GroupPage = () => {
+  const groupState = useSelector(state => state.group);
   return (
     <Grid container>
       <Grid
@@ -79,7 +81,7 @@ const GroupPage = () => {
               </ButtonGroup>
             </CardContent>
             <Typography align="center" style={{ fontWeight: "bold" }}>
-              Chess Club
+              {groupState.info.name}
             </Typography>
             <Typography
               align="center "

@@ -64,11 +64,11 @@ const UserTable = props => {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const handleGroupSelection = (event) => {
+  const handleGroupSelection = (group) => {
     try {
-      loadGroup(hobbyState.currentHobby, event.target.outerText, authState.token).then((res) => {
+      loadGroup(hobbyState.currentHobby, group.name, authState.token).then((res) => {
+        dispatch(groupSlice.actions.setGroupInfo({ info: group}))
         dispatch(groupSlice.actions.setGroupResources({pictures: res.groupPictures, videos: res.groupVideos, documents: res.groupDocuments, posts: res.groupPosts, events: res.groupEvents}))
-        // dispatch(groupSlice.actions.setGroup(res.group, res.groupVideos))
       })
       
     } catch (err) {
@@ -138,7 +138,7 @@ const UserTable = props => {
                       {group.name[0]}
                     </Avatar>
                   </ListItemAvatar>
-                  <ListItemButton style={{ marginRight: "30%", paddingLeft: "1%"}}  alignItems={"center"} dense={true} onClick={handleGroupSelection}>
+                  <ListItemButton style={{ marginRight: "30%", paddingLeft: "1%"}}  alignItems={"center"} dense={true} onClick={() => handleGroupSelection(group)}>
                   <ListItemText
                     primary={group.name}
                     
