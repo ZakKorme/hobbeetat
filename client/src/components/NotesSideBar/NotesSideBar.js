@@ -1,5 +1,7 @@
-import { useState } from "react";
-import { useTheme, styled } from "@mui/material/styles";
+import { React, useState, useEffect } from "react";
+import { styled } from "@mui/material/styles";
+import { useSelector, useDispatch } from "react-redux";
+import axios from "axios";
 import {
   Button,
   Drawer,
@@ -7,7 +9,8 @@ import {
   IconButton,
   List,
   ListItemButton,
-  ListItemText
+  ListItemText,
+  Typography
 } from "@mui/material";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -15,8 +18,11 @@ import "react-quill/dist/quill.snow.css";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import EditableTextField from "./EditableTextField/EditableTextField";
+import DeleteIcon from "@mui/icons-material/Delete";
 
-const drawerWidth = 350;
+import noteSlice from "../../store/slices/notes";
+
+const drawerWidth = 400;
 
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
@@ -27,68 +33,147 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   justifyContent: "flex-start"
 }));
 
-const defaultNotes = [
-  {
-    title: "Note 1",
-    value: "This is the text of the first note",
-    html:
-      "<p>fdafdfafdafa</p><p><br></p><p>fdasfds</p><p><br></p><p>fdafdafadfas</p>"
-  },
-  {
-    title: "Note 2",
-    value: "This is the text of the second note",
-    html:
-      "<p>fdafdfafdafa</p><p><br></p><p>fdasfds</p><p><br></p><p>fdafdafadfas</p>"
-  },
-  {
-    title: "Note 3",
-    value: "This is the text of the third note",
-    html:
-      "<p>fdafdfafdafa</p><p><br></p><p>fdasfds</p><p><br></p><p>fdafdafadfas</p>"
-  },
-  {
-    title: "Note 4",
-    value: "This is the text of the forth note",
-    html:
-      "<p>fdafdfafdafa</p><p><br></p><p>fdasfds</p><p><br></p><p>fdafdafadfas</p>"
-  }
-];
-
 const NotesSideBar = props => {
-  const theme = useTheme();
   const [open, setOpen] = useState(props.open);
+  const [originalSelectedNote, setOriginalSelectedNote] = useState(null);
+  const [originalSelectedTitle, setOriginalSelectedTitle] = useState(null);
   const [selectedNote, setSelectedNote] = useState(null);
   const [selectedNoteTitle, setSelectedNoteTitle] = useState(null);
   const [value, setValue] = useState("");
-  const [notes, setNotes] = useState(defaultNotes);
 
+  const authState = useSelector(state => state.auth);
+  const hobbyState = useSelector(state => state.hobby);
+  const noteState = useSelector(state => state.note);
+  const [notes, setNotes] = useState(noteState.notes ? noteState.notes : null);
+
+  const dispatch = useDispatch();
+
+  const sortByCreatedDate = notes => {
+    notes.sort((a, b) => {
+      return new Date(a["created_on"]) - new Date(b["created_on"]);
+    });
+    return notes;
+  };
   const handleDrawerClose = () => {
     props.close();
   };
 
+  const handleTitleChange = event => {
+    setSelectedNoteTitle(event.target.value);
+  };
+
   const handleSelectedNote = note => {
-    console.log(note);
     setSelectedNote(note);
+    setOriginalSelectedNote(note);
     setSelectedNoteTitle(note.title);
+    setOriginalSelectedTitle(note.title);
     setValue(note.html);
+  };
+
+  const handleChangeNote = () => {
+    // Updating note if our values or title changes
+    if (
+      originalSelectedTitle !== selectedNoteTitle ||
+      originalSelectedNote.html !== value
+    ) {
+      // Notes without modified note
+      console.log(notes);
+      let noteList = notes.filter(note => note.id !== originalSelectedNote.id);
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${authState.token}`
+        }
+      };
+      axios
+        .put(
+          `${process.env
+            .REACT_APP_API_URL}/auth/notes/${originalSelectedNote.id}/`,
+          {
+            title: selectedNoteTitle,
+            html: value
+          },
+          config
+        )
+        .then(res => {
+          let updatedNoteList = sortByCreatedDate([...noteList, res.data[0]]);
+          dispatch(
+            noteSlice.actions.setNotes({
+              notes: updatedNoteList
+            })
+          );
+        })
+        .catch(err => console.log(err));
+    }
+
+    handleClearNote();
   };
 
   const handleClearNote = () => {
     setSelectedNote(null);
+    setOriginalSelectedNote(null);
     setSelectedNoteTitle(null);
+    setOriginalSelectedTitle(null);
     setValue(null);
   };
 
   const handleNewNote = () => {
-    setNotes([
-      ...notes,
-      {
-        title: "New Note",
-        value: "",
-        html: ""
+    const config = {
+      headers: {
+        Authorization: `Bearer ${authState.token}`
       }
-    ]);
+    };
+
+    axios
+      .post(
+        `${process.env.REACT_APP_API_URL}/auth/notes/`,
+        {
+          hobby: hobbyState.currentHobby,
+          user: authState.account.id,
+          title: "New Note",
+          html: ""
+        },
+        config
+      )
+      .then(res => {
+        let newNoteList = sortByCreatedDate([...noteState.notes, res.data]);
+        dispatch(
+          noteSlice.actions.setNotes({
+            notes: newNoteList
+          })
+        );
+      })
+      .catch(err => console.log(err));
   };
+
+  const handleDeleteNote = () => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${authState.token}`
+      }
+    };
+
+    const removedNoteList = sortByCreatedDate(
+      noteState.notes.filter(note => note.id !== selectedNote.id)
+    );
+    axios
+      .delete(
+        `${process.env.REACT_APP_API_URL}/auth/notes/${selectedNote.id}`,
+        config
+      )
+      .then(res => {
+        dispatch(
+          noteSlice.actions.setNotes({
+            notes: removedNoteList
+          })
+        );
+
+        handleClearNote();
+      })
+      .catch(err => console.log(err));
+  };
+
+  useEffect(() => {}, [notes, noteState]);
   return (
     <Drawer
       sx={{
@@ -107,19 +192,30 @@ const NotesSideBar = props => {
       <div />
       <DrawerHeader>
         <IconButton>
-          {selectedNoteTitle
-            ? <ChevronLeftIcon onClick={handleClearNote} />
+          {originalSelectedTitle
+            ? <ChevronLeftIcon onClick={handleChangeNote} />
             : <ChevronRightIcon onClick={handleDrawerClose} />}
         </IconButton>
         <div />
-        {selectedNoteTitle
+        {originalSelectedNote
           ? <div
+              className="flex justify-between"
               styles={{
-                fontFamily: "sans-serif",
-                textAlign: "center"
+                fontFamily: "sans-serif"
               }}
             >
-              <EditableTextField value={selectedNoteTitle} />
+              <div>
+                <EditableTextField
+                  value={selectedNoteTitle}
+                  change={handleTitleChange}
+                />
+              </div>
+              <div />
+              <div className="pt-4 pl-20">
+                <IconButton aria-label="delete" onClick={handleDeleteNote}>
+                  <DeleteIcon />
+                </IconButton>
+              </div>
             </div>
           : <Button onClick={handleNewNote}>NEW NOTE</Button>}
       </DrawerHeader>
@@ -128,25 +224,58 @@ const NotesSideBar = props => {
         ? <ReactQuill
             theme="snow"
             defaultValue={value}
+            style={{
+              height: 250
+            }}
             value={value}
             onChange={value => {
-              console.log(value);
               return setValue(value);
             }}
           />
         : <List>
-            {notes
-              ? notes.map((note, index) => {
+            {noteState.notes
+              ? noteState.notes.map((note, index) => {
                   let selectedNote = note;
+                  let secondaryText;
+                  let modifiedDate = new Date(note["modified_on"])
+
+                  // Format text and remove html tags
+                  if (note.html.length > 40) {
+                    secondaryText = `${note.html
+                      .replace(/<\/?[^>]+(>|$)/g, "")
+                      .slice(0, 20)}...`;
+                  } else {
+                    secondaryText = note.html.replace(/<\/?[^>]+(>|$)/g, "");
+                  }
                   return (
+                    <>
                     <ListItemButton
                       onClick={() => handleSelectedNote(selectedNote)}
                     >
                       <ListItemText
-                        primary={note.title}
-                        secondary={note.value}
+                        primary={
+                          <strong>
+                            {selectedNote.title}
+                            </strong>}
+                        secondary={
+                          <>
+                            <Typography
+                              sx={{ display: "inline" }}
+                              component="span"
+                              variant="body2"
+                              color="text.secondary"
+                            >
+                              
+                              {`${modifiedDate.getMonth()+1}/${modifiedDate.getDate()}/${modifiedDate.getFullYear()}`}
+                            </Typography>
+                            <br/>
+                            {secondaryText}
+                          </>
+                        }
                       />
                     </ListItemButton>
+                    {index === notes.length - 1 ? null: <Divider/>}
+                    </>
                   );
                 })
               : null}

@@ -14,5 +14,8 @@ class Note(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     modified_on = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        ordering = ['created_on']
+
     def __str__(self):
         return f"{self.title} - {self.hobby}"

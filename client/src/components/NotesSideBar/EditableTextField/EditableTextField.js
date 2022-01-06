@@ -40,9 +40,7 @@ const EditableTextField = props => {
   const classes = styles();
   const value = props.value;
 
-  const handleChange = event => {
-    setNoteTitle(event.target.value);
-  };
+  const handleChange = props.change;
 
   const handleMouseOver = event => {
     if (!mouseOver) {
@@ -68,7 +66,7 @@ const EditableTextField = props => {
         variant="standard"
         defaultValue={value}
         margin="normal"
-        error={value === ""}
+        // error={value === ""}
         onChange={handleChange}
         disabled={!editMode}
         className={classes.textField}

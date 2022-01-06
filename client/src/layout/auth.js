@@ -51,17 +51,15 @@ const Auth = (props) => {
     }).catch((err) => console.error(err));
     // Get Notes
     axios.get(`http://127.0.0.1:8000/api/v1/auth/notes?hobby=${currentHobby}&user=${authState.account.id}`, config).then((res) => {
-    console.log(res.data)  
     dispatch(noteSlice.actions.setNotes({
         notes: res.data,
       }));
     }).catch((err) => console.error(err));
-    console.log("After axios");
   }, [dispatch, authState, currentHobby])
   return (
     <>
       <Navbar />
-      <Box >
+      <Box>
         <Switch>
           <ProtectedRoute exact path="/home/groups/page" component={GroupPage} />
           <ProtectedRoute exact path="/home/groups" component={Groups} />

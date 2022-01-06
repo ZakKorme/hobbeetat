@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework import viewsets, status
+from rest_framework import serializers, viewsets, status
 from rest_framework.response import Response
 from hobbies.models import Hobbies
 from users.models import User
@@ -40,9 +40,10 @@ class NoteViewSet(viewsets.ModelViewSet):
             user_obj = User.objects.get(pk=user_id)
 
             if hobby_obj and user_obj:
-                new_note = Note.objects.create(
-                    hobby=hobby_obj, user=user_obj, title=title, html=html)
-                return Response({"success": "Note has been created"}, status=status.HTTP_201_CREATED)
+                serializer = self.get_serializer(Note.objects.create(
+                    hobby=hobby_obj, user=user_obj, title=title, html=html))
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+
         return Response({"error": "Note has not been created"}, status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, *args, **kwargs):
@@ -53,6 +54,11 @@ class NoteViewSet(viewsets.ModelViewSet):
         note_id = self.kwargs['pk']
 
         if note_id:
-            updated_note = Note.objects.filter(id=note_id).update(
+            filtered_note = Note.objects.filter(id=note_id)
+            updated_note = filtered_note.update(
                 title=title, html=html)
-            return Response({"success": "Note has been updated"}, status=status.HTTP_200_OK)
+            serializer = NoteSerializer(filtered_note, many=True)
+
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        return Response({"error": "Note has not been updated"}, status=status.HTTP_400_BAD_REQUEST)
