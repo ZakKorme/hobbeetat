@@ -67,8 +67,17 @@ const UserTable = props => {
   const handleGroupSelection = (group) => {
     try {
       loadGroup(hobbyState.currentHobby, group.name, authState.token).then((res) => {
+        //Set group info 
         dispatch(groupSlice.actions.setGroupInfo({ info: group}))
-        dispatch(groupSlice.actions.setGroupResources({pictures: res.groupPictures, videos: res.groupVideos, documents: res.groupDocuments, posts: res.groupPosts, events: res.groupEvents}))
+        //Set group resources
+        dispatch(groupSlice.actions.setGroupResources({
+          pictures: res.groupPictures, 
+          videos: res.groupVideos, 
+          documents: res.groupDocuments, 
+          posts: res.groupPosts, 
+          events: res.groupEvents, 
+          links: res.groupLinks
+        }))
       })
       
     } catch (err) {

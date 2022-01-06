@@ -24,47 +24,6 @@ import IosShareIcon from '@mui/icons-material/IosShare';
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { capitalize } from "../../../../../utils/index";
 
-function createData(name, modified, size, owner, members) {
-  return { name, modified, size, owner, members };
-}
-
-const rows = [
-  createData(
-    "Google Doc",
-    "2 min ago",
-    "0.98 MB",
-    "Me",
-    "Zak Korme, Michael Scott"
-  ),
-  createData(
-    "Google Doc",
-    "2 min ago",
-    "0.98 MB",
-    "Me",
-    "Zak Korme, Michael Scott"
-  ),
-  createData(
-    "Google Doc",
-    "2 min ago",
-    "0.98 MB",
-    "Me",
-    "Zak Korme, Michael Scott"
-  ),
-  createData(
-    "Google Doc",
-    "2 min ago",
-    "0.98 MB",
-    "Me",
-    "Zak Korme, Michael Scott"
-  ),
-  createData(
-    "Google Doc",
-    "2 min ago",
-    "0.98 MB",
-    "Me",
-    "Zak Korme, Michael Scott"
-  )
-];
 
 const ResourceTable = props => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -74,6 +33,7 @@ const ResourceTable = props => {
   const groupPictures = groupSlice.pictures
   const groupVideos = groupSlice.videos
   const groupDocuments = groupSlice.documents
+  const groupLinks = groupSlice.links
 
   // Depending on the type returned, we'll render the corresponding resource
   let renderResource;
@@ -89,7 +49,7 @@ const ResourceTable = props => {
       renderResource = groupDocuments
       break;
     default:
-      renderResource = groupDocuments
+      renderResource = groupLinks
   }
   
   const handleProfileMenuOpen = event => {
@@ -168,7 +128,7 @@ const ResourceTable = props => {
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row" >
-                <div className="flex flex-row justify-between">
+                <div className="flex flex-row">
                 {props.type === "Documents"
                   ? <DocumentIcon className="text-blue-600 pr-1" />
                   : props.type === "Photos"
@@ -178,7 +138,7 @@ const ResourceTable = props => {
                       : props.type === "Links"
                         ? <LinkIcon className="text-green-400 pr-1" />
                         : null}
-                <p className="font-bold font m-0">
+                <p className="inline-flex font-bold font">
                   {row.name}
                 </p>
                 </div>

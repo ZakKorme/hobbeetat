@@ -9,6 +9,7 @@ from users.viewsets import UserViewSet, UserUpdateGroupViewSet, UserUpdateHobbyV
 from groups.viewsets import GroupViewSet
 from videos.viewsets import GroupVideoViewSet, HobbyVideoViewSet
 from pictures.viewsets import GroupPictureViewSet, HobbyPictureViewSet
+from links.viewsets import GroupLinkViewSet, HobbyLinkViewSet
 from rest_framework.routers import SimpleRouter
 
 
@@ -71,6 +72,11 @@ router.register(r'auth/documents/groups', GroupDocumentViewSet,
                 basename="auth-groups-documents")
 router.register(r'auth/documents/hobby', HobbyDocumentViewSet,
                 basename="auth-hobby-documents")
+# LINK - GROUP + HOBBY
+router.register(r'auth/links/groups', GroupLinkViewSet,
+                basename="auth-groups-links")
+router.register(r'auth/links/hobby', HobbyLinkViewSet,
+                basename="auth-hobby-links")
 
 # NOTES
 router.register(r'auth/notes', NoteViewSet, basename="auth-notes")

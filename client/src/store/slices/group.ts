@@ -8,6 +8,7 @@ type State = {
   pictures: Array<object> | null;
   videos: Array<object> | null;
   documents: Array<object> | null;
+  links: Array<object> | null;
 };
 
 const initialState: State = {
@@ -16,7 +17,8 @@ const initialState: State = {
   events: null,
   pictures: null,
   videos: null,
-  documents: null
+  documents: null,
+  links: null
 };
 
 const groupSlice = createSlice({
@@ -41,6 +43,7 @@ const groupSlice = createSlice({
         documents: Array<object>;
         posts: Array<object>;
         events: Array<object>;
+        links: Array<object>;
       }>
     ) {
       state.pictures = action.payload.pictures;
@@ -48,6 +51,7 @@ const groupSlice = createSlice({
       state.documents = action.payload.documents;
       state.posts = action.payload.posts;
       state.events = action.payload.events;
+      state.links = action.payload.links;
     },
     clearGroup(state: State) {
       state.info = null;
@@ -56,6 +60,7 @@ const groupSlice = createSlice({
       state.pictures = null;
       state.videos = null;
       state.documents = null;
+      state.links = null;
     }
   }
 });

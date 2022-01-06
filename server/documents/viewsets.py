@@ -28,8 +28,8 @@ class GroupDocumentViewSet(viewsets.ModelViewSet):
                 name=group_name, hobby=hobby_obj).first()
 
             if hobby_obj and group_obj:
-                results = Document.objects.filter(
-                    is_group=group_obj)
+                results = Document.objects.filter(hobby=hobby_obj,
+                                                  is_group=group_obj)
                 return results
 
         else:

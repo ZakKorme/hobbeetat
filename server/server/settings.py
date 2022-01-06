@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'documents',
     'videos',
     'notes',
+    'links',
     'rest_framework',
     'corsheaders',
     'storages'
