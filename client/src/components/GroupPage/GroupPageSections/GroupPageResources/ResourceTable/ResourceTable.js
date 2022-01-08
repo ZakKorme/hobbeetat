@@ -1,11 +1,15 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import FileViewer from "react-file-viewer";
+import { Document, Page } from  "react-pdf/dist/esm/entry.webpack";
+import useFileDownloader from "../../../../../hooks/useFileDownloader";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import CardMedia from '@mui/material/CardMedia';
 import Avatar from "@mui/material/Avatar";
 import AvatarGroup from "@mui/material/AvatarGroup";
 import IconButton from "@mui/material/IconButton";
@@ -14,6 +18,7 @@ import MenuItem from "@mui/material/MenuItem";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import EditIcon from '@mui/icons-material/Edit';
 import DownloadIcon from '@mui/icons-material/Download';
+
 
 
 import DocumentIcon from "@mui/icons-material/Article";
@@ -28,12 +33,22 @@ import { capitalize } from "../../../../../utils/index";
 const ResourceTable = props => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [view, setView] = useState(false);
+  const [selectedResource, setSelectedResource] = useState(null);
+  const [numPages, setNumPages] = useState(null);
+  const [pageNumber, setPageNumber] = useState(1);
   const isMenuOpen = Boolean(anchorEl);
   const groupSlice = useSelector(state => state.group)
   const groupPictures = groupSlice.pictures
   const groupVideos = groupSlice.videos
   const groupDocuments = groupSlice.documents
   const groupLinks = groupSlice.links
+
+
+
+  // File Downloading
+  const [downloadFile, downloaderComponentUI] = useFileDownloader()
+  const download = file => downloadFile(file)
+
 
   // Depending on the type returned, we'll render the corresponding resource
   let renderResource;
@@ -51,6 +66,10 @@ const ResourceTable = props => {
     default:
       renderResource = groupLinks
   }
+
+  const handleResource = (resource) => {
+    setSelectedResource(resource);
+  }
   
   const handleProfileMenuOpen = event => {
     setAnchorEl(event.currentTarget);
@@ -64,6 +83,96 @@ const ResourceTable = props => {
     handleMenuClose();
     setView(!view);
   };
+
+  const onDocumentLoadSuccess = ({ numPages }) => {
+    setNumPages(numPages)
+  }
+  const changePage = (offset) => {
+    setPageNumber(prevPageNumber => prevPageNumber + offset);
+  }
+
+  const previousPage = () => {
+    changePage(-1);
+  }
+
+  const nextPage = () => {
+    changePage(1);
+  }
+  const ViewComponent = () => {
+    // Remove query items within the link
+    let resource = selectedResource ? selectedResource.link:null;
+    let resourceType = null;
+    let resourceViewer;
+    switch(props.type) {
+        case "Photos":
+          resourceType = "png"
+          resourceViewer = (
+            <div style={{ display: "flex", width: "100%" }}>
+              <CardMedia
+                component="img"
+                image={resource}
+                alt="event-img"
+                sx={{
+                  height: "40%",
+                  width: "40%"
+                }}
+              />
+            </div>
+          )
+          break;
+        case "Videos":
+          resourceType = "mp4"
+          resourceViewer = <FileViewer fileType={resourceType} filePath={resource}/>
+          break;
+        case "Documents":
+          resourceType = "pdf"
+          resourceViewer = (
+          <>
+          <Document
+        file={resource}
+        onLoadSuccess={onDocumentLoadSuccess}
+      >
+        <Page pageNumber={pageNumber} />
+      </Document>
+      <div>
+        <p>
+          Page {pageNumber || (numPages ? 1 : '--')} of {numPages || '--'}
+        </p>
+        <div class="inline-flex">
+          <button 
+            class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l"
+            type="button"
+            disabled={pageNumber <= 1}
+            onClick={previousPage} >
+              Previous
+          </button>
+          <button 
+            class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r" 
+            type="button"
+            disabled={pageNumber >= numPages}
+            onClick={nextPage}>
+              Next
+          </button>
+        </div>
+      </div>
+          </>
+          );
+          break;
+        default:
+          resourceViewer = (
+            <div>
+              <p>Visit:</p>
+              <p>{resource}</p>
+            </div>
+          )
+      }
+    
+    return(
+      <div>
+          {resourceViewer}
+      </div>
+    )
+  }
 
   const menuId = "menu-appbar";
   const renderMenu = (
@@ -92,14 +201,14 @@ const ResourceTable = props => {
         Share
       </MenuItem>
       <MenuItem><EditIcon className="pr-1"/>Edit</MenuItem>
-      <MenuItem onClick={handleMenuClose}><DownloadIcon className="pr-1"/>Download</MenuItem>
+      <MenuItem onClick={() => download(selectedResource)}><DownloadIcon className="pr-1"/>Download</MenuItem>
       
       
     </Menu>
   );
   return (
     <>
-    {view ? <div>This is a view</div>: (
+    {view ? <ViewComponent resource={renderResource}/>: (
     <TableContainer>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
@@ -196,7 +305,7 @@ const ResourceTable = props => {
                 </AvatarGroup>
               </TableCell>
               <TableCell align="right">
-                <IconButton>
+                <IconButton onClick={() => handleResource(row)}>
                   <MoreVertIcon onClick={handleProfileMenuOpen}/>
                 </IconButton>
               </TableCell>
@@ -208,6 +317,7 @@ const ResourceTable = props => {
     </TableContainer>
     )}
     {renderMenu}
+    {downloaderComponentUI}
     </>
   );
 };
