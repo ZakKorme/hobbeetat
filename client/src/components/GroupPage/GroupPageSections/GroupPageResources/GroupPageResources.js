@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import {
   Card,
   CardHeader,
@@ -17,7 +18,7 @@ import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import VideoLibraryIcon from "@mui/icons-material/VideoLibrary";
 import LinkIcon from "@mui/icons-material/Link";
 import UploadIcon from "@mui/icons-material/Upload";
-import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
+
 
 const GroupPageResources = () => {
   const [notesAndDocuments, setNotesAndDocuments] = useState(false);
@@ -28,7 +29,8 @@ const GroupPageResources = () => {
   const [upload, setUpload] = useState(false);
 
   
-  
+  const authState = useSelector(state => state.auth)
+  const groupState = useSelector(state => state.group)
 
 
   const handleChange = (event, newValue) => {
@@ -63,9 +65,10 @@ const GroupPageResources = () => {
         title="Resources"
         titleTypographyProps={{ variant: "h6" }}
         action={
-          <Button startIcon={<UploadIcon />} onClick={handleUpload}>
+          authState.account.id === groupState.info['group_creator'] ?
+          (<Button startIcon={<UploadIcon />} onClick={handleUpload}>
             Upload
-          </Button>
+          </Button>):null
         }
       />
       <Divider />
