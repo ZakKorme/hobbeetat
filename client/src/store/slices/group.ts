@@ -53,6 +53,12 @@ const groupSlice = createSlice({
       state.events = action.payload.events;
       state.links = action.payload.links;
     },
+    setGroupEvent(
+      state: State,
+      action: PayloadAction<{ events: Array<object> }>
+    ) {
+      state.events = action.payload.events;
+    },
     clearGroup(state: State) {
       state.info = null;
       state.posts = null;

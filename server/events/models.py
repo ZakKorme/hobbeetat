@@ -12,8 +12,10 @@ class Event(models.Model):
     date = models.DateField()
     start_time = models.TimeField()
     end_time = models.TimeField()
-    location = models.CharField(max_length=80)
     address = models.CharField(max_length=80, blank=True, null=True)
+    state = models.CharField(max_length=80, null=True)
+    city = models.CharField(max_length=80, null=True)
+    zip = models.IntegerField(null=True)
     hobby = models.ForeignKey(Hobbies, null=True, on_delete=CASCADE)
     group = models.ForeignKey(
         Group, blank=True, null=True, on_delete=CASCADE, db_column="group")
@@ -22,6 +24,10 @@ class Event(models.Model):
     price = models.DecimalField(null=True, max_digits=6, decimal_places=2)
     img = models.FileField(null=True, blank=True)
     link = models.URLField(max_length=200, null=True, blank=True)
+    is_online = models.BooleanField(null=False, blank=False)
+
+    class Meta:
+        ordering = ['-date']
 
     def __str__(self):
         return f"{self.hobby} - {self.title}"

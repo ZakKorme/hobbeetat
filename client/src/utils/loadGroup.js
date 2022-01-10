@@ -49,7 +49,7 @@ const loadGroup = async (hobby, group, token) => {
     groupEvents = await axios
       .get(
         `${process.env
-          .REACT_APP_API_URL}/auth/events/groups/?hobby=${formattedHobby}&group=${formattedGroup}`,
+          .REACT_APP_API_URL}/auth/events/groups?hobby=${formattedHobby}&group=${formattedGroup}`,
         config
       )
       .then(res => res.data);

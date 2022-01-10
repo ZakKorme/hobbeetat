@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Card,
   CardHeader,
@@ -10,59 +10,15 @@ import {
   List,
   ListItem,
   ListItemButton,
-  IconButton
+  IconButton,
+  Modal
 } from "@mui/material";
+import CreateEvent from "./CreateEvent/CreateEvent";
 import { useSelector } from "react-redux";
 import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
 import SelectedEvent from "./SelectedEvent/SelectedEvent";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-
-// const events = [
-//   {
-//     title: "Chess Study Group",
-//     date: "2021-12-21",
-//     startTime: "18:00",
-//     description: "This is the description for the first event.",
-//     location: "Washington, DC",
-//     address: "717 Devonshire rd, Takoma Park MD 21144",
-//     eventImg: "https://picsum.photos/200/200/",
-//     eventCreator: "Zak Korme",
-//     price: 0
-//   },
-//   {
-//     title: "Chess Study Group",
-//     date: "2021-12-21",
-//     startTime: "18:00",
-//     description: "This is the description for the first event.",
-//     location: "Washington, DC",
-//     address: "717 Devonshire rd, Takoma Park MD 21144",
-//     eventImg: "https://picsum.photos/200/200/",
-//     eventCreator: "Zak Korme",
-//     price: 0
-//   },
-//   {
-//     title: "Chess Study Group",
-//     date: "2021-12-21",
-//     startTime: "18:00",
-//     description: "This is the description for the first event.",
-//     location: "Washington, DC",
-//     address: "717 Devonshire rd, Takoma Park MD 21144",
-//     eventImg: "https://picsum.photos/200/200/",
-//     eventCreator: "Zak Korme",
-//     price: 0
-//   },
-//   {
-//     title: "Chess Study Group",
-//     date: "2021-12-21",
-//     startTime: "18:00",
-//     description: "This is the description for the first event.",
-//     location: "Washington, DC",
-//     address: "717 Devonshire rd, Takoma Park MD 21144",
-//     eventImg: ,
-//     eventCreator: "Zak Korme",
-//     price: 0
-//   }
-// ];
+import useSelection from "antd/lib/table/hooks/useSelection";
 
 const monthList = {
   Jan: 1,
@@ -80,9 +36,13 @@ const monthList = {
 };
 
 const GroupPageEvents = () => {
+  const authState = useSelector(state => state.auth);
   const groupState = useSelector(state => state.group);
   const groupEvents = groupState.events;
+  const user = authState.account;
+  const groupCreator = groupState.info["group_creator"];
   const [eventSelected, setEventSelected] = useState(null);
+  const [createEvent, setCreateEvent] = useState(false);
 
   const handleEventSelection = event => {
     setEventSelected(event);
@@ -92,6 +52,11 @@ const GroupPageEvents = () => {
     setEventSelected(null);
   };
 
+  const handleCreateEvent = () => {
+    setCreateEvent(!createEvent);
+  };
+
+  useEffect(() => {}, [groupState.events]);
   const eventListComponent = (
     <CardContent>
       <List>
@@ -101,6 +66,8 @@ const GroupPageEvents = () => {
           let monthName = Object.keys(monthList).find(
             month => Number(monthNum) === monthList[month]
           );
+          let beforeMidDay =
+            event["start_time"].split(":")[0] >= 12 ? "PM" : "AM";
           return (
             <ListItem key={index}>
               <div>
@@ -135,10 +102,10 @@ const GroupPageEvents = () => {
                       {event.title}
                     </Typography>
                     <Typography variant="body2">
-                      {`Mon - ${event["start_time"]} PM`}
+                      {`Mon - ${event["start_time"]} ${beforeMidDay}`}
                     </Typography>
                     <Typography variant="body2">
-                      {event.location}
+                      {`${event.city}, ${event.state}`}
                     </Typography>
                   </div>
                   <div
@@ -218,6 +185,18 @@ const GroupPageEvents = () => {
                 >
                   This Month
                 </Button>
+                {user.id === groupCreator
+                  ? <Button
+                      style={{
+                        borderRadius: "14px",
+                        JustifyContent: "spaceAround",
+                        fontSize: "11px"
+                      }}
+                      onClick={handleCreateEvent}
+                    >
+                      Create Event
+                    </Button>
+                  : null}
               </ButtonGroup>
         }
       />
@@ -226,6 +205,9 @@ const GroupPageEvents = () => {
       {eventSelected
         ? <SelectedEvent event={eventSelected} />
         : eventListComponent}
+      <Modal open={createEvent}>
+        <CreateEvent handleClose={handleCreateEvent} />
+      </Modal>
     </Card>
   );
 };

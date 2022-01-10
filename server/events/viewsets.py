@@ -1,4 +1,4 @@
-from rest_framework import viewsets, status
+from rest_framework import viewsets, status, parsers
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from .models import Event
@@ -6,10 +6,12 @@ from hobbies.models import Hobbies
 from .serializer import EventSerializer
 from users.models import User
 from groups.models import Group
+import json
 
 
 class HobbyEventViewSet(viewsets.ModelViewSet):
     serializer_class = EventSerializer
+    parser_classes = [parsers.MultiPartParser, parsers.FormParser]
     permission_classes = (IsAuthenticated,)
     http_method_names = ['get', 'post', 'put', 'delete']
 
@@ -26,20 +28,32 @@ class HobbyEventViewSet(viewsets.ModelViewSet):
                 return Event.objects.all()
 
     def create(self, request, *args, **kwargs):
-        hobby_name = self.request.GET.get('hobby')
-        title = self.request.data['title']
-        description = self.request.data['description']
-        date = self.request.data['date']
-        start_time = self.request.data['start_time']
-        end_time = self.request.data['end_time']
-        location = self.request.data['location']
-        group_specific = self.request.data['group_specific']
+        body_unicode = self.request.body.decode('utf-8')
+        body = json.loads(body_unicode)
+
+        hobby_name = body['hobby']
+        title = body['title']
+        description = body['description']
+        date = body['date']
+        start_time = body['startTime']
+        end_time = body['endTime']
+        address = body['address']
+        city = body['city']
+        state = body['state']
+        zip = body['zip']
+        is_online = body['isOnline']
+        event_creator = body['eventCreator']
+        price = body['price']
+        img = body['img']
+        link = body['link']
 
         if hobby_name:
             hobby_obj = Hobbies.objects.get(
                 hobby_title=hobby_name.capitalize())
+            user_obj = User.objects.filter(id=event_creator).first()
             new_event = Event.objects.create(
-                title=title, description=description, date=date, start_time=start_time, end_time=end_time, location=location, hobby=hobby_obj, group_specific=group_specific)
+                title=title, description=description, date=date, start_time=start_time, end_time=end_time, address=address, 
+                hobby=hobby_obj, city=city, zip=zip, state=state, is_online=is_online, event_creator=user_obj, price=price, img=img, link=link)
             new_event.save()
             return Response({"success": "Event has been created"}, status=status.HTTP_201_CREATED)
 
@@ -65,6 +79,7 @@ class HobbyEventViewSet(viewsets.ModelViewSet):
 
 class GroupEventViewSet(viewsets.ModelViewSet):
     serializer_class = EventSerializer
+    parser_classes = [parsers.MultiPartParser, parsers.FormParser]
     permission_classes = (IsAuthenticated,)
     http_method_names = ['get', 'post', 'put', 'delete']
 
@@ -84,20 +99,34 @@ class GroupEventViewSet(viewsets.ModelViewSet):
                 return Event.objects.all()
 
     def create(self, request, *args, **kwargs):
-        hobby_name = self.request.GET.get('hobby')
-        title = self.request.data['title']
-        description = self.request.data['description']
-        date = self.request.data['date']
-        start_time = self.request.data['start_time']
-        end_time = self.request.data['end_time']
-        location = self.request.data['location']
-        group = self.request.data['group']
+        body_unicode = self.request.body.decode('utf-8')
+        body = json.loads(body_unicode)
+
+        hobby_name = body['hobby']
+        title = body['title']
+        description = body['description']
+        date = body['date']
+        start_time = body['startTime']
+        end_time = body['endTime']
+        address = body['address']
+        city = body['city']
+        state = body['state']
+        zip = body['zip']
+        is_online = body['isOnline']
+        group = body['group']
+        event_creator = body['eventCreator']
+        price = body['price']
+        img = body['img']
+        link = body['link']
 
         if hobby_name:
             hobby_obj = Hobbies.objects.get(
                 hobby_title=hobby_name)
+            group_obj = Group.objects.filter(hobby=hobby_obj).get(name=group)
+            user_obj = User.objects.filter(id=event_creator).first()
             new_event = Event.objects.create(
-                title=title, description=description, date=date, start_time=start_time, end_time=end_time, location=location, hobby=hobby_obj, group=group)
+                title=title, description=description, date=date, start_time=start_time, end_time=end_time, address=address, hobby=hobby_obj,
+                group=group_obj, city=city, zip=zip, state=state, is_online=is_online, event_creator=user_obj, price=price, img=img, link=link)
             new_event.save()
             return Response({"success": "Event has been created"}, status=status.HTTP_201_CREATED)
 

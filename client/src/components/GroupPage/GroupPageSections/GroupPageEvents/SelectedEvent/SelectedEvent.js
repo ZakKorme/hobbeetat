@@ -81,7 +81,7 @@ const SelectedEvent = props => {
           </ListItem>
           <ListItem>
             <Typography>
-              <LocationOnIcon /> {props.event.location}
+              <LocationOnIcon /> {`${props.event.city}, ${props.event.state}`}
             </Typography>
           </ListItem>
           <ListItem>
@@ -115,9 +115,6 @@ const SelectedEvent = props => {
           </ListItem>
           <ListItem>
             <Typography>
-              {props.event.description}
-              {props.event.description}
-              {props.event.description}
               {props.event.description}
             </Typography>
           </ListItem>

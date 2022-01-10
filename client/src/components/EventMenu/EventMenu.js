@@ -38,28 +38,6 @@ const EventMenu = (props) => {
         }
       >
         {
-        // [
-        //   {
-        //     event: "Monthly Meetup",
-        //     location: "Washington D.C.",
-        //     month: "Jan",
-        //     date: "19",
-        //   },
-
-        //   {
-        //     event: "Monthly Meetup",
-        //     location: "New York",
-        //     month: "Jan",
-        //     date: "21",
-        //   },
-
-        //   {
-        //     event: "Monthly Meetup",
-        //     location: "Toronto",
-        //     month: "Feb",
-        //     date: "2",
-        //   },
-        // ]
         events ? events
         .map((event, index) => {
           const month = event.date.split("-")[1];
@@ -77,7 +55,7 @@ const EventMenu = (props) => {
                 secondary={
                   <>
                     <LocationOnIcon fontSize="4px" color="black" />
-                    {event.location}
+                    {`${event.city}, ${event.state}`}
                   </>
                 }
               />
