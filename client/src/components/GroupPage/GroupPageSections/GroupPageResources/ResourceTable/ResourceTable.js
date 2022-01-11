@@ -100,7 +100,7 @@ const ResourceTable = props => {
   }
   const ViewComponent = () => {
     // Remove query items within the link
-    let resource = selectedResource ? selectedResource.link:null;
+    let resource = selectedResource ? selectedResource.file:null;
     let resourceType = null;
     let resourceViewer;
     switch(props.type) {
@@ -129,9 +129,9 @@ const ResourceTable = props => {
           resourceViewer = (
           <>
           <Document
-        file={resource}
-        onLoadSuccess={onDocumentLoadSuccess}
-      >
+            file={resource}
+            onLoadSuccess={onDocumentLoadSuccess}
+          >
         <Page pageNumber={pageNumber} />
       </Document>
       <div>

@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Card } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import axios from "axios";
 import { useSelector } from "react-redux";
 import { uploadGroupResource } from "../../../../../utils/uploadGroupResource";
 
@@ -50,7 +49,8 @@ const AddResource = props => {
     setTitle(event.target.value);
   };
   const handleFile = event => {
-    setFile(event.target.value);
+    let file = event.target.files[0];
+    setFile(file);
   };
   return (
     // TODO: IMPLEMENT FORMIK AND YULP VALIDATION ON UPLOAD
@@ -112,7 +112,6 @@ const AddResource = props => {
                       type="file"
                       class="h-full w-full opacity-0"
                       name=""
-                      value={file}
                       onChange={handleFile}
                     />
                   </div>

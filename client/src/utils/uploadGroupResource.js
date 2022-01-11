@@ -4,30 +4,24 @@ export const uploadGroupResource = async (hobby, group, resource, token) => {
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
-      "Content-Type": "application/x-www-form-urlencoded"
+      "Content-Type": "multipart/form-data"
     }
   };
 
+  let form_data = new FormData();
+
+  form_data.append("name", resource.title);
+  form_data.append("file", resource.file);
+  form_data.append("author", resource.author);
+  form_data.append("hobby", hobby);
+  form_data.append("is_group", group);
+
   try {
-    console.log({
-      name: resource.title,
-      link: resource.file,
-      author: resource.author,
-      hobby: hobby,
-      is_group: group
-    });
-    console.log(resource.type);
     axios
       .post(
         `${process.env
           .REACT_APP_API_URL}/auth/${resource.type.toLowerCase()}/groups/`,
-        {
-          name: resource.title,
-          link: resource.file,
-          author: resource.author,
-          hobby: hobby,
-          is_group: group
-        },
+        form_data,
         config
       )
       .then(res => {

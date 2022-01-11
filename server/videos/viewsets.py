@@ -36,16 +36,13 @@ class GroupVideoViewSet(viewsets.ModelViewSet):
             return Video.objects.all()
 
     def create(self, *args, **kwargs):
-        body_unicode = self.request.body.decode('utf-8')
-        body = json.loads(body_unicode)
+        body = self.request.data
         hobby_name = body['hobby']
         group_name = body['is_group']
         author_id = body['author']
         name = body['name']
-        link = body['link']
-        print({
-            hobby_name, group_name, author_id, name, link
-        })
+        file = body['file']
+
         if hobby_name and group_name:
             hobby_obj = Hobbies.objects.filter(hobby_title=hobby_name).first()
             group_obj = Group.objects.get(
@@ -54,7 +51,7 @@ class GroupVideoViewSet(viewsets.ModelViewSet):
 
             if hobby_obj and group_obj and author_obj:
                 new_video = Video.objects.create(
-                    name=name, link=link, author=author_obj, hobby=hobby_obj, is_group=group_obj)
+                    name=name, file=file, author=author_obj, hobby=hobby_obj, is_group=group_obj)
                 return Response({"success": "Video has been created"}, status=status.HTTP_201_CREATED)
 
 

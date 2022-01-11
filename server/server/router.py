@@ -12,6 +12,9 @@ from pictures.viewsets import GroupPictureViewSet, HobbyPictureViewSet
 from links.viewsets import GroupLinkViewSet, HobbyLinkViewSet
 from rest_framework.routers import SimpleRouter
 
+from django.conf.urls.static import static
+from django.conf import settings
+
 
 router = SimpleRouter()
 

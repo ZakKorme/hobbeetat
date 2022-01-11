@@ -7,6 +7,7 @@ from rest_framework import serializers
 class PictureSerializer(serializers.ModelSerializer):
     author = UserSerializer()
     is_group = GroupSerializer()
+    file = serializers.ImageField()
 
     class Meta:
         model = Picture

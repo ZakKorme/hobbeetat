@@ -45,15 +45,15 @@ class HobbyEventViewSet(viewsets.ModelViewSet):
         event_creator = body['eventCreator']
         price = body['price']
         img = body['img']
-        link = body['link']
+        file = body['file']
 
         if hobby_name:
             hobby_obj = Hobbies.objects.get(
                 hobby_title=hobby_name.capitalize())
             user_obj = User.objects.filter(id=event_creator).first()
             new_event = Event.objects.create(
-                title=title, description=description, date=date, start_time=start_time, end_time=end_time, address=address, 
-                hobby=hobby_obj, city=city, zip=zip, state=state, is_online=is_online, event_creator=user_obj, price=price, img=img, link=link)
+                title=title, description=description, date=date, start_time=start_time, end_time=end_time, address=address,
+                hobby=hobby_obj, city=city, zip=zip, state=state, is_online=is_online, event_creator=user_obj, price=price, img=img, file=file)
             new_event.save()
             return Response({"success": "Event has been created"}, status=status.HTTP_201_CREATED)
 
@@ -117,7 +117,7 @@ class GroupEventViewSet(viewsets.ModelViewSet):
         event_creator = body['eventCreator']
         price = body['price']
         img = body['img']
-        link = body['link']
+        file = body['file']
 
         if hobby_name:
             hobby_obj = Hobbies.objects.get(
@@ -126,7 +126,7 @@ class GroupEventViewSet(viewsets.ModelViewSet):
             user_obj = User.objects.filter(id=event_creator).first()
             new_event = Event.objects.create(
                 title=title, description=description, date=date, start_time=start_time, end_time=end_time, address=address, hobby=hobby_obj,
-                group=group_obj, city=city, zip=zip, state=state, is_online=is_online, event_creator=user_obj, price=price, img=img, link=link)
+                group=group_obj, city=city, zip=zip, state=state, is_online=is_online, event_creator=user_obj, price=price, img=img, file=file)
             new_event.save()
             return Response({"success": "Event has been created"}, status=status.HTTP_201_CREATED)
 
