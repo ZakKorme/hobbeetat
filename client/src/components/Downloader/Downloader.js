@@ -24,7 +24,7 @@ const Downloader = ({ files = [], remove }) => {
   );
 };
 
-const DownloadItem = ({ name, link, removeFile }) => {
+const DownloadItem = ({ name, file, removeFile }) => {
   const [downloadInfo, setDownloadInfo] = useState({
     progress: 0,
     completed: false,
@@ -46,7 +46,7 @@ const DownloadItem = ({ name, link, removeFile }) => {
             }
       };
       
-      axios.get(link, {
+      axios.get(file, {
           responseType: "blob",
           ...option,
       }).then((res) => {

@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { Card } from "@mui/material";
+// import { useDropzone } from "react-dropzone";
 import CloseIcon from "@mui/icons-material/Close";
 import { useSelector } from "react-redux";
 import { uploadGroupResource } from "../../../../../utils/uploadGroupResource";
+import Button from "@mui/material/Button";
 
 const style = {
   position: "absolute",
@@ -18,9 +20,80 @@ const style = {
   p: 4
 };
 
+// const baseStyle = {
+//   flex: 1,
+//   display: "flex",
+//   flexDirection: "column",
+//   alignItems: "center",
+//   padding: "20px",
+//   borderWidth: 2,
+//   borderRadius: 2,
+//   borderColor: "#eeeeee",
+//   borderStyle: "dashed",
+//   backgroundColor: "#fafafa",
+//   color: "#bdbdbd",
+//   outline: "none",
+//   transition: "border .24s ease-in-out"
+// };
+
+// const focusedStyle = {
+//   borderColor: "#2196f3"
+// };
+
+// const acceptStyle = {
+//   borderColor: "#00e676"
+// };
+
+// const rejectStyle = {
+//   borderColor: "#ff1744"
+// };
+
+// function StyledDropzone(props) {
+//   const onDrop = useCallback(acceptedFiles => {
+//     acceptedFiles.forEach(file => {
+//       const reader = new FileReader();
+//       reader.onabort = () => console.log("file reading was aborted");
+//       reader.onerror = () => console.log("file reading has failed");
+//       reader.onload = () => {
+//         // Do whatever you want with the file contents
+//         const binaryStr = reader.result;
+//         console.log(binaryStr);
+//       };
+//       reader.readAsDataURL(file);
+//     });
+//   }, []);
+
+//   const {
+//     getRootProps,
+//     getInputProps,
+//     isFocused,
+//     isDragAccept,
+//     isDragReject
+//   } = useDropzone({ onDrop });
+
+//   const style = useMemo(
+//     () => ({
+//       ...baseStyle,
+//       ...(isFocused ? focusedStyle : {}),
+//       ...(isDragAccept ? acceptStyle : {}),
+//       ...(isDragReject ? rejectStyle : {})
+//     }),
+//     [isFocused, isDragAccept, isDragReject]
+//   );
+
+//   return (
+//     <div className="container">
+//       <div {...getRootProps({ style })}>
+//         <input {...getInputProps()} />
+//         <p>Drag 'n' drop some files here, or click to select files</p>
+//       </div>
+//     </div>
+//   );
+// }
+
 const AddResource = props => {
   const [type, setType] = useState("Pictures");
-  const [title, setTitle] = useState(null);
+  const [title, setTitle] = useState("");
   const [file, setFile] = useState(null);
 
   const authState = useSelector(state => state.auth);
@@ -95,6 +168,7 @@ const AddResource = props => {
                 </div>
                 <div class="mb-2">
                   <span>Attachments</span>
+                  {/* <StyledDropzone setFile={setFile} /> */}
                   <div class="relative h-40 rounded-lg border-dashed border-2 border-gray-200 bg-white flex justify-center items-center hover:cursor-pointer">
                     <div class="absolute">
                       <div class="flex flex-col items-center ">
@@ -123,12 +197,15 @@ const AddResource = props => {
                   </div>
                 </div>
                 <div class="mt-3 text-center pb-3">
-                  <button
+                  <Button
+                    variant="contained"
                     onClick={handleResourceUpload}
-                    class="w-full h-12 text-lg w-32 bg-blue-600 rounded text-white hover:bg-blue-700"
+                    fullWidth={true}
+                    // class="w-full h-12 text-lg w-32 bg-blue-600 rounded text-white hover:bg-blue-700 disabled:bg-gray-50"
+                    disabled={title && file && type ? false : true}
                   >
                     Upload
-                  </button>
+                  </Button>
                 </div>
               </div>
             </div>
