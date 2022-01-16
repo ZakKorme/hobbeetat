@@ -35,7 +35,8 @@ const Login = () => {
             authSlice.actions.setAccount({
               user: res.data.user,
               hobbies: res.data.hobbies,
-              groups: res.data.groups
+              groups: res.data.groups,
+              notifications: res.data.notifications
             })
           );
           let last_hobby = res.data.user["last_accessed_hobby"]["hobby_title"]
@@ -68,7 +69,6 @@ const Login = () => {
         // setMessage(err.response.data.detail.toString());
       });
   };
-
   const formik = useFormik({
     initialValues: {
       email: "",

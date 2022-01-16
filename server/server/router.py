@@ -1,3 +1,4 @@
+import notifications.urls
 from django.db.models import base
 from auth_users.viewsets import LoginViewSet, RefreshViewSet, RegistrationViewSet, EmailConfirmationViewSet
 from hobbies.viewsets import HobbiesViewSet
@@ -13,6 +14,7 @@ from links.viewsets import GroupLinkViewSet, HobbyLinkViewSet
 from rest_framework.routers import SimpleRouter
 
 from django.conf.urls.static import static
+from django.urls import path, include
 from django.conf import settings
 
 
@@ -84,7 +86,11 @@ router.register(r'auth/links/hobby', HobbyLinkViewSet,
 # NOTES
 router.register(r'auth/notes', NoteViewSet, basename="auth-notes")
 
-
 urlpatterns = [
     *router.urls
+]
+
+urlpatterns += [
+    path('^notifications/',
+         include((notifications.urls), namespace='auth-notifications'))
 ]

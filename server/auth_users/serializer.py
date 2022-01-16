@@ -7,7 +7,7 @@ from auth_users.utils import get_user_hobbies, get_user_groups
 from groups.serializer import GroupSerializer
 
 
-from users.serializers import UserSerializer
+from users.serializers import UserSerializer, UserNotificationSerializer
 from users.models import User
 
 
@@ -24,6 +24,8 @@ class LoginSerializer(TokenObtainPairSerializer):
         data['hobbies'] = get_user_hobbies(self.user)
         data['groups'] = GroupSerializer(
             get_user_groups(self.user), many=True).data
+        data['notifications'] = UserNotificationSerializer(
+            self.user.notifications, many=True).data
         if api_settings.UPDATE_LAST_LOGIN:
             update_last_login(None, self.user)
 

@@ -13,3 +13,9 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ['id', 'first_name', 'last_name', 'email', 'gender', 'date_of_birth',
                   'is_active', 'is_staff', 'is_confirmed', 'date_joined', 'last_accessed_hobby', 'last_accessed_group']
+
+
+class UserNotificationSerializer(serializers.Serializer):
+    recipient = UserSerializer()
+    unread = serializers.BooleanField(read_only=True)
+    verb = serializers.CharField()

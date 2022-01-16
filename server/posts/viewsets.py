@@ -1,11 +1,15 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated
+
+from users.serializers import UserSerializer
+from users.models import User_Hobby
 from .models import Post
 from hobbies.models import Hobbies
 from .serializer import PostSerializer
 from users.models import User
 from groups.models import Group
+from notifications.signals import notify
 
 
 class HobbyPostViewSet(viewsets.ModelViewSet):
@@ -35,10 +39,19 @@ class HobbyPostViewSet(viewsets.ModelViewSet):
         if hobby_name:
             user_obj = User.objects.get(id=int(author))
             hobby_obj = Hobbies.objects.get(
-                hobby_title=hobby_name.capitalize())
+                hobby_title=hobby_name)
             new_post = Post.objects.create(
                 title=title, author=user_obj, hobby=hobby_obj, content=content)
             new_post.save()
+
+            # Notification: List of Users
+            hobby_users = list(User_Hobby.objects.filter(
+                user_hobbyTitle=hobby_obj).values('user_id'))
+            users_to_notify = [User.objects.get(
+                id=user['user_id']) for user in hobby_users]
+            notify.send(user_obj, recipient=users_to_notify,
+                        verb="created a post")
+
             return Response({"success": "Post has been created"}, status=status.HTTP_201_CREATED)
 
     def update(self, request, *args, **kwargs):
