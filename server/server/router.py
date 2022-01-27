@@ -1,4 +1,5 @@
 import notifications.urls
+from notification.viewsets import NotificationViewSet
 from django.db.models import base
 from auth_users.viewsets import LoginViewSet, RefreshViewSet, RegistrationViewSet, EmailConfirmationViewSet
 from hobbies.viewsets import HobbiesViewSet
@@ -86,11 +87,9 @@ router.register(r'auth/links/hobby', HobbyLinkViewSet,
 # NOTES
 router.register(r'auth/notes', NoteViewSet, basename="auth-notes")
 
+# NOTIFICATIONS
+router.register(r'auth/(?P<id>[A-Za-z0-9_-]+)/notifications',
+                NotificationViewSet, basename="auth-notification")
 urlpatterns = [
     *router.urls
-]
-
-urlpatterns += [
-    path('^notifications/',
-         include((notifications.urls), namespace='auth-notifications'))
 ]

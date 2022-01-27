@@ -4,6 +4,9 @@ from users.models import User
 from hobbies.models import Hobbies
 from groups.models import Group
 
+# from channels.layer import get_channel_layer
+from asgiref.sync import async_to_sync
+
 
 class Post(models.Model):
     title = models.CharField(max_length=200)

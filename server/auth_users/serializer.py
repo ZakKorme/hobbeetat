@@ -5,9 +5,10 @@ from django.contrib.auth.models import update_last_login
 from django.core.exceptions import ObjectDoesNotExist
 from auth_users.utils import get_user_hobbies, get_user_groups
 from groups.serializer import GroupSerializer
+from notification.serializers import UserNotificationSerializer
+from notification.models import Notification
 
-
-from users.serializers import UserSerializer, UserNotificationSerializer
+from users.serializers import UserSerializer
 from users.models import User
 
 
@@ -25,7 +26,8 @@ class LoginSerializer(TokenObtainPairSerializer):
         data['groups'] = GroupSerializer(
             get_user_groups(self.user), many=True).data
         data['notifications'] = UserNotificationSerializer(
-            self.user.notifications, many=True).data
+            Notification.get_user_notifications(user=self.user), many=True
+        ).data
         if api_settings.UPDATE_LAST_LOGIN:
             update_last_login(None, self.user)
 

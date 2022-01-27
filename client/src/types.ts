@@ -26,3 +26,12 @@ export interface GroupResponse {
     groupCreator: string;
   };
 }
+
+export interface NotificationResponse {
+  id: number;
+  creator: object;
+  is_seen: boolean;
+  type: string;
+  object: object;
+  created_on: string;
+}

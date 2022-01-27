@@ -31,7 +31,7 @@ class HobbyPostViewSet(viewsets.ModelViewSet):
                 return Post.objects.all()
 
     def create(self, request, *args, **kwargs):
-        hobby_name = self.request.GET.get('hobby')
+        hobby_name = self.request.data['hobby']
         title = self.request.data['title']
         author = self.request.data['author']
         content = self.request.data['content']
@@ -45,12 +45,12 @@ class HobbyPostViewSet(viewsets.ModelViewSet):
             new_post.save()
 
             # Notification: List of Users
-            hobby_users = list(User_Hobby.objects.filter(
-                user_hobbyTitle=hobby_obj).values('user_id'))
-            users_to_notify = [User.objects.get(
-                id=user['user_id']) for user in hobby_users]
-            notify.send(user_obj, recipient=users_to_notify,
-                        verb="created a post")
+            # hobby_users = list(User_Hobby.objects.filter(
+            #    user_hobbyTitle=hobby_obj).values('user_id'))
+            #users_to_notify = [User.objects.get(
+            #    id=user['user_id']) for user in hobby_users]
+            #notify.send(user_obj, recipient=users_to_notify,
+                        #verb="created a post")
 
             return Response({"success": "Post has been created"}, status=status.HTTP_201_CREATED)
 

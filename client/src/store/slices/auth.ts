@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AccountResponse } from "../../types";
+import { AccountResponse, NotificationResponse } from "../../types";
 
 type State = {
   token: string | null;
@@ -7,7 +7,7 @@ type State = {
   account: AccountResponse | null;
   hobbies: Array<string> | null;
   groups: Array<string> | null;
-  notifications: Array<object> | null;
+  notifications: NotificationResponse | null | Array<object>;
 };
 
 const initialState: State = {
@@ -36,12 +36,18 @@ const authSlice = createSlice({
         user: AccountResponse;
         hobbies: Array<string>;
         groups: Array<string>;
-        notifications: Array<object>;
+        notifications: NotificationResponse;
       }>
     ) {
       state.account = action.payload.user;
       state.hobbies = action.payload.hobbies;
       state.groups = action.payload.groups;
+      state.notifications = action.payload.notifications;
+    },
+    setNotifications(
+      state: State,
+      action: PayloadAction<{ notifications: NotificationResponse }>
+    ) {
       state.notifications = action.payload.notifications;
     },
     logout(state: State) {

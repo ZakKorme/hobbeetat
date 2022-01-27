@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -12,12 +12,13 @@ import Sidebar from "../Sidebar/Sidebar";
 import Search from "../Search/Search";
 import NotesSideBar from "../NotesSideBar/NotesSideBar";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import authSlice from "../../store/slices/auth";
 import hobbySlice from "../../store/slices/hobby";
 import groupSlice from "../../store/slices/group";
 import noteSlice from "../../store/slices/notes";
+import notificationSlice from "../../store/slices/notifications";
 
 // Material UI Icons
 import MenuIcon from "@mui/icons-material/Menu";
@@ -41,6 +42,9 @@ const Navbar = (props) => {
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
+
+  const authState = useSelector(state => state.auth);
+  const notificationState = useSelector(state => state.notification)
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -49,6 +53,7 @@ const Navbar = (props) => {
     dispatch(hobbySlice.actions.clearHobby())
     dispatch(groupSlice.actions.clearGroup())
     dispatch(noteSlice.actions.clearNotes())
+    dispatch(notificationSlice.actions.clearNotifications())
     history.push("/login");
   };
 
@@ -79,8 +84,14 @@ const Navbar = (props) => {
   const handleNotes = () => {
     setNotes(!notes);
     console.log("Notes have changed")
-  }
+  };
 
+  const handleNotifications = () => {
+    history.push("/home/notifications");
+  }
+  useEffect(() => {
+
+  }, [notificationState])
   const menuId = "menu-appbar";
   const renderMenu = (
     <Menu
@@ -143,17 +154,17 @@ const Navbar = (props) => {
       <MenuItem>
         <IconButton
           size="large"
-          aria-label="show 17 new notifications"
+          aria-label="show new notifications"
           color="inherit"
         >
-          <Badge badgeContent={17} color="error">
+          <Badge badgeContent={authState.notifications ? authState.notifications.length:null} color="error">
             <NotificationsIcon />
           </Badge>
         </IconButton>
         <p>Notifications</p>
       </MenuItem>
       <MenuItem>
-        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
+        <IconButton size="large" aria-label="show new notes" color="inherit">
           <Badge >
             <EditIcon />
           </Badge>
@@ -246,8 +257,9 @@ const Navbar = (props) => {
                 size="large"
                 aria-label="show 17 new notifications"
                 color="inherit"
+                onClick={handleNotifications}
               >
-                <Badge badgeContent={17} color="primary">
+                <Badge badgeContent={notificationState.unread ? notificationState.unread.length:null} color="primary">
                   <NotificationsIcon />
                 </Badge>
               </IconButton>

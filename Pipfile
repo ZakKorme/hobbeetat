@@ -13,9 +13,10 @@ django-cors-headers = "*"
 python-dotenv = "*"
 psycopg2-binary = "*"
 six = "*"
+channels = "*"
 
 [dev-packages]
 autopep8 = "*"
 
 [requires]
-python_version = "3.10"
+python_version = "3.10.1"

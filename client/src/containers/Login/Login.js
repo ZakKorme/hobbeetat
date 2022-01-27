@@ -8,6 +8,7 @@ import { useHistory } from "react-router-dom";
 import authSlice from "../../store/slices/auth";
 import hobbySlice from "../../store/slices/hobby";
 import groupSlice from "../../store/slices/group";
+import notificationSlice from "../../store/slices/notifications";
 
 const Login = () => {
   const [message, setMessage] = useState("");
@@ -24,6 +25,12 @@ const Login = () => {
       })
       .then(res => {
         // We first check if the user has confirmed email
+        let unreadNotifications = res.data.notifications.filter(
+          notification => notification.is_seen === false
+        );
+        let readNotifications = res.data.notifications.filter(
+          notifications => notifications.is_seen === true
+        );
         if (res.data.user.is_confirmed) {
           dispatch(
             authSlice.actions.setAuthTokens({
@@ -35,8 +42,18 @@ const Login = () => {
             authSlice.actions.setAccount({
               user: res.data.user,
               hobbies: res.data.hobbies,
-              groups: res.data.groups,
-              notifications: res.data.notifications
+              groups: res.data.groups
+            })
+          );
+          // Set Notifications
+          dispatch(
+            notificationSlice.actions.setUnreadNotifications({
+              unread: unreadNotifications
+            })
+          );
+          dispatch(
+            notificationSlice.actions.setReadNotifications({
+              read: readNotifications
             })
           );
           let last_hobby = res.data.user["last_accessed_hobby"]["hobby_title"]

@@ -54,9 +54,10 @@ INSTALLED_APPS = [
     'links',
     'rest_framework',
     'corsheaders',
-    'notifications',
-    'django_extensions'
-
+    'django_extensions',
+    'channels',
+    "notification",
+    'channels_redis'
 ]
 
 MIDDLEWARE = [
@@ -93,7 +94,15 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'server.wsgi.application'
-
+ASGI_APPLICATION = 'server.asgi.application'
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [('127.0.0.1', 6379)]
+        },
+    },
+}
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases

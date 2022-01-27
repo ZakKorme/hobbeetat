@@ -23,7 +23,7 @@ function App() {
             <Route path="/email-confirmation" component={EmailConfirmation} />
             <ProtectedRoute
               path="/home"
-              render={(props) => <AuthLayout {...props} />}
+              render={props => <AuthLayout {...props} />}
             />
           </Switch>
         </Router>
