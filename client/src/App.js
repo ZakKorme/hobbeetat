@@ -5,7 +5,6 @@ import { Provider } from "react-redux";
 import ProtectedRoute from "./routes/ProtectedRoute";
 
 import Login from "./containers/Login/Login";
-import Profile from "./containers/Profile/Profile";
 import Registration from "./containers/Registration/Registration";
 import EmailConfirmation from "./components/EmailConfirmation/EmailConfirmation.js";
 import AuthLayout from "./layout/auth";

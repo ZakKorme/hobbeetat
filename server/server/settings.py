@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'django_extensions',
     'channels',
+    'message',
     "notification",
     'channels_redis'
 ]

@@ -9,7 +9,7 @@ import authSlice from "../../store/slices/auth";
 import hobbySlice from "../../store/slices/hobby";
 import groupSlice from "../../store/slices/group";
 import notificationSlice from "../../store/slices/notifications";
-
+import messagesSlice from "../../store/slices/messages";
 const Login = () => {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
@@ -25,13 +25,21 @@ const Login = () => {
       })
       .then(res => {
         // We first check if the user has confirmed email
-        let unreadNotifications = res.data.notifications.filter(
-          notification => notification.is_seen === false
-        );
-        let readNotifications = res.data.notifications.filter(
-          notifications => notifications.is_seen === true
-        );
+
         if (res.data.user.is_confirmed) {
+          let unreadNotifications = res.data.notifications.filter(
+            notification => notification.is_seen === false
+          );
+          let readNotifications = res.data.notifications.filter(
+            notifications => notifications.is_seen === true
+          );
+          let unreadMessages = res.data.messages.filter(
+            message => message.is_seen === false
+          );
+          let readMessages = res.data.messages.filter(
+            message => message.is_seen === true
+          );
+
           dispatch(
             authSlice.actions.setAuthTokens({
               token: res.data.access,
@@ -54,6 +62,18 @@ const Login = () => {
           dispatch(
             notificationSlice.actions.setReadNotifications({
               read: readNotifications
+            })
+          );
+          // Set User Messages
+
+          dispatch(
+            messagesSlice.actions.setUnreadMessages({
+              unread: unreadMessages
+            })
+          );
+          dispatch(
+            messagesSlice.actions.setReadMessages({
+              read: readMessages
             })
           );
           let last_hobby = res.data.user["last_accessed_hobby"]["hobby_title"]

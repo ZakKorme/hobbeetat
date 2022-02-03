@@ -12,7 +12,6 @@ import CardActions from "@mui/material/CardActions";
 import Button from "@mui/material/Button";
 
 import { useSelector } from "react-redux";
-import { capitalize } from "../../utils/index";
 
 const EventMenu = (props) => {
   const hobbyState = useSelector((state => state.hobby));

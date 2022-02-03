@@ -17,13 +17,15 @@ import hobbySlice from "./slices/hobby";
 import groupSlice from "./slices/group";
 import noteSlice from "./slices/notes";
 import notificationSlice from "./slices/notifications";
+import messagesSlice from "./slices/messages";
 
 const rootReducer = combineReducers({
   auth: authSlice.reducer,
   hobby: hobbySlice.reducer,
   group: groupSlice.reducer,
   note: noteSlice.reducer,
-  notification: notificationSlice.reducer
+  notification: notificationSlice.reducer,
+  message: messagesSlice.reducer
 });
 
 const persistedReducer = persistReducer(

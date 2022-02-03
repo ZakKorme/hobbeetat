@@ -8,6 +8,7 @@ from asgiref.sync import async_to_sync
 import json
 from users.models import User
 from users.serializers import UserSerializer
+from hobbies.models import Hobbies
 
 
 class Notification(models.Model):
@@ -24,6 +25,7 @@ class Notification(models.Model):
     creator = models.ForeignKey(
         User, null=True, on_delete=models.CASCADE, related_name="creator_notification")
     notification = models.TextField(max_length=100)
+    hobby = models.ForeignKey(Hobbies, null=True, on_delete=models.CASCADE)
     is_seen = models.BooleanField(default=False)
     url = models.URLField()
     type = models.IntegerField(choices=TYPE_CHOICES)
@@ -33,6 +35,7 @@ class Notification(models.Model):
 
     def save(self, *args, **kwargs):
         channel_layer = get_channel_layer()
+        hobby = "gardening"
         date_time = datetime.now()
         data = {
             "creator": UserSerializer(self.creator).data,
@@ -42,7 +45,7 @@ class Notification(models.Model):
             "created_on": date_time.isoformat()
         }
         async_to_sync(channel_layer.group_send)(
-            "lobby", {
+            hobby, {
                 'type': 'send_notification',
                 'value': json.dumps(data)
             }

@@ -6,6 +6,7 @@ from django.conf.urls import url
 from django.core.asgi import get_asgi_application
 
 from users.consumers import NotificationConsumer
+from message.consumer import MessageConsumer
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mysite.settings")
 
@@ -16,8 +17,10 @@ application = ProtocolTypeRouter({
     # WebSocket chat handler
     "websocket": AuthMiddlewareStack(
         URLRouter([
-            url(r"^ws/notifications/(?P<room_name>[A-Za-z0-9_-]+)/",
+            url(r"^ws/notifications/(?P<currentHobby>\w+)/$",
                 NotificationConsumer.as_asgi()),
+            url(r"^ws/messages/(?P<userId>\w+)/$",
+                MessageConsumer.as_asgi())
         ])
     ),
 })

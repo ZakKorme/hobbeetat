@@ -45,6 +45,7 @@ const Navbar = (props) => {
 
   const authState = useSelector(state => state.auth);
   const notificationState = useSelector(state => state.notification)
+  const messageState = useSelector(state => state.message)
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -85,6 +86,10 @@ const Navbar = (props) => {
     setNotes(!notes);
     console.log("Notes have changed")
   };
+
+  const handleMessages = () => {
+    history.push("/home/messages")
+  }
 
   const handleNotifications = () => {
     history.push("/home/notifications");
@@ -248,8 +253,9 @@ const Navbar = (props) => {
                 size="large"
                 aria-label="show 4 new mails"
                 color="inherit"
+                onClick={handleMessages}
               >
-                <Badge badgeContent={4} color="primary">
+                <Badge badgeContent={messageState.unread ? messageState.unread.length:null} color="primary">
                   <MailIcon />
                 </Badge>
               </IconButton>

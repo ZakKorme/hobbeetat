@@ -23,7 +23,6 @@ def get_user_hobbies(user):
     for hobby in user_hobbies:
         hobbies.append(str(Hobbies.objects.get(
             id=hobby['user_hobbyTitle'])))
-
     return hobbies
 
 

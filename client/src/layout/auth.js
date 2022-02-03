@@ -18,36 +18,39 @@ import { useDispatch } from "react-redux";
 import Notifications from "../containers/Notifications/Notifications";
 import { toast, Toaster } from "react-hot-toast";
 import notificationSlice from "../store/slices/notifications";
+import Messages from "../containers/Messages/Messages";
+import messagesSlice from "../store/slices/messages";
 
 const Auth = props => {
   const hobbyState = useSelector(state => state.hobby);
   const authState = useSelector(state => state.auth);
-  const notificationState = useSelector(state => state.notification);
+  const messageState = useSelector(state => state.message);
   const currentHobby = hobbyState.currentHobby;
   const dispatch = useDispatch();
 
-  const unreadNotifications = notificationState
-    ? notificationState.unread
-    : null;
+  const unreadMessages = messageState ? messageState.unread : null;
 
   useEffect(() => {
     //Websocket for Notification
+    const urlHobby = authState.account.last_accessed_hobby.hobby_title.toLowerCase();
     let notificationClient = new WebSocket(
-      `${process.env.REACT_APP_WEBSOCKET_NOTIFICATION_URL}`
+      `${process.env.REACT_APP_WEBSOCKET_NOTIFICATION_URL}/${urlHobby}/`
     );
 
     notificationClient.onmessage = e => {
-      const data = JSON.parse(e.data);
-      if (data.notification) {
+      const hobby = Object.keys(JSON.parse(e.data))[0];
+      console.log(hobby);
+      const isValidHobby = hobby !== "Success" && hobby !== "Failure";
+      const { ...hobbyNotification } = JSON.parse(e.data);
+
+      if (isValidHobby) {
         // Notify users beside the creator
+        const notification = hobbyNotification[hobby];
         if (
-          data.notification.creator.id !== authState.account.id &&
-          data.notification.is_seen !== true
+          notification.creator.id !== authState.account.id &&
+          notification.is_seen !== true
         ) {
-          let updatedUnReadNotifications = [
-            data.notification,
-            ...unreadNotifications
-          ];
+          let updatedUnReadNotifications = [notification, ...unreadMessages];
           dispatch(
             notificationSlice.actions.setUnreadNotifications({
               unread: updatedUnReadNotifications
@@ -55,8 +58,7 @@ const Auth = props => {
           );
 
           toast.success(
-            `${data.notification.creator["first_name"]} ${data.notification
-              .notification}`
+            `${notification.creator["first_name"]} ${notification.notification}`
           );
         }
       }
@@ -67,6 +69,42 @@ const Auth = props => {
     };
     return () => {
       notificationClient.close();
+    };
+  }, []);
+
+  useEffect(() => {
+    //Websocket for Messages
+    let messageClient = new WebSocket(
+      `${process.env.REACT_APP_WEBSOCKET_MESSAGE_URL}/${authState.account.id}/`
+    );
+    messageClient.onmessage = e => {
+      const userId = authState.account.id;
+      const data = JSON.parse(e.data);
+      if (data[userId]) {
+        // Notify users beside the creator
+        const message = data[userId];
+        if (
+          message.creator.id !== authState.account.id &&
+          message.is_seen !== true
+        ) {
+          let updatedUnReadMessage = [message, ...unreadMessages];
+          dispatch(
+            messagesSlice.actions.setUnreadMessages({
+              unread: updatedUnReadMessage
+            })
+          );
+          toast(`${message.creator["first_name"]} messaged you`, {
+            icon: "💬"
+          });
+        }
+      }
+    };
+
+    messageClient.onclose = e => {
+      console.error("Web Socket Closed Unexpectedly");
+    };
+    return () => {
+      messageClient.close();
     };
   }, []);
 
@@ -139,6 +177,7 @@ const Auth = props => {
       <Navbar />
       <Box>
         <Switch>
+          <ProtectedRoute exact path="/home/messages" component={Messages} />
           <ProtectedRoute
             exact
             path="/home/notifications"
